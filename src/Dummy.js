@@ -12,6 +12,8 @@ import Signup from './Signup';
 import Decision from './Decision';
 import Org from './Signuporg';
 import Demo  from './Demo';
+import Demo1 from './Demo1';
+import Nav from './Nav';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 
@@ -57,9 +59,9 @@ class Dummy extends Component {
              <Route exact path="/User/signup" component={Signup} />
              <Route exact path="/User/Decision" component={Decision} />
              <Route exact path="/User/signup_org" component={Org} />
-            <Route exact path="/Us" component={Demo} />
-
-
+             <Route exact path="/Us" component={Demo} />
+             <Route exact path="/Us1" component={Demo1} />
+             <Route exact path="/Home" component={Nav} />
            </div>
            </Switch>
 

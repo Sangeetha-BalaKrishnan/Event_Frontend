@@ -15,6 +15,9 @@ import signin from './Signin';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 
+const SubMenu = Menu.SubMenu;
+const MenuItemGroup = Menu.ItemGroup;
+
 
 class App extends Component {
   constructor(props){
@@ -26,6 +29,16 @@ class App extends Component {
       event_time:["24th June 2018,05.30 AM,CHENNAI","31th March 2018,05.30 AM,CHENNAI","24th June 2018,05.30 AM,CHENNAI","24th December 2018,05.30 AM,CHENNAI","15th November 2018,05.30 AM,CHENNAI","24th June 2018,05.30 AM,CHENNAI"]
     };
   }
+  state = {
+      current: 'mail',
+    }
+
+    handleClick = (e) => {
+      console.log('click ', e);
+      this.setState({
+        current: e.key,
+      });
+    }
 
 
 
@@ -110,19 +123,36 @@ const fontdrop={
          <img style={awesome} src={logo}/>
          </Link>
        </div>
-       <div class="col-sm-6" id="head_tab1">
-       <span style={awesome1}>HOME&nbsp;&nbsp;&nbsp;&nbsp;</span>
-       <span style={awesome1}>EVENTS&nbsp;&nbsp;&nbsp;&nbsp;</span>
-       <span style={awesome1}>TRENDING&nbsp;&nbsp;&nbsp;&nbsp;</span>
-       <span style={awesome1}>UPCOMING&nbsp;&nbsp;&nbsp;&nbsp;</span>
-       <span style={awesome1}>GET STARTED&nbsp;&nbsp;&nbsp;&nbsp;</span>
-       <span style={awesome1}>ABOUT US</span>
+       <div class="col-sm-7" id="head_tab1">
+       <Menu
+        onClick={this.handleClick}
+        selectedKeys={[this.state.current]}
+        mode="horizontal"
+        style={{width:'50% !important'}}
+      >
+        <Menu.Item key="mail" style={{fontSize:'17px'}}>
+          HOME
+        </Menu.Item>
+        <Menu.Item key="app" style={{fontSize:'17px'}}>
+          EVENTS
+        </Menu.Item>
+        <Menu.Item key="alipay" style={{fontSize:'17px'}}>
+          TRENDING
+        </Menu.Item>
+        <Menu.Item key="alipay1" style={{fontSize:'17px'}}>
+          UPCOMING
+        </Menu.Item>
+        <Menu.Item key="alipay2" style={{fontSize:'17px'}}>
+          GET STARTED
+        </Menu.Item>
+        <Menu.Item key="alipay3" style={{fontSize:'17px'}}>
+          ABOUT US
+        </Menu.Item>
+      </Menu>
        </div>
-       <div style={hello} class="col-sm-3">
+       <div style={hello} class="col-sm-2">
        {dropdown}
-       <Link to={`/User/signin`}>
-       <span className="awesome2"><i class="fa fa-user"></i>&nbsp;&nbsp;signin</span>
-       </Link>
+
        </div>
 
 

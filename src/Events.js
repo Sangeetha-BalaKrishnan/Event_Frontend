@@ -11,12 +11,14 @@ import './App.css';
 import dummy from './Dummy';
 import AnchorLink from 'react-anchor-link-smooth-scroll';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 
 
 class Events extends Component{
   constructor(props){
     super(props);
-    this.state={summa:""}
+    this.state={summa:"",
+  selectedPlace:{name:'summa'}}
   }
   componentDidMount() {
     const  value =this.props.location.state;
@@ -77,6 +79,7 @@ window.scrollTo(0, 0);
         <div id="subnav">
       <AnchorLink  className="smooth" href='#things'>Things</AnchorLink>&nbsp;&nbsp;&nbsp;
       <AnchorLink className="smooth" href='#stuff'>Stuff</AnchorLink>
+      <AnchorLink className="smooth" href='#stuff'>map</AnchorLink>
       </div>
 
 
@@ -90,10 +93,29 @@ window.scrollTo(0, 0);
       <h1>EVENT DESCRIPTION</h1>
 
     </section>
+    <section id='map'>
+    <Map google={this.props.google} zoom={14} initialCenter={{
+          lat: 11.082382,
+          lng: 76.986913
+        }}
+        style={{width: '80%', height: '70%', position: 'relative',marginLeft:'150px'}}>
+
+      <Marker onMouseover={this.onMouseoverMarker}
+              name={'Current location'} />
+
+      <InfoWindow onClose={this.onInfoWindowClose}>
+          <div>
+            <h1>{this.state.selectedPlace.name}</h1>
+          </div>
+      </InfoWindow>
+    </Map>
+    </section>
   </div>
       </div>
     );
   }
 }
 
-export default Events;
+export default GoogleApiWrapper({
+  apiKey: ('AIzaSyCWpEoKPyUDW7x3OnfX0slzlz4NfV-abBI')
+})(Events);

@@ -6,7 +6,6 @@ import ReactDOM from 'react-dom';
 import Signup from './Signup';
 import Events from './Events';
 import Signin from './Signin';
-import { BrowserRouter as Router, Route, Link ,Redirect } from "react-router-dom";
 
 import { render } from 'react-dom';
 
@@ -18,7 +17,6 @@ class Demo extends React.Component {
     super(props);
 
   }
-
   state = {
     collapsed: false,
   };
@@ -45,13 +43,13 @@ class Demo extends React.Component {
         >
           <div className="logo" />
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-            <Menu.Item key="1" >
+            <Menu.Item key="1" onClick={this.handleChange1}>
               <Icon type="pie-chart" />
               <span >Option 1</span>
             </Menu.Item>
-            <Menu.Item key="2" >
-            <Link to={`/Us1`}>  <Icon type="desktop" />
-              <span>Option 2</span></Link>
+            <Menu.Item key="2" onClick={this.handleChange}>
+              <Icon type="desktop" />
+              <span>Option 2</span>
             </Menu.Item>
             <SubMenu
               key="sub1"

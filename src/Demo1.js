@@ -6,18 +6,35 @@ import ReactDOM from 'react-dom';
 import Signup from './Signup';
 import Events from './Events';
 import Signin from './Signin';
-import { BrowserRouter as Router, Route, Link ,Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import { render } from 'react-dom';
 
-const { Header, Content, Footer, Sider } = Layout;
+
 const SubMenu = Menu.SubMenu;
+const MenuItemGroup = Menu.ItemGroup;
+
+const { Header, Content, Footer, Sider } = Layout;
+
 
 class Demo extends React.Component {
   constructor(props){
     super(props);
 
   }
+  handleclick(){
+    <Link to={`/Us`}/>
+  }
+  state = {
+  current: 'mail',
+}
+
+handleClick = (e) => {
+  console.log('click ', e);
+  this.setState({
+    current: e.key,
+  });
+}
 
   state = {
     collapsed: false,
@@ -44,14 +61,14 @@ class Demo extends React.Component {
           onCollapse={this.onCollapse}
         >
           <div className="logo" />
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-            <Menu.Item key="1" >
-              <Icon type="pie-chart" />
-              <span >Option 1</span>
+          <Menu theme="dark" defaultSelectedKeys={['2']} mode="inline">
+            <Menu.Item key="1" onClick={this.handleChange}>
+              <Link to={`/Us`}><Icon type="pie-chart" />
+              <span >Option 1</span></Link>
             </Menu.Item>
-            <Menu.Item key="2" >
-            <Link to={`/Us1`}>  <Icon type="desktop" />
-              <span>Option 2</span></Link>
+            <Menu.Item key="2"  onClick={this.handleChange}>
+              <Icon type="desktop" />
+              <span>Option 2</span>
             </Menu.Item>
             <SubMenu
               key="sub1"
@@ -85,7 +102,31 @@ class Demo extends React.Component {
               <Breadcrumb.Item>Bill</Breadcrumb.Item>
             </Breadcrumb>
             <div id="support" class="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-              <h1 style={{marginLeft:'450px',marginRight:'300px'}}>Welcome saran</h1>
+            <Menu
+    onClick={this.handleClick}
+    selectedKeys={[this.state.current]}
+    mode="horizontal"
+  >
+    <Menu.Item key="mail">
+      <Icon type="mail" />Navigation One
+    </Menu.Item>
+    <Menu.Item key="app" disabled>
+      <Icon type="appstore" />Navigation Two
+    </Menu.Item>
+    <SubMenu title={<span><Icon type="setting" />Navigation Three - Submenu</span>}>
+      <MenuItemGroup title="Item 1">
+        <Menu.Item key="setting:1">Option 1</Menu.Item>
+        <Menu.Item key="setting:2">Option 2</Menu.Item>
+      </MenuItemGroup>
+      <MenuItemGroup title="Item 2">
+        <Menu.Item key="setting:3">Option 3</Menu.Item>
+        <Menu.Item key="setting:4">Option 4</Menu.Item>
+      </MenuItemGroup>
+    </SubMenu>
+    <Menu.Item key="alipay">
+      <a href="https://ant.design" target="_blank" rel="noopener noreferrer">Navigation Four - Link</a>
+    </Menu.Item>
+  </Menu>
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>
