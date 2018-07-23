@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { Menu, Dropdown, Icon } from 'antd';
+import { Layout,Menu, Dropdown, Icon } from 'antd';
 
 import logo from './images/new.png';
 import Slider from 'react-animated-slider';
@@ -14,7 +14,7 @@ import dummy from './Dummy';
 import signin from './Signin';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-
+const { Header, Content, Footer } = Layout;
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 
@@ -124,31 +124,36 @@ const fontdrop={
          </Link>
        </div>
        <div class="col-sm-7" id="head_tab1">
-       <Menu
-        onClick={this.handleClick}
-        selectedKeys={[this.state.current]}
+       <Header style={{backgroundColor:'white'}}>
+      <div className="logo" />
+      <Menu
+        theme="dark"
         mode="horizontal"
-        style={{width:'50% !important'}}
+        defaultSelectedKeys={['1']}
+        style={{ lineHeight: '64px',backgroundColor:'black' }}
       >
-        <Menu.Item key="mail" style={{fontSize:'17px'}}>
+
+
+        <Menu.Item key="1" style={{fontSize:'17px'}}>
           HOME
         </Menu.Item>
-        <Menu.Item key="app" style={{fontSize:'17px'}}>
+        <Menu.Item key="2" style={{fontSize:'17px'}}>
           EVENTS
         </Menu.Item>
-        <Menu.Item key="alipay" style={{fontSize:'17px'}}>
+        <Menu.Item key="3" style={{fontSize:'17px'}}>
           TRENDING
         </Menu.Item>
-        <Menu.Item key="alipay1" style={{fontSize:'17px'}}>
+        <Menu.Item key="4" style={{fontSize:'17px'}}>
           UPCOMING
         </Menu.Item>
-        <Menu.Item key="alipay2" style={{fontSize:'17px'}}>
+        <Menu.Item key="5" style={{fontSize:'17px'}}>
           GET STARTED
         </Menu.Item>
-        <Menu.Item key="alipay3" style={{fontSize:'17px'}}>
+        <Menu.Item key="6" style={{fontSize:'17px'}}>
           ABOUT US
         </Menu.Item>
       </Menu>
+      </Header>
        </div>
        <div style={hello} class="col-sm-2">
        {dropdown}

@@ -56,7 +56,7 @@ class Signin extends Component{
       <div class="row">
           <div class="col-md-6 mx-auto">
             <div class="form-group">
-                <input name="email" value={this.state.email} onChange={this.handleChange} type="text" placeholder="Email Address" id="email" class="form-control" required/>
+                <input style={{height:'100px'}} name="email" value={this.state.email} onChange={this.handleChange} type="text" placeholder="Email Address" id="email" class="form-control" required/>
                 <label  class="form-control-placeholder" for="name">Email Address</label>
             </div>
             <br/>
@@ -89,6 +89,8 @@ class Signin extends Component{
   </ul>
 <br/>
   <button id="btt1" class="btn btn-default">Google+</button>
+  <br/><br/>
+  <button id="bttfb" class="btn btn-default">FaceBook</button>
 
 </div>
 </div>

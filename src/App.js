@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { Menu, Dropdown, Icon } from 'antd';
-
+import { Menu, Dropdown,Button, Icon } from 'antd';
 import logo from './images/new.png';
 import Slider from 'react-animated-slider';
 import content from './content'
@@ -10,6 +9,7 @@ import 'normalize.css/normalize.css';
 import './slider-animations.css';
 import './styles.css';
 import './App.css';
+import './hover.css';
 import dummy from './Dummy';
 import signin from './Signin';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
@@ -41,21 +41,28 @@ class App extends Component {
 
   </Menu>
 );
-const fontdrop={
-  fontFamily:'Roboto',
-  fontSize:'18px'
-};
+  const fontdrop={
+    fontFamily:'Roboto',
+    fontSize:'18px'
+  };
 
     const dropdown=(  <Dropdown overlay={menu}>
     <a style={fontdrop} className="ant-dropdown-link" href="#">
-      <i class="fa fa-user"></i>&nbsp;&nbsp;signin<Icon style={{fontSize:'13px'}} type="down" />
+      <i className="fa fa-user"></i>&nbsp;&nbsp;signin<Icon style={{fontSize:'13px'}} type="down" />
     </a>
   </Dropdown>);
+    const searchTime =(
+        <Dropdown overlay={menu}>
+          <Button style={{ marginLeft: 8 }}>
+            Button <Icon type="down" />
+          </Button>
+        </Dropdown>
+      );
 
     const cards=this.state.photo.map((photo,i)=>
 
 
-      <div class="rows" id="saran1">
+      <div className="rows" id="saran1">
 
 <Link to= {{pathname:'/Events', state:{value:'hello',gel:'summa'}}}  >
           <div className="column_main777 col-sm-3">
@@ -83,49 +90,55 @@ const fontdrop={
 
 
 
-    const awesome={
+    const LogoStyle={
       height:'120px',
       marginTop : '-13px',
       float:'letf',
       marginLeft:'20px',
       marginBottom:'-20px'
     };
-    const awesome1={
+    const iconStyle={
       color:'black',
       fontSize:'18px',
       fontFamily: 'Roboto',
       marginTop:'30px;',
       cursor:'pointer'
     };
+    const siginInbutton={
+      marginLeft: '118px',
+marginTop: '17px',
+height: '35px',
+paddingBottom: '14px',
+paddingTop: '11px'
+
+    };
 
     const hello={
-      marginTop:'40px'
-    }
+      marginTop:'30px'
+    };
+
     return (
      <div>
 
-     <div class="row" id="head_main">
-       <div class="col-sm-3">
+     <div className="row" id="head_main">
+       <div className="col-sm-3">
        <Link to={`/`}>
-         <img style={awesome} src={logo}/>
+         <img style={LogoStyle} src={logo}/>
          </Link>
        </div>
-       <div class="col-sm-6" id="head_tab1">
-       <span style={awesome1}>HOME&nbsp;&nbsp;&nbsp;&nbsp;</span>
-       <span style={awesome1}>EVENTS&nbsp;&nbsp;&nbsp;&nbsp;</span>
-       <span style={awesome1}>TRENDING&nbsp;&nbsp;&nbsp;&nbsp;</span>
-       <span style={awesome1}>UPCOMING&nbsp;&nbsp;&nbsp;&nbsp;</span>
-       <span style={awesome1}>GET STARTED&nbsp;&nbsp;&nbsp;&nbsp;</span>
-       <span style={awesome1}>ABOUT US</span>
+       <div className="col-sm-6" id="head_tab1">
+       <a className="hvr-bob">HOME</a>
+       <a className="hvr-bob">EVENTS</a>
+       <a className="hvr-bob">TRENDING</a>
+       <a className="hvr-bob">UPCOMING</a>
+       <a className="hvr-bob">GET STARTED</a>
+       <a className="hvr-bob">ABOUT US</a>
        </div>
-       <div style={hello} class="col-sm-3">
-       {dropdown}
+       <div className="col-sm-3 signinBlock">
        <Link to={`/User/signin`}>
-       <span className="awesome2"><i class="fa fa-user"></i>&nbsp;&nbsp;signin</span>
+        <button style={siginInbutton} className="siginInbutton"><i className="fa fa-user"></i>&nbsp;&nbsp;&nbsp;signin</button>
        </Link>
        </div>
-
-
      </div>
       <Slider className="slider-wrapper" autoplay={2000}>
         {content.map((item, index) => (
@@ -148,29 +161,24 @@ const fontdrop={
         ))}
       </Slider>
       <br/>
-      <div class="row">
-      <div class="col-sm-5"><input id="deadpool1" type="text" placeholder="  search events"/></div>
-      <div class="col-sm-5"><input id="deadpool2" type="text" placeholder="  area"/></div>
-      <div class="col-sm-2"><button id="deadpool3"onClick={this.hello} class="btn btn-primary">GO</button></div>
+      <div className="row">
+      <div className="col-sm-5"><input id="deadpool1" type="text" placeholder="  search events"/></div>
+      <div className="col-sm-5"><input id="deadpool2" type="text" placeholder="area"/></div>
+      <div className="col-sm-2"><button id="deadpool3"onClick={this.hello} className="btn btn-primary">GO</button></div>
       </div>
+      <div>
+        {cards}
+      </div>
+      <br/> <br/>  <br/>  <br/>
+      <div id="footer" className="col-md-12">
+        <div className="col-md-6">
+          <a className="menuOption">Privacy Policy</a>
+        </div>
+        <div className="col-md-6">
+          <a href="http://www.facebook.com/The-Tickets-212290419409526/?modal=admin_todo_tour"  target="_blank"><i className="fa fa-facebook fa-3x iconStyle" aria-hidden="true"></i></a>
 
-
-
-
-
-<br/><br/>
-
-
-      {cards}
-
-
-
-
-
-
-
-
-
+        </div>
+      </div>
   </div>
     );
   }

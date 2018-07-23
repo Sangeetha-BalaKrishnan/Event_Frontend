@@ -4,7 +4,9 @@ html{
 }
 
 
-
+.ant-calender{
+  width:360px !important;
+}
 
 #subnav {
   display: flex;
@@ -58,6 +60,50 @@ border-left-color: white;
 position: -webkit-sticky;
 position: sticky;
 top: 0;*/
+}
+#footer {
+  clear: left;
+  float: left;
+  width: 100%;
+  position: relative;
+  padding: 10px 0 15px 0;
+  margin-top: 20px;
+  font-size: .8em;
+  font-size: .8em;
+  border-top: 1px solid black;
+
+}
+.menuOption
+{
+  color:black;
+  text-align: center;
+  font-size:18px;
+  font-family: Roboto;
+  margin-top: 30px;
+  padding: 11px;
+  margin-left: 75px;
+}
+.iconStyle
+{
+  margin-left: 51%;
+  padding: 5px;
+
+}
+.siginInbutton
+{
+  margin-left : 118px;
+}
+.signinBlock
+{
+  margin-top:28px;
+}
+.LogoStyle
+{
+  height:120px;
+  margin-top:-13px;
+  float:left;
+  margin-left:20px;
+  margin-bottom:-20px;
 }
 
 #cat{
@@ -192,6 +238,25 @@ height: 38px;
   background-color: white;
   border-radius:30px;
 }
+#bttgoogle{
+  border:1px solid #bd4537;
+  outline: none;
+  width: 215px;
+  margin-top: 2px;
+margin-left: 175px;
+height: 38px;
+  background-color: white;
+  border-radius:30px;
+}
+#bttfb{
+  border:1px solid #3B5998;
+  outline: none;
+  width: 215px;
+  margin-left: 64px;
+height: 38px;
+  background-color: white;
+  border-radius:30px;
+}
 #btt3{
   border:1px solid #bd4537;
   outline: none;
@@ -211,11 +276,18 @@ height: 38px;
   background-color: #bd4537;
   color:white;
 }
+#bttfb:hover{
+  background-color: #3B5998;
+  color:white;
+}
 #btt2:hover{
   background-color: #bd4537;
   color:white;
 }
-#bkground{
+#bttgoogle:hover{
+  background-color: #bd4537;
+  color:white;
+}#bkground{
   background: #e8e8e8;
   height: 100%;
 
@@ -314,6 +386,7 @@ ul#signup22{
   transition: all 200ms;
   opacity: 0.5;
   display: none;
+
 }
 
 .form-control:focus + .form-control-placeholder,
@@ -367,6 +440,9 @@ ul#signup22{
 .App-intro {
   font-size: large;
 }
+
+
+
 
 #deadpool1{
   margin-left:90px;

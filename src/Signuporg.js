@@ -58,7 +58,9 @@ handleChange(event){
       <div id="logform2" class="col-sm-6">
       <br/><br/><br/><br/>
         <div class="col-sm-6" id="signup1">
-          <button id="btt2" class="btn btn-default">Google+</button>
+        <button id="bttgoogle" class="btn btn-default">Google+</button>
+
+        <button id="bttfb" class="btn btn-default">FaceBook</button>
         </div>
 
       <div className="or-space1">
