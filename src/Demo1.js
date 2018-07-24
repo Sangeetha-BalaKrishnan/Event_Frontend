@@ -6,13 +6,12 @@ import ReactDOM from 'react-dom';
 import Signup from './Signup';
 import Events from './Events';
 import Signin from './Signin';
-import { Select } from 'antd';
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import { render } from 'react-dom';
 
-const Option = Select.Option;
+
 
 function handleChange(value) {
   console.log(`selected ${value}`);
@@ -28,23 +27,27 @@ class Demo extends React.Component {
     super(props);
     this.state={
       event_name:'',
+      event_org_name:'',
       event_url:'',
       venue:'',
       address:'',
       city:'',
-      category:'',
+      category:'Please select',
       current:'mail',
       render:''
 
 
   };
+
   this.handleChange2 = this.handleChange2.bind(this);
   this.handleChange1 = this.handleChange1.bind(this);
+
 };
 
 handleChange2(event){
   this.setState({[event.target.name]:event.target.value});
 };
+
 
 
 handleChange1(){
@@ -78,50 +81,49 @@ handleClick = (e) => {
             <label  class="form-control-placeholder" for="name">Event Name</label>
         </div>
         <div class="col-sm-6">
-              <input name="event_url" value={this.state.event_url} onChange={this.handleChange2} type="text"  placeholder="Event URL" id="email1" class="form-control" required/>
-              <label class="form-control-placeholder" for="password">Event URL</label>
+              <input name="event_org_name" value={this.state.event_org_name} onChange={this.handleChange2} type="text"  placeholder="Event Organiser Name" id="email1" class="form-control" required/>
+              <label class="form-control-placeholder" for="password">Event Org Name</label>
           </div>
       </div>
       <div id="cat1" class="row">
       <div class="col-sm-6">
-            <input name="venue" value={this.state.venue} onChange={this.handleChange2} type="text"  placeholder="Venue" id="email1" class="form-control" required/>
-            <label class="form-control-placeholder" for="password">Venue</label>
+      <input name="event_url" value={this.state.event_url} onChange={this.handleChange2} type="text"  placeholder="Event URL" id="email1" class="form-control" required/>
+      <label class="form-control-placeholder" for="password">Event URL</label>
+        </div>
+
+
+      </div>
+      <div style={{marginTop:'8px',fontFamily:'Roboto',fontSize:'15px'}}>Thetickets.com/</div>
+      <div id="cat1" class="row">
+        <div  class="col-sm-6">
+            <input  name="event_name" value={this.state.event_name} onChange={this.handleChange2} type="text" placeholder="Event Name" id="email1" class="form-control" required/>
+            <label  class="form-control-placeholder" for="name">Event Name</label>
         </div>
         <div class="col-sm-6">
-         <textarea name="address" rows="6" cols="30" value={this.state.address} onChange={this.handleChange2} type="text"  placeholder="Address" id="email1" class="form-control" required/>
-
-              <label class="form-control-placeholder" for="password">Address</label>
+              <input name="event_org_name" value={this.state.event_org_name} onChange={this.handleChange2} type="text"  placeholder="Event Organiser Name" id="email1" class="form-control" required/>
+              <label class="form-control-placeholder" for="password">Event Org Name</label>
           </div>
       </div>
       <div id="cat1" class="row">
         <div  class="col-sm-6">
-          <label>City</label>
-          <div>
-            <Select defaultValue="lucy" style={{ width: 200 }} onChange={this.handleChange2} class="form-control">
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="disabled" disabled>Disabled</Option>
-              <Option value="Yiminghe">yiminghe</Option>
-              </Select>
-
-            </div>
-
-        </div>
-        <div  class="col-sm-6">
           <label>Category</label>
           <div>
-            <Select defaultValue="lucy" style={{ width: 200 }} onChange={this.handleChange2} class="form-control">
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="disabled" disabled>Disabled</Option>
-              <Option value="Yiminghe">yiminghe</Option>
-              </Select>
+          <label>
+            <select name="category" value={this.state.category} style={{ width: '200px',height:'27px',borderRadius:'5px' }} onChange={this.handleChange2} >
+              <option value="jack">Jack</option>
+              <option value="lucy">Lucy</option>
+              <option value="Yiminghe">yiminghe</option>
+              </select>
+              </label>
 
             </div>
+
+        </div>
         </div>
 
 
-      </div>
+
+
       <br/><br/>
       <button type="button" class="btn btn-primary">Cancel</button>
       &nbsp;&nbsp;&nbsp;&nbsp;
