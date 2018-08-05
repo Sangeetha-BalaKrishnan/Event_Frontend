@@ -12,13 +12,9 @@ import AnchorLink from 'react-anchor-link-smooth-scroll';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 import { Spin, Icon } from 'antd';
-import { Tabs } from 'antd';
+
 
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
-
-
-const TabPane = Tabs.TabPane;
-
 
 class Events extends Component{
   constructor(props){
@@ -33,9 +29,6 @@ class Events extends Component{
     const  value =this.props.location.state;
 console.log(value);
 window.scrollTo(0, 0);
-}
-callback(key) {
-  console.log(key);
 }
   render(){
 
@@ -76,7 +69,6 @@ callback(key) {
 
     return(
       <div>
-
         <div className="head222">
         <Link to={`/`}>
           <img style={awesome} src={logo}/>
@@ -89,35 +81,41 @@ callback(key) {
         <img style={awesome1} src={"https://d1eejzs07oawlt.cloudfront.net/files/events/9321-traditionalathon--1524073058740077502.jpg"}/>
         </div>
         <div>
-        <Tabs defaultActiveKey="1" onChange={this.callback}>
-      <TabPane tab="Tab 1" key="1">Content of Tab Pane 1</TabPane>
-      <TabPane tab="Tab 2" key="2">Content of Tab Pane 2</TabPane>
-      <TabPane tab="Maps" key="3">
-      <div style={{height:'700px'}}>
-      <Map google={this.props.google} zoom={14} initialCenter={{
-            lat: 11.082382,
-            lng: 76.986913
-          }}
-          style={{width: '80%', height: '70%', position: 'relative',marginLeft:'150px'}}>
-
-        <Marker onMouseover={this.onMouseoverMarker}
-                name={'Current location'} />
-
-        <InfoWindow onClose={this.onInfoWindowClose}>
-            <div>
-              <h1>{this.state.selectedPlace.name}</h1>
-            </div>
-        </InfoWindow>
-      </Map>
+        <div id="subnav">
+      <AnchorLink  className="smooth" href='#things'>Things</AnchorLink>&nbsp;&nbsp;&nbsp;
+      <AnchorLink className="smooth" href='#stuff'>Stuff</AnchorLink>
+      <AnchorLink className="smooth" href='#stuff'>map</AnchorLink>
       </div>
-      </TabPane>
-    </Tabs>
+
+
+    <section id='things'>
+      <div>
+
         </div>
+    </section>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <section id='stuff'>
+      <h1>EVENT DESCRIPTION</h1>
 
+    </section>
+    <section id='map'>
+    <Map google={this.props.google} zoom={14} initialCenter={{
+          lat: 11.082382,
+          lng: 76.986913
+        }}
+        style={{width: '80%', height: '70%', position: 'relative',marginLeft:'150px'}}>
 
+      <Marker onMouseover={this.onMouseoverMarker}
+              name={'Current location'} />
 
-
-
+      <InfoWindow onClose={this.onInfoWindowClose}>
+          <div>
+            <h1>{this.state.selectedPlace.name}</h1>
+          </div>
+      </InfoWindow>
+    </Map>
+    </section>
+  </div>
       </div>
     );
   }

@@ -3,7 +3,12 @@ html{
   overflow-x: hidden;
 }
 
-
+#xxx{
+  height:35%;
+  width:20%;
+  border-style:dotted;
+  clip: rect(auto,auto,auto,41px);
+}
 .ant-calender{
   width:360px !important;
 }

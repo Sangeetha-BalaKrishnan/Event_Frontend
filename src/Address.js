@@ -1,16 +1,18 @@
-
 import React, { Component } from 'react';
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import { render } from 'react-dom';
+import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
+import { Layout, Menu, Breadcrumb,Icon,Input,Tabs} from 'antd';
 import logo from './images/new.png';
 import ReactDOM from 'react-dom';
 import Signup from './Signup';
 import Events from './Events';
 import Signin from './Signin';
+import './App.css';
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-import { render } from 'react-dom';
 
+const TabPane = Tabs.TabPane;
 
 
 function handleChange(value) {
@@ -22,40 +24,28 @@ const MenuItemGroup = Menu.ItemGroup;
 const { Header, Content, Footer, Sider } = Layout;
 
 
-class Demo extends React.Component {
+class Address extends React.Component {
   constructor(props){
     super(props);
     this.state={
-      event_name:'',
-      event_org_name:'',
-      event_url:'',
-      venue:'',
-      address:'',
-      city:'',
-      category:'Please select',
-      current:'mail',
-      render:''
-
-
+    venue:'',
+    add1:'',
+    add2:'',
+    city:'',
+    link:''
   };
-
-  this.handleChange2 = this.handleChange2.bind(this);
-  this.handleChange1 = this.handleChange1.bind(this);
+  this.handleChange = this.handleChange.bind(this);
+  this.reset = this.reset.bind(this);
 
 };
 
-handleChange2(event){
-
+handleChange(event){
   this.setState({[event.target.name]:event.target.value});
-  alert(this.state.category);
-};
 
-
-
-handleChange1(){
-  alert("hello");
-
-};
+}
+reset(){
+  this.setState({venue:'',add1:'',add2:'',city:''});
+}
 
 handleClick = (e) => {
   console.log('click ', e);
@@ -75,70 +65,14 @@ handleClick = (e) => {
 
 
   render() {
-    const general_info=(
-      <div>
-      <div id="cat" class="row">
-        <div  class="col-sm-6">
-            <input  name="event_name" value={this.state.event_name} onChange={this.handleChange2} type="text" placeholder="Event Name" id="email1" class="form-control" required/>
-            <label  class="form-control-placeholder" for="name">Event Name</label>
-        </div>
-        <div class="col-sm-6">
-              <input name="event_org_name" value={this.state.event_org_name} onChange={this.handleChange2} type="text"  placeholder="Event Organiser Name" id="email1" class="form-control" required/>
-              <label class="form-control-placeholder" for="password">Event Org Name</label>
-          </div>
-      </div>
-      <div id="cat1" class="row">
-      <div class="col-sm-6">
-      <input name="event_url" value={this.state.event_url} onChange={this.handleChange2} type="text"  placeholder="Event URL" id="email1" class="form-control" required/>
-      <label class="form-control-placeholder" for="password">Event URL</label>
-        </div>
-
-
-      </div>
-      <div style={{marginTop:'8px',fontFamily:'Roboto',fontSize:'15px'}}>Thetickets.com/</div>
-      <div id="cat1" class="row">
-        <div  class="col-sm-6">
-            <input  name="event_name" value={this.state.event_name} onChange={this.handleChange2} type="text" placeholder="Event Name" id="email1" class="form-control" required/>
-            <label  class="form-control-placeholder" for="name">Event Name</label>
-        </div>
-        <div class="col-sm-6">
-              <input name="event_org_name" value={this.state.event_org_name} onChange={this.handleChange2} type="text"  placeholder="Event Organiser Name" id="email1" class="form-control" required/>
-              <label class="form-control-placeholder" for="password">Event Org Name</label>
-          </div>
-      </div>
-      <div id="cat1" class="row">
-        <div  class="col-sm-6">
-          <label>Category</label>
-          <div>
-          <label>
-            <select name="category" value={this.state.category} style={{ width: '200px',height:'27px',borderRadius:'5px' }} onChange={this.handleChange2} >
-              <option value="jack">Jack</option>
-              <option value="lucy">Lucy</option>
-              <option value="Yiminghe">yiminghe</option>
-              </select>
-              </label>
-
-            </div>
-
-        </div>
-        </div>
-
-
-
-
-      <br/><br/>
-      <button type="button" class="btn btn-primary">Cancel</button>
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <button type="button" class="btn btn-primary">Next</button>
-      </div>
-    );
-
-    const show_ticket=(
-      <div>
-      <br/><br/>
-        <button type="button" class="btn btn-primary">ADD SHOW</button>
-      </div>
-    );
+    const bt={
+      width:'112px',
+      marginBottom:'40px'
+    };
+    const bt1={
+      width:'112px',
+      marginBottom:'40px'
+    };
     const awesome={
       height:'120px',
       marginTop : '-27px',
@@ -146,6 +80,8 @@ handleClick = (e) => {
       marginLeft:'490px',
       marginBottom:'-14px'
     };
+
+
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
@@ -198,14 +134,14 @@ handleClick = (e) => {
 
             <Menu
     onClick={this.handleClick}
-    defaultSelectedKeys={[this.state.current]}
+    defaultSelectedKeys={'app'}
     mode="horizontal" style={{marginLeft:'20px'}}
   >
     <Menu.Item key="mail">
       General INFO
     </Menu.Item>
     <Menu.Item key="app" onClick={this.handle}>
-      <Link to={`/H1`}> Shows / Tickets</Link>
+       Shows / Tickets
     </Menu.Item>
     <SubMenu title={<span><Icon type="setting" />Navigation Three - Submenu</span>}>
       <MenuItemGroup title="Item 1">
@@ -222,7 +158,54 @@ handleClick = (e) => {
     </Menu.Item>
   </Menu>
   <div id="contain">
-  {general_info}
+  <Tabs defaultActiveKey="1">
+<TabPane tab="Physical Location" key="1">
+<div style={{marginLeft:'65px'}}>
+<h3>Event Venue</h3>
+<br/>
+<div>
+<Input name="venue" value={this.state.venue} onChange={this.handleChange} style={{width:'270px'}} placeholder="Name of Venue" />
+<br/><br/>
+<Input name="add1" value={this.state.add1} onChange={this.handleChange} style={{width:'270px'}} placeholder="Street Line1" />
+<br/><br/>
+<Input name="add2" value={this.state.add2} onChange={this.handleChange} style={{width:'270px'}} placeholder="Street Line2" />
+<br/><br/>
+<Input name="city" value={this.state.city} onChange={this.handleChange} style={{width:'270px'}} placeholder="City" />
+<br/><br/>
+<span style={{cursor:'pointer'}} onClick={this.reset}><Icon type="reload" />&nbsp;&nbsp;Reset Location</span>
+<br/><br/><br/>
+</div>
+<div id="map"style={{height:'338px',marginLeft:'180px',marginTop:'-344px'}}>
+<Map google={this.props.google} zoom={14} initialCenter={{
+      lat: 11.082382,
+      lng: 76.986913
+    }}
+    style={{width: '60%', height: '70%', position: 'relative',marginLeft:'150px'}}>
+
+  <Marker onMouseover={this.onMouseoverMarker}
+          name={'Current location'} />
+
+  <InfoWindow onClose={this.onInfoWindowClose}>
+      <div>
+        <h1>helo</h1>
+      </div>
+  </InfoWindow>
+</Map>
+</div>
+<button type="button" style={bt} class="btn btn-primary">Submit</button>
+</div>
+</TabPane>
+<TabPane tab="Online Event" key="2">
+<div style={{marginLeft:'65px'}}>
+<h3>Link (optional)</h3>
+<br/>
+<Input name="link" value={this.state.link} onChange={this.handleChange} style={{width:'450px'}} placeholder="Name of Venue" />
+<br/><br/>
+<button type="button" style={bt1} class="btn btn-primary">Submit</button>
+</div>
+</TabPane>
+
+</Tabs>
   </div>
             </div>
           </Content>
@@ -235,4 +218,6 @@ handleClick = (e) => {
   }
 }
 
-export default Demo;
+export default GoogleApiWrapper({
+  apiKey: ('AIzaSyCWpEoKPyUDW7x3OnfX0slzlz4NfV-abBI')
+})(Address);

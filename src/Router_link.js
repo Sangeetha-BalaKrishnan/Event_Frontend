@@ -15,10 +15,15 @@ import Demo  from './Demo';
 import Demo1 from './Demo1';
 import Nav from './Nav';
 import Modal from './Modal';
+import Address from './Address';
+import Upload from './Upload';
+import Tickets from './Ticket';
+import Hello from './Hello';
+import Text from './Text';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 
-class Dummy extends Component {
+class Router_link extends Component {
 
 
   render() {
@@ -64,6 +69,11 @@ class Dummy extends Component {
              <Route exact path="/Us1" component={Demo1} />
              <Route exact path="/Home" component={Nav} />
              <Route exact path="/H" component={Modal} />
+             <Route exact path="/H1" component={Address} />
+             <Route exact path="/H2" component={Upload} />
+             <Route exact path="/H3" component={Tickets} />
+             <Route exact path="/dummy" component={Hello} />
+             <Route exact path="/dummy1" component={Text} />
            </div>
            </Switch>
 
@@ -81,4 +91,4 @@ class Dummy extends Component {
   }
 }
 
-export default Dummy;
+export default Router_link;

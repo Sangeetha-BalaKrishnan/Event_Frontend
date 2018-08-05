@@ -1,16 +1,12 @@
-
 import React, { Component } from 'react';
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import { Layout, Menu, Breadcrumb, Icon ,Input} from 'antd';
 import logo from './images/new.png';
 import ReactDOM from 'react-dom';
 import Signup from './Signup';
 import Events from './Events';
 import Signin from './Signin';
-
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-
 import { render } from 'react-dom';
-
 
 
 function handleChange(value) {
@@ -22,40 +18,86 @@ const MenuItemGroup = Menu.ItemGroup;
 const { Header, Content, Footer, Sider } = Layout;
 
 
-class Demo extends React.Component {
+class Ticket extends React.Component {
   constructor(props){
     super(props);
     this.state={
-      event_name:'',
-      event_org_name:'',
-      event_url:'',
-      venue:'',
-      address:'',
-      city:'',
-      category:'Please select',
-      current:'mail',
-      render:''
-
-
+    toggle:false,
+    ticket_name:'',
+    price:'',
+    quantity:'',
+    ticket_name_array:[],
+    price_array:[],
+    quantity_array:[]
   };
+  this.handleToggle = this.handleToggle.bind(this);
+  this.handleChange = this.handleChange.bind(this);
+  this.push_details = this.push_details.bind(this);
+  this.close = this.close.bind(this);
+  this.delete_ticket = this.delete_ticket.bind(this);
 
-  this.handleChange2 = this.handleChange2.bind(this);
-  this.handleChange1 = this.handleChange1.bind(this);
+
 
 };
 
-handleChange2(event){
 
+handleToggle(){
+  this.setState({toggle:true});
+  console.log(this.state.ticket_name_array);
+}
+
+handleChange(event){
   this.setState({[event.target.name]:event.target.value});
-  alert(this.state.category);
-};
+}
+
+push_details()
+{
+  if(this.state.ticket_name ==''|| this.state.price=='' || this.state.quantity=='')
+  {
+    alert("Enter All the Values");
+  }
+  else
+  {
+    this.setState({
+      ticket_name_array:[...this.state.ticket_name_array,this.state.ticket_name],
+      price_array:[...this.state.price_array,this.state.price],
+      quantity_array:[...this.state.quantity_array,this.state.quantity],
+      quantity:'',
+      ticket_name:'',
+      price:'',
+      toggle:false
+    });
 
 
+  }
 
-handleChange1(){
-  alert("hello");
+}
 
-};
+close()
+{
+  this.setState({
+    ticket_name:'',
+    price:'',
+    quantity:'',
+    toggle:false
+  });
+}
+
+delete_ticket(event)
+{
+  const temp1=this.state.ticket_name_array;
+  const temp2=this.state.price_array;
+  const temp3=this.state.quantity_array;
+  temp1.splice(event.target.name,1);
+  temp2.splice(event.target.name,1);
+  temp3.splice(event.target.name,1);
+  this.setState({
+    ticket_name_array:temp1,
+    price_array:temp2,
+    quantity_array:temp3
+  });
+}
+
 
 handleClick = (e) => {
   console.log('click ', e);
@@ -75,77 +117,63 @@ handleClick = (e) => {
 
 
   render() {
-    const general_info=(
-      <div>
-      <div id="cat" class="row">
-        <div  class="col-sm-6">
-            <input  name="event_name" value={this.state.event_name} onChange={this.handleChange2} type="text" placeholder="Event Name" id="email1" class="form-control" required/>
-            <label  class="form-control-placeholder" for="name">Event Name</label>
-        </div>
-        <div class="col-sm-6">
-              <input name="event_org_name" value={this.state.event_org_name} onChange={this.handleChange2} type="text"  placeholder="Event Organiser Name" id="email1" class="form-control" required/>
-              <label class="form-control-placeholder" for="password">Event Org Name</label>
-          </div>
-      </div>
-      <div id="cat1" class="row">
-      <div class="col-sm-6">
-      <input name="event_url" value={this.state.event_url} onChange={this.handleChange2} type="text"  placeholder="Event URL" id="email1" class="form-control" required/>
-      <label class="form-control-placeholder" for="password">Event URL</label>
-        </div>
+  const awesome={
+    height:'120px',
+    marginTop : '-27px',
+
+    marginLeft:'490px',
+    marginBottom:'-14px'
+  };
+
+  const add_ticket_style={
+    border:'1px solid black',
+    borderStyle:'dashed',
+    width:'32%',
+    cursor:'pointer',
+    marginLeft:'324px'
+  };
+  const show_ticket_style={
+    border:'1px solid black',
+    borderStyle:'dashed',
+    width:'32%',
+    marginTop:'25px',
+    marginLeft:'324px'
+  };
+  const show_ticket=(
+    this.state.ticket_name_array.map((name,i)=>
+  <div style={show_ticket_style} key={i}>
+  <div style={{marginTop:'30px',marginLeft:'100px',marginBottom:'10px'}}>
+  <h5>TICKET</h5>
+  <span>{name}</span>&nbsp;&nbsp;&nbsp;<span>{this.state.price_array[i]}</span>&nbsp;&nbsp;&nbsp;<span>{this.state.quantity_array[i]}</span><button onClick={this.delete_ticket} className="btn btn-primary" name={i} style={{marginLeft:'40px'}}>DELETE</button>
+  </div>
+
+  </div>
+
+)
+  );
+  const add_ticket=(
+    <div style={add_ticket_style} onClick={this.handleToggle}>
+    <div style={{marginTop:'30px',marginLeft:'149px',marginBottom:'10px'}}>
+    <Icon type="plus" style={{ fontSize: 35, color: '#08c' }}/>
+    <h4 style={{marginLeft:'-34px'}}>ADD TICKETS</h4>
+    </div>
+    </div>
+  );
+  const add_ticket_details=(
+    <div style={{marginLeft:'67px'}}>
+      <Icon style={{marginLeft:'40%',marginTop:'25px',fontSize:25,cursor:'pointer'}} onClick={this.close} type="close" />
+      <h5>TICKET NAME</h5>
+      <Input type="text" style={{width:'27%'}} name="ticket_name" value={this.state.ticket_name} onChange={this.handleChange} placeholder="Ticket Name" />
+      <br/>
+      <h5>QUANTITY</h5>
+      <Input type="number" style={{width:'27%'}} name="quantity" value={this.state.quantity} onChange={this.handleChange} placeholder="Ticket price" />
+      <h5>TICKET PRICE</h5>
+      <Input type="number" style={{width:'27%'}} name="price" value={this.state.price} onChange={this.handleChange} placeholder="Ticket price" /><br/><br/>
+      <button onClick={this.push_details} className="btn btn-primary">SUBMIT</button>
+    </div>
+  );
 
 
-      </div>
-      <div style={{marginTop:'8px',fontFamily:'Roboto',fontSize:'15px'}}>Thetickets.com/</div>
-      <div id="cat1" class="row">
-        <div  class="col-sm-6">
-            <input  name="event_name" value={this.state.event_name} onChange={this.handleChange2} type="text" placeholder="Event Name" id="email1" class="form-control" required/>
-            <label  class="form-control-placeholder" for="name">Event Name</label>
-        </div>
-        <div class="col-sm-6">
-              <input name="event_org_name" value={this.state.event_org_name} onChange={this.handleChange2} type="text"  placeholder="Event Organiser Name" id="email1" class="form-control" required/>
-              <label class="form-control-placeholder" for="password">Event Org Name</label>
-          </div>
-      </div>
-      <div id="cat1" class="row">
-        <div  class="col-sm-6">
-          <label>Category</label>
-          <div>
-          <label>
-            <select name="category" value={this.state.category} style={{ width: '200px',height:'27px',borderRadius:'5px' }} onChange={this.handleChange2} >
-              <option value="jack">Jack</option>
-              <option value="lucy">Lucy</option>
-              <option value="Yiminghe">yiminghe</option>
-              </select>
-              </label>
-
-            </div>
-
-        </div>
-        </div>
-
-
-
-
-      <br/><br/>
-      <button type="button" class="btn btn-primary">Cancel</button>
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <button type="button" class="btn btn-primary">Next</button>
-      </div>
-    );
-
-    const show_ticket=(
-      <div>
-      <br/><br/>
-        <button type="button" class="btn btn-primary">ADD SHOW</button>
-      </div>
-    );
-    const awesome={
-      height:'120px',
-      marginTop : '-27px',
-
-      marginLeft:'490px',
-      marginBottom:'-14px'
-    };
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
@@ -221,8 +249,10 @@ handleClick = (e) => {
       <a href="https://ant.design" target="_blank" rel="noopener noreferrer">Navigation Four - Link</a>
     </Menu.Item>
   </Menu>
-  <div id="contain">
-  {general_info}
+  <div id="contain" style={{height:'400px',overflow:'auto'}}>
+  {this.state.toggle?'':show_ticket}
+  <br/><br/>
+  {this.state.toggle?add_ticket_details:add_ticket}
   </div>
             </div>
           </Content>
@@ -235,4 +265,4 @@ handleClick = (e) => {
   }
 }
 
-export default Demo;
+export default Ticket;
