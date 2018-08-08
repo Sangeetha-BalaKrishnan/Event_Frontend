@@ -16,11 +16,25 @@ class Signuporg extends Component{
 
   };
   this.handleChange = this.handleChange.bind(this);
+  this.handleClick = this.handleClick.bind(this);
 
 }
 handleChange(event){
 
   this.setState({[event.target.name] : event.target.value});
+}
+handleClick()
+{
+  if(this.state.organiser_name!=='' && this.state.organisation_name!=='' && this.state.email!=='' && this.state.password!=='' && this.state.cpassword!=='' && this.state.phone!='')
+  {
+    if(this.state.passord!==this.state.cpassword)
+    {
+      alert("both PW should be same");
+    }
+  }
+  else {
+    alert("fill all the details");
+  }
 }
   render(){
     const hello={
@@ -58,7 +72,7 @@ handleChange(event){
       <div id="logform2" class="col-sm-6">
       <br/><br/><br/><br/>
         <div class="col-sm-6" id="signup1">
-        <button id="bttgoogle" class="btn btn-default">Google+</button>
+
 
         <button id="bttfb" class="btn btn-default">FaceBook</button>
         </div>
@@ -102,7 +116,7 @@ handleChange(event){
 
           </div>
           <br/><br/>
-          <button id="btt3" class="btn btn-default">CREATE ACCOUNT</button>
+          <button id="btt3" class="btn btn-default" onClick={this.handleClick}>CREATE ACCOUNT</button>
             <br/>
 
 

@@ -6,7 +6,6 @@ import logo from './images/new.png';
 import ReactDOM from 'react-dom';
 import Signup from './Signup';
 import Events from './Events';
-import Signin from './Signin';
 import './App.css';
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
@@ -134,28 +133,24 @@ handleClick = (e) => {
 
             <Menu
     onClick={this.handleClick}
-    defaultSelectedKeys={'app'}
+    defaultSelectedKeys={'toggle2'}
     mode="horizontal" style={{marginLeft:'20px'}}
   >
-    <Menu.Item key="mail">
-      General INFO
-    </Menu.Item>
-    <Menu.Item key="app" onClick={this.handle}>
-       Shows / Tickets
-    </Menu.Item>
-    <SubMenu title={<span><Icon type="setting" />Navigation Three - Submenu</span>}>
-      <MenuItemGroup title="Item 1">
-        <Menu.Item key="setting:1">Option 1</Menu.Item>
-        <Menu.Item key="setting:2">Option 2</Menu.Item>
-      </MenuItemGroup>
-      <MenuItemGroup title="Item 2">
-        <Menu.Item key="setting:3">Option 3</Menu.Item>
-        <Menu.Item key="setting:4">Option 4</Menu.Item>
-      </MenuItemGroup>
-    </SubMenu>
-    <Menu.Item key="alipay">
-      <a href="https://ant.design" target="_blank" rel="noopener noreferrer">Navigation Four - Link</a>
-    </Menu.Item>
+  <Menu.Item key="toggle1">
+    <Link to={`/Us1`}>General INFO</Link>
+  </Menu.Item>
+  <Menu.Item key="toggle2" style={{marginLeft:'40px'}} onClick={this.handle}>
+    ADDRESS
+  </Menu.Item>
+  <Menu.Item key="toggle3" style={{marginLeft:'40px'}}>
+    <Link to={`/dummy1`}>DESCRIPTION</Link>
+  </Menu.Item>
+  <Menu.Item key="toggle4" style={{marginLeft:'40px'}}>
+    DEPENDENCY
+  </Menu.Item>
+  <Menu.Item key="toggle5" style={{marginLeft:'40px'}}>
+    TICKETS
+  </Menu.Item>
   </Menu>
   <div id="contain">
   <Tabs defaultActiveKey="1">

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import ReactDOM from 'react-dom';
 import logo from './images/new.png';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
@@ -15,10 +16,25 @@ class Signin extends Component{
 
   };
   this.handleChange = this.handleChange.bind(this);
+  this.handleClick = this.handleClick.bind(this);
 
 }
 handleChange(event){
   this.setState({[event.target.name]:event.target.value});
+  ReactDOM.findDOMNode(this.refs.input).borderColor='red';
+}
+handleClick()
+{
+  if(this.state.user_name!=='' && this.state.email!=='' && this.state.password!=='' && this.state.cpassword!=='' && this.state.phone!='')
+  {
+    if(this.state.passord!==this.state.cpassword)
+    {
+      alert("both PW should be same");
+    }
+  }
+  else {
+    alert("fill all the details");
+  }
 }
   render(){
     const hello={
@@ -56,7 +72,7 @@ handleChange(event){
       <div id="logform2" class="col-sm-6">
       <br/><br/><br/><br/>
         <div class="col-sm-6" id="signup1">
-          <button id="bttgoogle" class="btn btn-default">Google+</button>
+
 
           <button id="bttfb" class="btn btn-default">FaceBook</button>
         </div>
@@ -70,7 +86,7 @@ handleChange(event){
 
           <div id="cat" class="row">
             <div  class="col-sm-6">
-                <input name="name_user" value={this.state.name_user} onChange={this.handleChange} type="text" placeholder="Name" id="email1" class="form-control" required/>
+                <input name="name_user" ref="input" value={this.state.name_user} onChange={this.handleChange} type="text" placeholder="Name" id="email1" class="form-control" required/>
                 <label  class="form-control-placeholder" for="name">Name</label>
             </div>
             <div class="col-sm-6">
@@ -96,7 +112,7 @@ handleChange(event){
 
           </div>
           <br/><br/>
-          <button id="btt3" class="btn btn-default">CREATE ACCOUNT</button>
+          <button id="btt3" onClick={this.handleClick} class="btn btn-default">CREATE ACCOUNT</button>
             <br/>
 
 

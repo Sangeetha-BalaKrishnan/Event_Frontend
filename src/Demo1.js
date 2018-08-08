@@ -5,7 +5,7 @@ import logo from './images/new.png';
 import ReactDOM from 'react-dom';
 import Signup from './Signup';
 import Events from './Events';
-import Signin from './Signin';
+
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
@@ -33,7 +33,6 @@ class Demo extends React.Component {
       address:'',
       city:'',
       category:'Please select',
-      current:'mail',
       render:''
 
 
@@ -57,12 +56,7 @@ handleChange1(){
 
 };
 
-handleClick = (e) => {
-  console.log('click ', e);
-  this.setState({
-    current: e.key,
-  });
-};
+
 
   state = {
     collapsed: false,
@@ -197,28 +191,24 @@ handleClick = (e) => {
             <div id="support" class="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
             <Menu
-    onClick={this.handleClick}
-    defaultSelectedKeys={[this.state.current]}
+
+    defaultSelectedKeys={'toggle1'}
     mode="horizontal" style={{marginLeft:'20px'}}
   >
-    <Menu.Item key="mail">
+    <Menu.Item key="toggle1">
       General INFO
     </Menu.Item>
-    <Menu.Item key="app" onClick={this.handle}>
-      <Link to={`/H1`}> Shows / Tickets</Link>
+    <Menu.Item key="toggle2" style={{marginLeft:'40px'}} onClick={this.handle}>
+      <Link to={`/H1`}> ADDRESS</Link>
     </Menu.Item>
-    <SubMenu title={<span><Icon type="setting" />Navigation Three - Submenu</span>}>
-      <MenuItemGroup title="Item 1">
-        <Menu.Item key="setting:1">Option 1</Menu.Item>
-        <Menu.Item key="setting:2">Option 2</Menu.Item>
-      </MenuItemGroup>
-      <MenuItemGroup title="Item 2">
-        <Menu.Item key="setting:3">Option 3</Menu.Item>
-        <Menu.Item key="setting:4">Option 4</Menu.Item>
-      </MenuItemGroup>
-    </SubMenu>
-    <Menu.Item key="alipay">
-      <a href="https://ant.design" target="_blank" rel="noopener noreferrer">Navigation Four - Link</a>
+    <Menu.Item key="toggle3" style={{marginLeft:'40px'}}>
+      DESCRIPTION
+    </Menu.Item>
+    <Menu.Item key="toggle4" style={{marginLeft:'40px'}}>
+      DEPENDENCY
+    </Menu.Item>
+    <Menu.Item key="toggle5" style={{marginLeft:'40px'}}>
+      TICKETS
     </Menu.Item>
   </Menu>
   <div id="contain">

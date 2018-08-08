@@ -5,7 +5,6 @@ import logo from './images/new.png';
 import ReactDOM from 'react-dom';
 import Signup from './Signup';
 import Events from './Events';
-import Signin from './Signin';
 import { BrowserRouter as Router, Route, Link ,Redirect } from "react-router-dom";
 
 import { render } from 'react-dom';

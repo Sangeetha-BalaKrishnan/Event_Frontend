@@ -10,7 +10,6 @@ import './slider-animations.css';
 import './styles.css';
 import './App.css';
 import './hover.css';
-import signin from './Signin';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 

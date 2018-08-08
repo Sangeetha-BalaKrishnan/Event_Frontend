@@ -7,7 +7,8 @@ import { Switch} from 'react-router-dom'
 
 import App from './App';
 import Events from './Events';
-import Signin from './Signin';
+import Signin_cust from './Signin_cust';
+import Signin_org from './Signin_org'
 import Signup from './Signup';
 import Decision from './Decision';
 import Org from './Signuporg';
@@ -61,7 +62,8 @@ class Router_link extends Component {
            <div className="App">
              <Route exact path="/" component={App} />
              <Route exact path="/Events" component={Events} />
-             <Route exact path="/User/signin" component={Signin} />
+             <Route exact path="/User/cust/signin" component={Signin_cust} />
+             <Route exact path="/User/org/signin" component={Signin_org} />
              <Route exact path="/User/signup" component={Signup} />
              <Route exact path="/User/Decision" component={Decision} />
              <Route exact path="/User/signup_org" component={Org} />
