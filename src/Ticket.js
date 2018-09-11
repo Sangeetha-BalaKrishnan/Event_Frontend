@@ -7,6 +7,18 @@ import Events from './Events';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { render } from 'react-dom';
 
+const after={
+  borderColor:'red',
+  width:'27%'
+};
+
+const before={
+  borderColor:'#cccccc',
+  width:'27%'
+}
+const message=(
+  <span style={{fontFamily:'Roboto',fontSize:'11px'}}>&nbsp;Enter this field</span>
+);
 
 function handleChange(value) {
   console.log(`selected ${value}`);
@@ -27,14 +39,17 @@ class Ticket extends React.Component {
     quantity:'',
     ticket_name_array:[],
     price_array:[],
-    quantity_array:[]
+    quantity_array:[],
+    check_ticket_name:before,
+    check_quantity:before,
+    check_price:before
   };
   this.handleToggle = this.handleToggle.bind(this);
   this.handleChange = this.handleChange.bind(this);
   this.push_details = this.push_details.bind(this);
   this.close = this.close.bind(this);
   this.delete_ticket = this.delete_ticket.bind(this);
-
+  this.handleChange_toggle = this.handleChange_toggle.bind(this);
 
 
 };
@@ -45,15 +60,43 @@ handleToggle(){
   console.log(this.state.ticket_name_array);
 }
 
+handleChange_toggle(event){
+
+  this.setState({[event.target.name] : event.target.value});
+
+var temp="check_"+event.target.name;
+console.log(temp);
+  if((event.target.value).length>0)
+  {
+    this.setState({[temp]:before});
+  }
+}
+
 handleChange(event){
   this.setState({[event.target.name]:event.target.value});
+  var temp="check_"+event.target.name;
+  if(event.target.value=='')
+  {
+    this.setState({[temp]:after});
+  }
 }
 
 push_details()
 {
   if(this.state.ticket_name ==''|| this.state.price=='' || this.state.quantity=='')
   {
-    alert("Enter All the Values");
+    if(this.state.ticket_name =='')
+    {
+      this.setState({check_ticket_name:after});
+    }
+    if(this.state.price=='')
+    {
+      this.setState({check_price:after});
+    }
+    if(this.state.quantity=='')
+    {
+      this.setState({check_quantity:after});
+    }
   }
   else
   {
@@ -153,21 +196,27 @@ handleClick = (e) => {
   const add_ticket=(
     <div style={add_ticket_style} onClick={this.handleToggle}>
     <div style={{marginTop:'30px',marginLeft:'149px',marginBottom:'10px'}}>
-    <Icon type="plus" style={{ fontSize: 35, color: '#08c' }}/>
+
+    <i class="fa fa-plus" style={{ marginTop:'-10px',fontSize: 40, color: '#08c' }}></i>
     <h4 style={{marginLeft:'-34px'}}>ADD TICKETS</h4>
     </div>
     </div>
   );
   const add_ticket_details=(
-    <div style={{marginLeft:'67px'}}>
-      <Icon style={{marginLeft:'40%',marginTop:'25px',fontSize:25,cursor:'pointer'}} onClick={this.close} type="close" />
+    <div style={{marginLeft:'67px',marginTop:'-40px'}}>
+
+      <i class="fa fa-close" style={{marginLeft:'40%',marginTop:'25px',fontSize:25,cursor:'pointer'}} onClick={this.close}></i>
       <h5>TICKET NAME</h5>
-      <Input type="text" style={{width:'27%'}} name="ticket_name" value={this.state.ticket_name} onChange={this.handleChange} placeholder="Ticket Name" />
+      <Input type="text" style={this.state.check_ticket_name} name="ticket_name" value={this.state.ticket_name} onChange={this.state.check_ticket_name==after?this.handleChange_toggle:this.handleChange} placeholder="Ticket Name" class="form-control" required/><br/>
+      {this.state.check_ticket_name==after?message:''}
       <br/>
       <h5>QUANTITY</h5>
-      <Input type="number" style={{width:'27%'}} name="quantity" value={this.state.quantity} onChange={this.handleChange} placeholder="Ticket price" />
+      <Input type="number" style={this.state.check_quantity} name="quantity" value={this.state.quantity} onChange={this.state.check_quantity==after?this.handleChange_toggle:this.handleChange} placeholder="Ticket price" /><br/>
+      {this.state.check_quantity==after?message:''}
       <h5>TICKET PRICE</h5>
-      <Input type="number" style={{width:'27%'}} name="price" value={this.state.price} onChange={this.handleChange} placeholder="Ticket price" /><br/><br/>
+      <Input type="number" style={this.state.check_price} name="price" value={this.state.price} onChange={this.state.check_price==after?this.handleChange_toggle:this.handleChange} placeholder="Ticket price" /><br/>
+      {this.state.check_price==after?message:''}
+      <br/><br/>
       <button onClick={this.push_details} className="btn btn-primary">SUBMIT</button>
     </div>
   );

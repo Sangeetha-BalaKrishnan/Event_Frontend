@@ -112,13 +112,13 @@ length_check()
 check_all()
 {
   console.log(this.state.password,this.state.cpassword);
-    if( this.state.passord!==this.state.cpassword && this.state.password!=='')
+    if( this.state.password!==this.state.cpassword && this.state.password!=='')
     {
         this.setState({check_cpassword:after,pass_crct:true});
     }
 
 
-    if(this.state.password==this.state.cpassword)
+    if(this.state.password==this.state.cpassword && this.state.cpassword!=='')
     {
         this.setState({check_cpassword:before,pass_crct:false});
     }

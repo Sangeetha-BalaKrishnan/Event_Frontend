@@ -263,7 +263,8 @@ handleClick = (e) => {
     const main_table=(
       <div>
       <br/><br/>
-      <Icon style={{marginLeft:'89%',marginTop:'-8px',fontSize:25,cursor:'pointer'}} onClick={this.close} type="close" />
+      
+      <i class="fa fa-close" style={{marginLeft:'89%',marginTop:'-8px',fontSize:25,cursor:'pointer'}} onClick={this.close}></i>
       <div className="rows">
       <div className="col-sm-2">
           Name

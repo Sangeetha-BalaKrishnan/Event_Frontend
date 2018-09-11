@@ -115,10 +115,10 @@ class TextEditor extends React.Component {
 
             <Menu
     onClick={this.handleClick}
-    defaultSelectedKeys={[this.state.current]}
+    defaultSelectedKeys={'toggle3'}
     mode="horizontal" style={{marginLeft:'20px'}}
   >
-  <Menu.Item key="toggle3">
+  <Menu.Item key="toggle1">
     General INFO
   </Menu.Item>
   <Menu.Item key="toggle2" style={{marginLeft:'40px'}} onClick={this.handle}>

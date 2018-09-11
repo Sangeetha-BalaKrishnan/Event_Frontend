@@ -3,9 +3,8 @@ import React, { Component } from 'react';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import logo from './images/new.png';
 import ReactDOM from 'react-dom';
-import Signup from './Signup';
-import Events from './Events';
-
+import './Demo1.css'
+import MediaQuery from 'react-responsive';
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
@@ -33,13 +32,14 @@ class Demo extends React.Component {
       address:'',
       city:'',
       category:'Please select',
-      render:''
-
-
+      render:'',
+      collapsed:false,
+      ismobile:false
   };
 
   this.handleChange2 = this.handleChange2.bind(this);
   this.handleChange1 = this.handleChange1.bind(this);
+  this.summa = this.summa.bind(this);
 
 };
 
@@ -56,11 +56,12 @@ handleChange1(){
 
 };
 
+summa()
+{
+  this.setState({isMobile:true})
+}
 
 
-  state = {
-    collapsed: false,
-  };
 
   onCollapse = (collapsed) => {
     console.log(collapsed);
@@ -77,7 +78,7 @@ handleChange1(){
             <label  class="form-control-placeholder" for="name">Event Name</label>
         </div>
         <div class="col-sm-6">
-              <input name="event_org_name" value={this.state.event_org_name} onChange={this.handleChange2} type="text"  placeholder="Event Organiser Name" id="email1" class="form-control" required/>
+              <input name="event_org_name" value={this.state.event_org_name} onChange={this.handleChange2} type="text"  placeholder="Event Organiser Name" id="inbox" class="form-control" required/>
               <label class="form-control-placeholder" for="password">Event Org Name</label>
           </div>
       </div>
@@ -96,7 +97,7 @@ handleChange1(){
             <label  class="form-control-placeholder" for="name">Event Name</label>
         </div>
         <div class="col-sm-6">
-              <input name="event_org_name" value={this.state.event_org_name} onChange={this.handleChange2} type="text"  placeholder="Event Organiser Name" id="email1" class="form-control" required/>
+              <input name="event_org_name" value={this.state.event_org_name} onChange={this.handleChange2} type="text"  placeholder="Event Organiser Name" id="inbox" class="form-control" required/>
               <label class="form-control-placeholder" for="password">Event Org Name</label>
           </div>
       </div>
@@ -124,6 +125,7 @@ handleChange1(){
       <button type="button" class="btn btn-primary">Cancel</button>
       &nbsp;&nbsp;&nbsp;&nbsp;
       <button type="button" class="btn btn-primary">Next</button>
+
       </div>
     );
 
@@ -140,8 +142,20 @@ handleChange1(){
       marginLeft:'490px',
       marginBottom:'-14px'
     };
+    const awesome1={
+      height:'120px',
+      marginTop : '-27px',
+
+      marginLeft:'65px',
+      marginBottom:'-14px'
+    };
+
     return (
+
+<div>
+<MediaQuery query="(min-device-width: 1224px)">
       <Layout style={{ minHeight: '100vh' }}>
+
         <Sider
           collapsible
           collapsed={this.state.collapsed}
@@ -212,6 +226,7 @@ handleChange1(){
     </Menu.Item>
   </Menu>
   <div id="contain">
+
   {general_info}
   </div>
             </div>
@@ -221,6 +236,93 @@ handleChange1(){
           </Footer>
         </Layout>
       </Layout>
+</MediaQuery>
+
+
+<MediaQuery query="(max-device-width: 1224px)">
+<Layout style={{ minHeight: '100vh' }}>
+
+  <Sider
+    collapsible
+    collapsed={'true'}
+  >
+    <div className="logo" />
+    <Menu theme="dark" defaultSelectedKeys={['2']} mode="inline">
+      <Menu.Item key="1" onClick={this.handleChange}>
+        <Link to={`/Us`}><Icon type="pie-chart" />
+        <span >Option 1</span></Link>
+      </Menu.Item>
+      <Menu.Item key="2"  >
+        <Icon type="desktop" />
+        <span>Option 2</span>
+      </Menu.Item>
+      <SubMenu
+        key="sub1"
+        title={<span><Icon type="user" /><span>User</span></span>}
+      >
+        <Menu.Item key="3">Tom</Menu.Item>
+        <Menu.Item key="4">Bill</Menu.Item>
+        <Menu.Item key="5">Alex</Menu.Item>
+      </SubMenu>
+      <SubMenu
+        key="sub2"
+        title={<span><Icon type="team" /><span>Team</span></span>}
+      >
+        <Menu.Item key="6">Team 1</Menu.Item>
+        <Menu.Item key="8">Team 2</Menu.Item>
+      </SubMenu>
+      <Menu.Item key="9">
+        <Icon type="file" />
+        <span>File</span>
+      </Menu.Item>
+    </Menu>
+  </Sider>
+  <Layout>
+    <Header style={{ background: '#fff', padding: 0 }}  >
+    <img style={awesome1} src={logo}/>
+    </Header>
+
+    <Content style={{ margin: '0 16px' }}>
+      <Breadcrumb style={{ margin: '16px 0' }}>
+        <Breadcrumb.Item>User</Breadcrumb.Item>
+        <Breadcrumb.Item>Bill</Breadcrumb.Item>
+      </Breadcrumb>
+      <div id="support" class="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+
+      <Menu
+
+defaultSelectedKeys={'toggle1'}
+mode="horizontal" style={{marginLeft:'20px'}}
+>
+<Menu.Item key="toggle1">
+General INFO
+</Menu.Item>
+<Menu.Item key="toggle2"  onClick={this.handle}>
+<Link to={`/H1`}> ADDRESS</Link>
+</Menu.Item>
+<Menu.Item key="toggle3" >
+DESCRIPTION
+</Menu.Item>
+<Menu.Item key="toggle4" >
+DEPENDENCY
+</Menu.Item>
+<Menu.Item key="toggle5" >
+TICKETS
+</Menu.Item>
+</Menu>
+<div id="contain">
+
+{general_info}
+</div>
+      </div>
+    </Content>
+    <Footer style={{ textAlign: 'center' }}>
+      Ant Design ©2016 Created by Ant UED
+    </Footer>
+  </Layout>
+</Layout>
+</MediaQuery>
+</div>
     );
   }
 }

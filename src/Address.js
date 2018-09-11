@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { render } from 'react-dom';
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 import { Layout, Menu, Breadcrumb,Icon,Input,Tabs} from 'antd';
 import logo from './images/new.png';
-import ReactDOM from 'react-dom';
 import Signup from './Signup';
 import Events from './Events';
 import './App.css';

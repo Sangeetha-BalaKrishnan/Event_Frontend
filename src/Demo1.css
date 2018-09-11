@@ -1,0 +1,10 @@
+@media screen and (max-width: 1224px){
+  #inbox{
+    margin-top: 35px;
+    width:200px !important;
+  }
+}
+#inbox{
+  width:95% !important;
+  height:120% !important;
+}
