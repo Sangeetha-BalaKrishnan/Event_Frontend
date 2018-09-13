@@ -9,7 +9,9 @@ import MediaQuery from 'react-responsive';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import { render } from 'react-dom';
+import { DatePicker } from 'antd';
 
+const { RangePicker } = DatePicker;
 
 
 function handleChange(value) {
@@ -68,7 +70,14 @@ summa()
     this.setState({ collapsed });
   };
 
+  onChange(value, dateString) {
+    console.log('Selected Time: ', value);
+    console.log('Formatted Selected Time: ', dateString);
+  }
 
+  onOk(value) {
+    console.log('onOk: ', value);
+  }
   render() {
     const general_info=(
       <div>
@@ -124,8 +133,15 @@ summa()
       <br/><br/>
       <button type="button" class="btn btn-primary">Cancel</button>
       &nbsp;&nbsp;&nbsp;&nbsp;
-      <button type="button" class="btn btn-primary">Next</button>
-
+      <button type="button" class="btn btn-primary">Next</button>&nbsp;&nbsp;
+      <DatePicker
+            showTime
+            format="YYYY-MM-DD HH:mm:ss"
+            placeholder="Select Time"
+            onChange={this.onChange.bind(this)}
+            onOk={this.onOk.bind(this)}
+            style={{width:"357px !important"}}
+          />
       </div>
     );
 

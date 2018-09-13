@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
 import logo from './images/new.png';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link,Redirect } from "react-router-dom";
+import Cookies from 'universal-cookie';
 
+const cookies = new Cookies();
 class Signin_org extends Component{
   constructor(props){
     super(props);
@@ -10,14 +12,24 @@ class Signin_org extends Component{
 
       email:'',
       password:'',
+      redirect:false
 
   };
   this.handleChange = this.handleChange.bind(this);
+  this.verify = this.verify.bind(this);
   }
   handleChange(event){
     this.setState({
       [event.target.name]:event.target.value
     });
+  }
+  verify(){
+    console.log(this.state.email,this.state.password);
+    if(this.state.email=='ls.saravanan96@gmail.com' && this.state.password=='saran123')
+    {
+      this.setState({redirect:true});
+      cookies.set('name', 'organiser', { path: '/' });
+    }
   }
   render(){
     const hello={
@@ -39,6 +51,11 @@ class Signin_org extends Component{
       width:'112px',
       marginBottom:'40px'
     };
+    if(this.state.redirect)
+    {
+      return <Redirect to='/' />
+    }
+
     return(
       <div>
 
@@ -70,7 +87,7 @@ class Signin_org extends Component{
       <br/>
       <ul id="bullet"><li><input style={hello} type="checkbox" name="vehicle" value="Bike"/></li><li id="bullet1"> Remember Me</li><li id="bullet2">Forget Password?</li></ul><br/>
       <br/>
-      <button type="button" style={bt} class="btn btn-primary">Login</button>
+      <button type="button" style={bt} onClick={this.verify} class="btn btn-primary">Login</button>
 </div>
 <div class="col-sm-6" id="logform1">
   <ul id="googlesign">
