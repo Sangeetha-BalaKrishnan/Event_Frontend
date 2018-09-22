@@ -2,7 +2,56 @@ html{
   width:100%;
   overflow-x: hidden;
 }
+@media only screen and (max-width: 1224px) {
+  .column_main777{
+    width:40%;
+    margin-left: -58px;
+    margin-top:25px;
+    float:left
+  }
+  #LogoStyle{
+    height:120px;
+    margin-top : -13px;
+    float:left;
+    margin-left:115px !important;
+    margin-bottom:-20px;
+    margin-right: 65px !important;
+  };
+  #login_button{
+    margin-left:250px !important;
+  }
+  #saran1{
+    width:400px !important;
+    height:400px;
+  }
+  .iconStyle
+  {
+    margin-left: 24% !important;
+    padding: 5px;
 
+  }
+  .iconStyle1
+  {
+    margin-left: 51%;
+    padding: 5px;
+
+  }
+
+}
+#LogoStyle{
+  height:120px;
+  margin-top : -13px;
+  float:left;
+  margin-left:20px;
+  margin-bottom:-20px;
+};
+#login_button{
+  margin-left:140px !important;
+}
+
+#instagram{
+  margin-left: -220px;
+}
 #xxx{
   height:35%;
   width:20%;
@@ -12,7 +61,6 @@ html{
 .ant-calender{
   width:360px !important;
 }
-
 #subnav {
   display: flex;
   flex-direction: row;
@@ -43,12 +91,7 @@ html{
 
 
 
-.head222{
-  border: 2px solid #e8e8e8;
-border-top-color: white;
-border-right-color: white;
-border-left-color: white;
-}
+
 #head222{
   border: 2px solid #e8e8e8;
 border-top-color: white;
@@ -94,6 +137,12 @@ top: 0;*/
   padding: 5px;
 
 }
+.iconStyle1
+{
+  margin-left: 51%;
+  padding: 5px;
+
+}
 .siginInbutton
 {
   margin-left : 118px;
@@ -101,6 +150,7 @@ top: 0;*/
 .signinBlock
 {
   margin-top:28px;
+  margin-left: -103px;
 }
 .LogoStyle
 {
@@ -142,34 +192,15 @@ top: 0;*/
   height:120%!important;
   width:95% !important;
 }
+#email2{
+  height:120%!important;
+  width:35% !important;
+}
+#email3{
+  height:120%!important;
+  width:90% !important;
+}
 
-.or-space {
-    width: 50px;
-    height: 50px;
-    position: absolute;
-    bottom: 100%;
-    margin-bottom: -143px;
-    left: 50%;
-    margin-left: -207px;
-    border-radius: 100%;
-    box-shadow: 0 2px 4px #999;
-    background: white;
-}
-.or-spacer{
-  height:41px;
-  width:42px;
-    position: absolute;
-    top: 4px;
-    bottom: 4px;
-    left: 4px;
-    right: 4px;
-    border-radius: 100%;
-    border: 1px dashed #aaa;
-    text-align: center;
-    line-height: 40px;
-    font-style: normal;
-    color: #999;
-}
 .or-space1 {
     width: 50px;
     height: 50px;
@@ -217,12 +248,6 @@ height: 36px;
   border-radius:30px;
 }
 
-#goosign2{
-  margin-top: 90px;
-  margin-left: 70px;
-  font-size: 17px;
-  font-family: Roboto;
-}
 
 #btt1{
   border:1px solid #bd4537;
@@ -262,15 +287,7 @@ height: 38px;
   background-color: white;
   border-radius:30px;
 }
-#bttfb_signin{
-  border:1px solid #3B5998;
-  outline: none;
-  width: 215px;
-  margin-left: 64px;
-height: 38px;
-  background-color: white;
-  border-radius:30px;
-}
+
 #btt3{
   border:1px solid #bd4537;
   outline: none;
@@ -294,10 +311,7 @@ height: 38px;
   background-color: #3B5998;
   color:white;
 }
-#bttfb_signin:hover{
-  background-color: #3B5998;
-  color:white;
-}
+
 #btt2:hover{
   background-color: #bd4537;
   color:white;
@@ -305,22 +319,8 @@ height: 38px;
 #bttgoogle:hover{
   background-color: #bd4537;
   color:white;
-}#bkground{
-  background: #e8e8e8;
-  height: 100%;
+}
 
-}
-#logform{
-  background: white;
-  width:40%;
-  border: 1px solid #e5e5e5;
-  border-top-color: white;
-  border-bottom-color: white;
-  border-left-color: white;
-  margin-left:233px;
-  margin-top: 90px;
-  margin-bottom: 100px;
-}
 #logform222{
   background: white;
   width:64%;
@@ -343,17 +343,8 @@ height: 38px;
   margin-top: 90px;
   margin-bottom: 100px;
 }
-#logform1{
-  background: white;
-  margin-top: 90px;
-  width:26% !important;
-  height: 347px !important;
 
-}
-ul#googlesign{
-   list-style-type: none;
-   display: inline-flex;
-}
+
 ul#bullet{
    list-style-type: none;
    display: inline-flex;
@@ -383,13 +374,7 @@ ul#signup22{
   font-family: Roboto;
 }
 
-#bullet2{
-  margin-top: 7px;
-  margin-left: 301px;
-  color:red;
-  font-family: Roboto;
-  font-size:12px;
-}
+
 
 .form-group {
   position: relative;
@@ -727,8 +712,8 @@ Clear floats after the columns */
   float:left
 }
 .column_main777{
-  width:30%;
-  margin-left: 2px;
+  width:40%;
+  margin-left: 50px;
   margin-top:25px;
   float:left
 }
@@ -1312,7 +1297,7 @@ font-weight: 300;
 
 }*/
 .helllo{
-  min-height:50px !important;
+  min-height:67px !important;
   margin-top: 7px;
 
 }
@@ -1556,7 +1541,7 @@ th{
 
 
 td{
-  padding:12px !important;
+  padding:12px;
   font-family: Roboto;
   font-size: 16px;
 }

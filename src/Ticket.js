@@ -1,25 +1,29 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Breadcrumb, Icon ,Input} from 'antd';
+import { Layout, Menu, Breadcrumb, Icon ,Input,Dropdown} from 'antd';
 import logo from './images/new.png';
 import ReactDOM from 'react-dom';
 import Signup from './Signup';
 import Events from './Events';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link,Redirect } from "react-router-dom";
 import { render } from 'react-dom';
-
+import MediaQuery from 'react-responsive';
+import './Ticket.css';
+import Cookies from 'universal-cookie';
+import swal from 'sweetalert';
+const cookies = new Cookies();
 const after={
   borderColor:'red',
-  width:'27%'
 };
 
 const before={
   borderColor:'#cccccc',
-  width:'27%'
 }
 const message=(
   <span style={{fontFamily:'Roboto',fontSize:'11px'}}>&nbsp;Enter this field</span>
 );
-
+const message1=(
+  <span style={{fontFamily:'Roboto',fontSize:'14px',color:'red'}}>&nbsp;Atleast one ticket should be there</span>
+);
 function handleChange(value) {
   console.log(`selected ${value}`);
 }
@@ -42,22 +46,122 @@ class Ticket extends React.Component {
     quantity_array:[],
     check_ticket_name:before,
     check_quantity:before,
-    check_price:before
+    check_price:before,
+    error:false,
+    name:cookies.get('name'),
+    user:cookies.get('user'),
+    auth_token:cookies.get('auth_token'),
+    redirect_prev:false,
+    redirect_logout:false
   };
   this.handleToggle = this.handleToggle.bind(this);
   this.handleChange = this.handleChange.bind(this);
   this.push_details = this.push_details.bind(this);
   this.close = this.close.bind(this);
+  this.previous = this.previous.bind(this);
+  this.next = this.next.bind(this);
   this.delete_ticket = this.delete_ticket.bind(this);
   this.handleChange_toggle = this.handleChange_toggle.bind(this);
+  this.delete_cookies = this.delete_cookies.bind(this);
 
 
 };
+componentDidMount() {
+  var cookie = cookies.get('event_id');
+  if(cookie)
+  {
+    fetch('https://admin.thetickets.in/api/show_ticket/'+cookie, {
+  method: 'get',
+  headers: {
+    'Accept': 'application/json, text/plain, */*',
+    'Content-Type': 'application/json',
+    'Authorization':'Bearer '+this.state.auth_token
+  }
+  }).then(res=>res.json())
+  .then(res => {console.log(res.data.tickets);
+    if(res.data.tickets != null)
+    {
+    var a=[];
+    var b=[];
+    var c=[];
+    for(var i=0;i<3;i++)
+    {
+      for(var j=0;j<res.data.tickets[0].length;j++)
+      {
+        if(i==0)
+        {
+          a.push(res.data.tickets[i][j]);
+        }
+        if(i==1)
+        {
+          b.push(res.data.tickets[i][j]);
+        }
+        if(i==2)
+        {
+          c.push(res.data.tickets[i][j]);
+        }
+      }
+    }
+    this.setState({ticket_name_array:a,quantity_array:b,price_array:c});
 
+}
+  });
+  }
+}
 
 handleToggle(){
   this.setState({toggle:true});
   console.log(this.state.ticket_name_array);
+}
+
+previous(){
+  this.setState({redirect_prev:true});
+}
+next(){
+  if(this.state.ticket_name_array.length==0)
+  {
+    console.log("hello");
+    this.setState({error:true})
+  }
+  else
+  {
+    var key;
+    if(cookies.get('event_id')==undefined)
+    {
+      key=null;
+    }
+    else {
+      key=cookies.get('event_id');
+    }
+
+    fetch('https://admin.thetickets.in/api/create_ticket', {
+  method: 'post',
+  headers: {
+    'Accept': 'application/json, text/plain, */*',
+    'Content-Type': 'application/json',
+    'Authorization':'Bearer '+this.state.auth_token
+  },
+  body: JSON.stringify({eventid:key,ticket_name:this.state.ticket_name_array,ticket_max:this.state.quantity_array,ticket_price:this.state.price_array})
+}).then(res=>res.json())
+  .then(res => {console.log(res);
+    if(res.status==false)
+    {
+      swal("Oops", "try again after some time", "error");
+    }
+    if(res.status==true)
+    {
+      swal("success", "Event created", "success");
+    }
+
+  });
+  }
+}
+delete_cookies(){
+  cookies.remove('name', { path: '/' });
+  cookies.remove('user', { path: '/' });
+  cookies.remove('auth_token', { path: '/' });
+  cookies.remove('event_id', { path: '/' });
+  this.setState({name:cookies.get('name'),redirect_logout:true});
 }
 
 handleChange_toggle(event){
@@ -107,7 +211,8 @@ push_details()
       quantity:'',
       ticket_name:'',
       price:'',
-      toggle:false
+      toggle:false,
+      error:false
     });
 
 
@@ -159,6 +264,10 @@ handleClick = (e) => {
 
 
   render() {
+    const bt={
+      width:'112px',
+      marginBottom:'40px'
+    };
   const awesome={
     height:'120px',
     marginTop : '-27px',
@@ -167,26 +276,28 @@ handleClick = (e) => {
     marginBottom:'-14px'
   };
 
-  const add_ticket_style={
-    border:'1px solid black',
-    borderStyle:'dashed',
-    width:'32%',
-    cursor:'pointer',
-    marginLeft:'324px'
-  };
-  const show_ticket_style={
-    border:'1px solid black',
-    borderStyle:'dashed',
-    width:'32%',
-    marginTop:'25px',
-    marginLeft:'324px'
-  };
+
+
   const show_ticket=(
     this.state.ticket_name_array.map((name,i)=>
-  <div style={show_ticket_style} key={i}>
-  <div style={{marginTop:'30px',marginLeft:'100px',marginBottom:'10px'}}>
-  <h5>TICKET</h5>
-  <span>{name}</span>&nbsp;&nbsp;&nbsp;<span>{this.state.price_array[i]}</span>&nbsp;&nbsp;&nbsp;<span>{this.state.quantity_array[i]}</span><button onClick={this.delete_ticket} className="btn btn-primary" name={i} style={{marginLeft:'40px'}}>DELETE</button>
+  <div id="show_ticket_style" key={i}>
+  <div id="show_ticket">
+  <span style={{color:'#ce2127',fontSize:'18px'}}>TICKET</span>
+  <br/>
+  <span style={{marginLeft:'-40px'}}>{name}</span>&nbsp;&nbsp;&nbsp;<span>Rs.{this.state.price_array[i]}</span>&nbsp;&nbsp;&nbsp;<span>{this.state.quantity_array[i]}</span><button onClick={this.delete_ticket} className="btn btn-primary" name={i} style={{marginLeft:'40px'}}>DELETE</button>
+  </div>
+
+  </div>
+
+)
+  );
+  const show_ticket_m=(
+    this.state.ticket_name_array.map((name,i)=>
+  <div id="show_ticket_style" key={i}>
+  <div id="show_ticket">
+  <span style={{color:'#ce2127',fontSize:'18px'}}>TICKET</span>
+  <br/>
+  <span>{name}</span>&nbsp;&nbsp;&nbsp;<span>Rs.{this.state.price_array[i]}</span>&nbsp;&nbsp;&nbsp;<span>{this.state.quantity_array[i]}</span><button onClick={this.delete_ticket} className="btn btn-primary" name={i} style={{marginLeft:'40px'}}>DELETE</button>
   </div>
 
   </div>
@@ -194,35 +305,91 @@ handleClick = (e) => {
 )
   );
   const add_ticket=(
-    <div style={add_ticket_style} onClick={this.handleToggle}>
-    <div style={{marginTop:'30px',marginLeft:'149px',marginBottom:'10px'}}>
+    <div id="add_ticket_style" onClick={this.handleToggle}>
+    <div id="add_ticket">
 
-    <i class="fa fa-plus" style={{ marginTop:'-10px',fontSize: 40, color: '#08c' }}></i>
-    <h4 style={{marginLeft:'-34px'}}>ADD TICKETS</h4>
+    <i class="fa fa-plus" id="plus_mark"></i>
+    <h4 id="add_ticket_text">ADD TICKETS</h4>
     </div>
     </div>
   );
   const add_ticket_details=(
-    <div style={{marginLeft:'67px',marginTop:'-40px'}}>
+    <div id="ticket_details">
 
-      <i class="fa fa-close" style={{marginLeft:'40%',marginTop:'25px',fontSize:25,cursor:'pointer'}} onClick={this.close}></i>
+      <i class="fa fa-close" id="close_mark" onClick={this.close}></i>
       <h5>TICKET NAME</h5>
-      <Input type="text" style={this.state.check_ticket_name} name="ticket_name" value={this.state.ticket_name} onChange={this.state.check_ticket_name==after?this.handleChange_toggle:this.handleChange} placeholder="Ticket Name" class="form-control" required/><br/>
+      <Input type="text" style={this.state.check_ticket_name} id="input_width" name="ticket_name" value={this.state.ticket_name} onChange={this.state.check_ticket_name==after?this.handleChange_toggle:this.handleChange} placeholder="Ticket Name" class="form-control" required/><br/>
       {this.state.check_ticket_name==after?message:''}
       <br/>
       <h5>QUANTITY</h5>
-      <Input type="number" style={this.state.check_quantity} name="quantity" value={this.state.quantity} onChange={this.state.check_quantity==after?this.handleChange_toggle:this.handleChange} placeholder="Ticket price" /><br/>
+      <Input type="number" style={this.state.check_quantity} id="input_width" name="quantity" value={this.state.quantity} onChange={this.state.check_quantity==after?this.handleChange_toggle:this.handleChange} placeholder="Ticket price" /><br/>
       {this.state.check_quantity==after?message:''}
+      <br/>
       <h5>TICKET PRICE</h5>
-      <Input type="number" style={this.state.check_price} name="price" value={this.state.price} onChange={this.state.check_price==after?this.handleChange_toggle:this.handleChange} placeholder="Ticket price" /><br/>
+      <Input type="number" style={this.state.check_price} id="input_width" name="price" value={this.state.price} onChange={this.state.check_price==after?this.handleChange_toggle:this.handleChange} placeholder="Ticket price" /><br/>
       {this.state.check_price==after?message:''}
       <br/><br/>
       <button onClick={this.push_details} className="btn btn-primary">SUBMIT</button>
     </div>
   );
+  const awesome1={
+    height:'120px',
+    marginTop : '-27px',
+
+    marginLeft:'28px',
+    marginBottom:'-14px'
+  };
+  const menu_organiser = (
+  <Menu style={{marginLeft:'327px',marginTop:'12px'}}>
+  <Menu.Item key="1" style={{marginTop:'5px'}}>
+    <a onClick={this.dashboard}>&nbsp;&nbsp;DASHBOARD</a>
+  </Menu.Item>
+  <Menu.Item key="2" style={{marginTop:'5px'}}>
+    <a onClick={this.delete_cookies}>&nbsp;&nbsp;LOGOUT</a>
+  </Menu.Item>
+
+
+  </Menu>
+  );
+  const menu_organiser_m = (
+  <Menu style={{marginLeft:'10px',marginTop:'12px'}}>
+  <Menu.Item key="1" style={{marginTop:'5px'}}>
+    <a onClick={this.dashboard}>&nbsp;&nbsp;DASHBOARD</a>
+  </Menu.Item>
+  <Menu.Item key="2" style={{marginTop:'5px'}}>
+    <a onClick={this.delete_cookies}>&nbsp;&nbsp;LOGOUT</a>
+  </Menu.Item>
+
+
+  </Menu>
+  );
+  const dropdown_organiser=(  <Dropdown overlay={menu_organiser}>
+  <a style={fontdrop} className="ant-dropdown-link" href="#">
+    <button className="btn btn-primary" style={{marginLeft:'327px'}}><i style={{fontSize:'14px'}} className="fa fa-user"></i>&nbsp;&nbsp;{this.state.user}</button>
+  </a>
+  </Dropdown>);
+  const dropdown_organiser_m=(  <Dropdown overlay={menu_organiser_m}>
+  <a style={fontdrop} className="ant-dropdown-link" href="#">
+    <button className="btn btn-primary" style={{marginLeft:'10px'}}><i style={{fontSize:'14px'}} className="fa fa-user"></i>&nbsp;&nbsp;{this.state.user}</button>
+  </a>
+  </Dropdown>);
+  const fontdrop={
+    fontFamily:'Roboto',
+    fontSize:'18px'
+  };
+  if(this.state.redirect_prev)
+  {
+    return <Redirect to='/dummy1' />
+  }
+  if(this.state.redirect_logout)
+  {
+    return <Redirect to='/' />
+  }
 
 
     return (
+      <div>
+      <MediaQuery query="(min-device-width: 1224px)">
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
           collapsible
@@ -232,37 +399,20 @@ handleClick = (e) => {
           <div className="logo" />
           <Menu theme="dark" defaultSelectedKeys={['2']} mode="inline">
             <Menu.Item key="1" onClick={this.handleChange}>
-              <Link to={`/Us`}><Icon type="pie-chart" />
-              <span >Option 1</span></Link>
+              <Link to={`/Us`}><Icon type="dashboard" theme="outlined" />
+              <span >Home</span></Link>
             </Menu.Item>
             <Menu.Item key="2"  >
               <Icon type="desktop" />
-              <span>Option 2</span>
+              <span>Create an Event</span>
             </Menu.Item>
-            <SubMenu
-              key="sub1"
-              title={<span><Icon type="user" /><span>User</span></span>}
-            >
-              <Menu.Item key="3">Tom</Menu.Item>
-              <Menu.Item key="4">Bill</Menu.Item>
-              <Menu.Item key="5">Alex</Menu.Item>
-            </SubMenu>
-            <SubMenu
-              key="sub2"
-              title={<span><Icon type="team" /><span>Team</span></span>}
-            >
-              <Menu.Item key="6">Team 1</Menu.Item>
-              <Menu.Item key="8">Team 2</Menu.Item>
-            </SubMenu>
-            <Menu.Item key="9">
-              <Icon type="file" />
-              <span>File</span>
-            </Menu.Item>
+
           </Menu>
         </Sider>
         <Layout>
           <Header style={{ background: '#fff', padding: 0 }}  >
-          <img style={awesome} src={logo}/>
+          <Link to='/'><img style={awesome} src={logo}/></Link>
+          {dropdown_organiser}
           </Header>
 
           <Content style={{ margin: '0 16px' }}>
@@ -277,16 +427,16 @@ handleClick = (e) => {
     defaultSelectedKeys={'toggle5'}
     mode="horizontal" style={{marginLeft:'20px'}}
   >
-  <Menu.Item key="toggle1">
+  <Menu.Item disabled key="toggle1">
     General INFO
   </Menu.Item>
-  <Menu.Item key="toggle2" style={{marginLeft:'40px'}} onClick={this.handle}>
+  <Menu.Item disabled key="toggle2" style={{marginLeft:'40px'}} onClick={this.handle}>
     ADDRESS
   </Menu.Item>
-  <Menu.Item key="toggle3" style={{marginLeft:'40px'}}>
+  <Menu.Item disabled key="toggle3" style={{marginLeft:'40px'}}>
     DESCRIPTION
   </Menu.Item>
-  <Menu.Item key="toggle4" style={{marginLeft:'40px'}}>
+  <Menu.Item disabled key="toggle4" style={{marginLeft:'40px'}}>
     <Link to={`/H`}>DEPENDENCY</Link>
   </Menu.Item>
   <Menu.Item key="toggle5" style={{marginLeft:'40px'}}>
@@ -294,9 +444,14 @@ handleClick = (e) => {
   </Menu.Item>
   </Menu>
   <div id="contain" style={{height:'400px',overflow:'auto'}}>
+  {this.state.error?message1:''}
   {this.state.toggle?'':show_ticket}
   <br/><br/>
   {this.state.toggle?add_ticket_details:add_ticket}
+  <br/><br/>
+  <button type="button" style={bt} onClick={this.previous} class="btn btn-primary">Previous</button>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <button type="button" style={bt} onClick={this.next} class="btn btn-primary">Next</button>
   </div>
             </div>
           </Content>
@@ -305,6 +460,82 @@ handleClick = (e) => {
           </Footer>
         </Layout>
       </Layout>
+      </MediaQuery>
+
+
+      <MediaQuery query="(max-device-width: 1224px)">
+      <Layout style={{ minHeight: '100vh' }}>
+      <Sider
+        collapsible
+        collapsed={'true'}
+      >
+          <div className="logo" />
+          <Menu theme="dark" defaultSelectedKeys={['2']} mode="inline">
+            <Menu.Item key="1" onClick={this.handleChange}>
+              <Link to={`/Us`}><Icon type="dashboard" theme="outlined" />
+              <span >Home</span></Link>
+            </Menu.Item>
+            <Menu.Item key="2"  >
+              <Icon type="desktop" />
+              <span>Create an Event</span>
+            </Menu.Item>
+
+          </Menu>
+        </Sider>
+        <Layout>
+          <Header style={{ background: '#fff', padding: 0 }}  >
+          <Link to='/'><img style={awesome1} src={logo}/></Link>
+          {dropdown_organiser_m}
+          </Header>
+
+          <Content style={{ margin: '0 16px' }}>
+            <Breadcrumb style={{ margin: '16px 0' }}>
+              <Breadcrumb.Item>User</Breadcrumb.Item>
+              <Breadcrumb.Item>Bill</Breadcrumb.Item>
+            </Breadcrumb>
+            <div id="support" class="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+
+            <Menu
+    onClick={this.handleClick}
+    defaultSelectedKeys={'toggle5'}
+    mode="horizontal" style={{marginLeft:'20px'}}
+  >
+  <Menu.Item disabled key="toggle1">
+    General INFO
+  </Menu.Item>
+  <Menu.Item disabled key="toggle2" style={{marginLeft:'40px'}} onClick={this.handle}>
+    ADDRESS
+  </Menu.Item>
+  <Menu.Item disabled key="toggle3" style={{marginLeft:'40px'}}>
+    DESCRIPTION
+  </Menu.Item>
+  <Menu.Item disabled key="toggle4" style={{marginLeft:'40px'}}>
+    <Link to={`/H`}>DEPENDENCY</Link>
+  </Menu.Item>
+  <Menu.Item key="toggle5" style={{marginLeft:'40px'}}>
+    TICKETS
+  </Menu.Item>
+  </Menu>
+  <div id="contain" style={{height:'400px',overflow:'auto'}}>
+  <br/>
+  {this.state.error?message1:''}
+  {this.state.toggle?'':show_ticket_m}
+  <br/><br/>
+  {this.state.toggle?add_ticket_details:add_ticket}
+  <br/><br/>
+  <button type="button" style={bt} onClick={this.previous} class="btn btn-primary">Previous</button>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <button type="button" style={bt} onClick={this.next} class="btn btn-primary">Next</button>
+  </div>
+            </div>
+          </Content>
+          <Footer style={{ textAlign: 'center' }}>
+            Ant Design ©2016 Created by Ant UED
+          </Footer>
+        </Layout>
+      </Layout>
+      </MediaQuery>
+      </div>
     );
   }
 }

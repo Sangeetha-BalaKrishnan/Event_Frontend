@@ -21,6 +21,9 @@ import Upload from './Upload';
 import Tickets from './Ticket';
 import Hello from './Hello';
 import Text from './Text';
+import Trending from './Trending';
+import Event_main from './Event_Main';
+import Upcoming_Events from './Upcoming_Events'
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 
@@ -61,7 +64,9 @@ class Router_link extends Component {
 <Switch>
            <div className="App">
              <Route exact path="/" component={App} />
-             <Route exact path="/Events" component={Events} />
+             <Route exact path="/Events" component={Event_main} />
+             <Route exact path="/Trending" component={Trending} />
+             <Route exact path="/Events/:value" component={Events} />
              <Route exact path="/User/cust/signin" component={Signin_cust} />
              <Route exact path="/User/org/signin" component={Signin_org} />
              <Route exact path="/User/signup" component={Signup} />
@@ -76,6 +81,7 @@ class Router_link extends Component {
              <Route exact path="/H3" component={Tickets} />
              <Route exact path="/dummy" component={Hello} />
              <Route exact path="/dummy1" component={Text} />
+             <Route exact path="/Upcoming_Events" component={Upcoming_Events} />
            </div>
            </Switch>
 

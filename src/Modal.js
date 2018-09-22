@@ -1,19 +1,32 @@
 import { render } from 'react-dom';
 import React, { Component } from 'react';
-import { Layout, Menu, Breadcrumb, Icon,Input } from 'antd';
+import { Layout, Menu, Breadcrumb, Icon,Input,Dropdown } from 'antd';
 import logo from './images/new.png';
 import ReactDOM from 'react-dom';
 import Signup from './Signup';
 import Events from './Events';
+import MediaQuery from 'react-responsive';
 
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-
+import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 
 const { Header, Content, Footer, Sider } = Layout;
+const after={
+  borderColor:'red',
+};
 
+
+const before={
+  borderColor:'#cccccc',
+}
+
+const message=(
+  <span style={{fontFamily:'Roboto',fontSize:'11px'}}>&nbsp;Enter this field</span>
+);
 
 
 class Hello extends Component{
@@ -34,22 +47,57 @@ class Hello extends Component{
       category_option_arr:[],
       category_option_ref_arr:[],
       name_arr:[],
-      checkbox_mand_arr:[]
+      check_name:before,
+      checkbox_mand_arr:[],
+      name_ch:cookies.get('name'),
+      user:cookies.get('user'),
+      auth_token:cookies.get('auth_token'),
+      redirect_logout:false
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleChange_name1 = this.handleChange_name1.bind(this);
+    this.handleChange_toggle = this.handleChange_toggle.bind(this);
     this.handleChange1 = this.handleChange1.bind(this);
     this.handleChange_name = this.handleChange_name.bind(this);
     this.close = this.close.bind(this);
     this.clicked = this.clicked.bind(this);
     this.delete_ticket = this.delete_ticket.bind(this);
     this.statechange = this.statechange.bind(this);
+    this.delete_cookies = this.delete_cookies.bind(this);
+  }
+  handleChange_toggle(event){
+
+    this.setState({[event.target.name] : event.target.value});
+
+  var temp="check_"+event.target.name;
+  console.log(temp);
+    if((event.target.value).length>0)
+    {
+      this.setState({[temp]:before});
+    }
+  }
+  handleChange_name1(event){
+
+    this.setState({[event.target.name] : event.target.value});
+    var temp="check_"+event.target.name;
+    if(event.target.value=='')
+    {
+      this.setState({[temp]:after});
+    }
+
   }
 
   handleChange(event){
   this.setState({checkbox:event.target.checked,toggleFirst:!this.state.toggleFirst});
   console.log(this.state.checkbox);
 }
-
+delete_cookies(){
+  cookies.remove('name', { path: '/' });
+  cookies.remove('user', { path: '/' });
+  cookies.remove('auth_token', { path: '/' });
+  cookies.remove('event_id', { path: '/' });
+  this.setState({name:cookies.get('name'),redirect_logout:true});
+}
   delete_ticket(event)
   {
     alert(event.target.name);
@@ -129,6 +177,13 @@ dynamic(){
 
 
 clicked(){
+  if(this.state.name == '')
+  {
+    this.setState({check_name:after});
+  }
+  else {
+
+
   var value;
   var check;
 if(this.state.category_option_ref!='')
@@ -163,6 +218,7 @@ console.log(value);
       toggleAfter:true
     })
   console.log(this.state.name_arr);
+}
 }
 
 statechange(){
@@ -232,7 +288,9 @@ handleClick = (e) => {
 
       <div className="rows">
       <div className="col-sm-3">
-            <input  name="name" value={this.state.name} onChange={this.handleChange_name} type="text" placeholder="Event Name" id="email1" class="form-control" required/>
+
+            <input  name="name" style={this.state.check_name} value={this.state.name} onChange={this.state.check_name==after?this.handleChange_toggle:this.handleChange_name} type="text" placeholder="Event Name" id="email1" class="form-control" required/>
+            {this.state.check_name==after?message:''}
       </div>
             <div className="col-sm-3">
                   <label>
@@ -255,7 +313,46 @@ handleClick = (e) => {
             <div className="col-sm-3">
                  <input style={{marginLeft:'27px'}} type="checkbox" onChange={this.handleChange1} /><br/>
             </div>
-            <br/><br/>
+            <br/><br/><br/><br/>
+          <button  style={{height:'25px',marginTop:'10px',paddingTop:'2px',marginLeft:'15px'}} type="button" onClick={this.clicked} class="btn btn-primary">save</button>
+      </div>
+      </div>
+    );
+    const drop_down_mobile=(
+      <div>
+
+      <div className="rows">
+      <i class="fa fa-close" style={{marginLeft:'89%',marginTop:'-8px',fontSize:25,cursor:'pointer'}} onClick={this.close}></i>
+      <div className="col-sm-3">
+            <h4>Name</h4>
+            <input  name="name" style={this.state.check_name} value={this.state.name} onChange={this.state.check_name==after?this.handleChange_toggle:this.handleChange_name} type="text" placeholder="Event Name" id="email1" class="form-control" required/>
+            {this.state.check_name==after?message:''}
+      </div>
+            <div className="col-sm-3">
+            <h4>Type</h4>
+                  <label>
+                  <select name="category_option" value={this.state.category_option} style={{ width: '200px',height:'29px',borderRadius:'7px' }} onChange={this.handleChange_name} >
+                  <option value="Text_box">Text box</option>
+                  <option value="Mobile">Mobile</option>
+                  <option value="Radio_button">Radio button</option>
+                  <option value="Check_box">Check box</option>
+                  <option value="Select_box">Select box</option>
+                  <option value="Text_area">Text area</option>
+                  <option value="Date">Date</option>
+                  <option value="Attachment">Attachment</option>
+                  </select>
+                  </label>
+            </div>
+            <div className="col-sm-3">
+            <h4>Options</h4>
+            {this.dynamic()}
+
+            </div>
+            <div className="col-sm-3">
+            <h4>Mandatory</h4>
+                 <input style={{marginLeft:'27px'}} type="checkbox" onChange={this.handleChange1} /><br/>
+            </div>
+            <br/><br/><br/><br/>
           <button  style={{height:'25px',marginTop:'10px',paddingTop:'2px',marginLeft:'15px'}} type="button" onClick={this.clicked} class="btn btn-primary">save</button>
       </div>
       </div>
@@ -263,7 +360,7 @@ handleClick = (e) => {
     const main_table=(
       <div>
       <br/><br/>
-      
+
       <i class="fa fa-close" style={{marginLeft:'89%',marginTop:'-8px',fontSize:25,cursor:'pointer'}} onClick={this.close}></i>
       <div className="rows">
       <div className="col-sm-2">
@@ -310,9 +407,59 @@ handleClick = (e) => {
 const check=(<div><input type="checkbox"  checked={this.state.checkbox}  onChange={this.handleChange} /> ADD dependency<br/></div>);
 
 const add=(<div><button style={{height:'25px',marginTop:'10px',paddingTop:'2px',marginLeft:'15px'}} className="btn btn-primary" onClick={this.statechange}>ADD</button></div>);
+const awesome1={
+  height:'120px',
+  marginTop : '-27px',
 
+  marginLeft:'28px',
+  marginBottom:'-14px'
+};
+const menu_organiser = (
+<Menu style={{marginLeft:'327px',marginTop:'12px'}}>
+<Menu.Item key="1" style={{marginTop:'5px'}}>
+  <a onClick={this.dashboard}>&nbsp;&nbsp;DASHBOARD</a>
+</Menu.Item>
+<Menu.Item key="2" style={{marginTop:'5px'}}>
+  <a onClick={this.delete_cookies}>&nbsp;&nbsp;LOGOUT</a>
+</Menu.Item>
+
+
+</Menu>
+);
+const menu_organiser_m = (
+<Menu style={{marginLeft:'10px',marginTop:'12px'}}>
+<Menu.Item key="1" style={{marginTop:'5px'}}>
+  <a onClick={this.dashboard}>&nbsp;&nbsp;DASHBOARD</a>
+</Menu.Item>
+<Menu.Item key="2" style={{marginTop:'5px'}}>
+  <a onClick={this.delete_cookies}>&nbsp;&nbsp;LOGOUT</a>
+</Menu.Item>
+
+
+</Menu>
+);
+const dropdown_organiser=(  <Dropdown overlay={menu_organiser}>
+<a style={fontdrop} className="ant-dropdown-link" href="#">
+  <button className="btn btn-primary" style={{marginLeft:'327px'}}><i style={{fontSize:'14px'}} className="fa fa-user"></i>&nbsp;&nbsp;{this.state.user}</button>
+</a>
+</Dropdown>);
+const dropdown_organiser_m=(  <Dropdown overlay={menu_organiser_m}>
+<a style={fontdrop} className="ant-dropdown-link" href="#">
+  <button className="btn btn-primary" style={{marginLeft:'10px'}}><i style={{fontSize:'14px'}} className="fa fa-user"></i>&nbsp;&nbsp;{this.state.user}</button>
+</a>
+</Dropdown>);
+const fontdrop={
+  fontFamily:'Roboto',
+  fontSize:'18px'
+};
+if(this.state.redirect_logout)
+{
+  return <Redirect to='/' />
+}
 
     return(
+      <div>
+      <MediaQuery query="(min-device-width: 1224px)">
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
           collapsible
@@ -322,37 +469,20 @@ const add=(<div><button style={{height:'25px',marginTop:'10px',paddingTop:'2px',
           <div className="logo" />
           <Menu theme="dark" defaultSelectedKeys={['2']} mode="inline">
             <Menu.Item key="1" onClick={this.handleChange}>
-              <Link to={`/Us`}><Icon type="pie-chart" />
-              <span >Option 1</span></Link>
+              <Link to={`/Us`}><Icon type="dashboard" theme="outlined" />
+              <span >Home</span></Link>
             </Menu.Item>
             <Menu.Item key="2"  >
               <Icon type="desktop" />
-              <span>Option 2</span>
+              <span>Create an Event</span>
             </Menu.Item>
-            <SubMenu
-              key="sub1"
-              title={<span><Icon type="user" /><span>User</span></span>}
-            >
-              <Menu.Item key="3">Tom</Menu.Item>
-              <Menu.Item key="4">Bill</Menu.Item>
-              <Menu.Item key="5">Alex</Menu.Item>
-            </SubMenu>
-            <SubMenu
-              key="sub2"
-              title={<span><Icon type="team" /><span>Team</span></span>}
-            >
-              <Menu.Item key="6">Team 1</Menu.Item>
-              <Menu.Item key="8">Team 2</Menu.Item>
-            </SubMenu>
-            <Menu.Item key="9">
-              <Icon type="file" />
-              <span>File</span>
-            </Menu.Item>
+
           </Menu>
         </Sider>
         <Layout>
           <Header style={{ background: '#fff', padding: 0 }}  >
-          <img style={awesome} src={logo}/>
+          <Link to='/'><img style={awesome} src={logo}/></Link>
+          {dropdown_organiser}
           </Header>
 
           <Content style={{ margin: '0 16px' }}>
@@ -367,19 +497,19 @@ const add=(<div><button style={{height:'25px',marginTop:'10px',paddingTop:'2px',
     defaultSelectedKeys={'toggle4'}
     mode="horizontal" style={{marginLeft:'20px'}}
   >
-  <Menu.Item key="toggle1">
+  <Menu.Item disabled key="toggle1">
     General INFO
   </Menu.Item>
-  <Menu.Item key="toggle2" style={{marginLeft:'40px'}} onClick={this.handle}>
+  <Menu.Item disabled key="toggle2" style={{marginLeft:'40px'}} onClick={this.handle}>
     ADDRESS
   </Menu.Item>
-  <Menu.Item key="toggle3" style={{marginLeft:'40px'}}>
+  <Menu.Item disabled key="toggle3" style={{marginLeft:'40px'}}>
     <Link to={`/dummy1`}>DESCRIPTION</Link>
   </Menu.Item>
   <Menu.Item key="toggle4" style={{marginLeft:'40px'}}>
     DEPENDENCY
   </Menu.Item>
-  <Menu.Item key="toggle5" style={{marginLeft:'40px'}}>
+  <Menu.Item disabled key="toggle5" style={{marginLeft:'40px'}}>
     <Link to={`/H3`}>TICKETS</Link>
   </Menu.Item>
   </Menu>
@@ -399,6 +529,81 @@ const add=(<div><button style={{height:'25px',marginTop:'10px',paddingTop:'2px',
     </Footer>
   </Layout>
 </Layout>
+</MediaQuery>
+
+
+
+<MediaQuery query="(max-device-width: 1224px)">
+<Layout style={{ minHeight: '100vh' }}>
+<Sider
+  collapsible
+  collapsed={'true'}
+>
+    <div className="logo" />
+    <Menu theme="dark" defaultSelectedKeys={['2']} mode="inline">
+      <Menu.Item key="1" onClick={this.handleChange}>
+        <Link to={`/Us`}><Icon type="dashboard" theme="outlined" />
+        <span >Home</span></Link>
+      </Menu.Item>
+      <Menu.Item key="2"  >
+        <Icon type="desktop" />
+        <span>Create an Event</span>
+      </Menu.Item>
+
+    </Menu>
+  </Sider>
+  <Layout>
+    <Header style={{ background: '#fff', padding: 0 }}  >
+    <Link to='/'><img style={awesome1} src={logo}/></Link>
+    {dropdown_organiser_m}
+    </Header>
+
+    <Content style={{ margin: '0 16px' }}>
+      <Breadcrumb style={{ margin: '16px 0' }}>
+        <Breadcrumb.Item>User</Breadcrumb.Item>
+        <Breadcrumb.Item>Bill</Breadcrumb.Item>
+      </Breadcrumb>
+      <div id="support" class="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+
+      <Menu
+onClick={this.handleClick}
+defaultSelectedKeys={'toggle4'}
+mode="horizontal" style={{marginLeft:'20px'}}
+>
+<Menu.Item disabled key="toggle1">
+General INFO
+</Menu.Item>
+<Menu.Item disabled key="toggle2" style={{marginLeft:'40px'}} onClick={this.handle}>
+ADDRESS
+</Menu.Item>
+<Menu.Item disabled key="toggle3" style={{marginLeft:'40px'}}>
+<Link to={`/dummy1`}>DESCRIPTION</Link>
+</Menu.Item>
+<Menu.Item key="toggle4" style={{marginLeft:'40px'}}>
+DEPENDENCY
+</Menu.Item>
+<Menu.Item disabled key="toggle5" style={{marginLeft:'40px'}}>
+<Link to={`/H3`}>TICKETS</Link>
+</Menu.Item>
+</Menu>
+<div id="contain" style={{height:'400px',overflow:'auto'}}>
+<br/>
+{this.state.toggle?'':check}
+
+{this.state.toggleFirst?this.state.toggle?drop_down_mobile:this.state.toggleAfter?main_table1:'':''}
+<br/><br/>
+{this.state.toggleFirst?this.state.toggle?'':add:''}
+
+</div>
+</div>
+</Content>
+<Footer style={{ textAlign: 'center' }}>
+Ant Design ©2016 Created by Ant UED
+</Footer>
+</Layout>
+</Layout>
+</MediaQuery>
+</div>
     );
   }
 }

@@ -9,9 +9,11 @@ import 'normalize.css/normalize.css';
 import './slider-animations.css';
 import './styles.css';
 import './App.css';
+import './App1.css';
 import './hover.css';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 import { Spin, Icon } from 'antd';
+import MediaQuery from 'react-responsive';
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
@@ -24,23 +26,69 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state={
-      photo:
-        ["https://d1eejzs07oawlt.cloudfront.net/files/events/thumbs/9428-geo-marathon-1526580850635134152.png","https://d1eejzs07oawlt.cloudfront.net/files/events/thumbs/15117261551488711069.jpg","https://d1eejzs07oawlt.cloudfront.net/files/events/thumbs/9321-traditionalathon--1524073058543826265.jpg","https://d1eejzs07oawlt.cloudfront.net/files/events/thumbs/9510-business-and-franchise-expo-15289580782052527469.png","https://d1eejzs07oawlt.cloudfront.net/files/events/thumbs/9498-power-yoga-15288006231733000337.jpg","https://d1eejzs07oawlt.cloudfront.net/files/events/thumbs/9417-adventure-fun-travel-to-india-s-grand-canyon-caves-1525982658135363334.jpg"],
-      event_detail:["GEO trail Marathon","KIDS Marathon","TRADITIONLANTHON","BUSINESS AND FRANCHISE EXPO","POER YOGA","Adventure Fun Travel"],
-      event_time:["24th June 2018,05.30 AM,CHENNAI","31th March 2018,05.30 AM,CHENNAI","24th June 2018,05.30 AM,CHENNAI","24th December 2018,05.30 AM,CHENNAI","15th November 2018,05.30 AM,CHENNAI","24th June 2018,05.30 AM,CHENNAI"],
-      name:cookies.get('name')
+      photo:[],
+      event_detail:[],
+      event_time:[],
+      event_url:[],
+      name:cookies.get('name'),
+      user:cookies.get('user'),
+      organiser:false,
+      customer:false,
+      dashboard:false
     };
     this.delete_cookies = this.delete_cookies.bind(this);
+    this.organiser = this.organiser.bind(this);
+    this.customer = this.customer.bind(this);
+    this.dashboard = this.dashboard.bind(this);
   }
 
-  componentDidMount(){
-  <Spin indicator={antIcon} />
-}
+  componentDidMount() {
+    window.scrollTo(0, 0);
+    fetch('https://admin.thetickets.in/show/events', {
+  method: 'get',
+  headers: {
+    'Accept': 'application/json, text/plain, */*',
+    'Content-Type': 'application/json'
+  }
+  }).then(res=>res.json())
+  .then(res => {console.log(res.data[0].event_id);
+    const image=[];
+    const name=[];
+    const timestamp=[];
+    const url=[];
+    var i;
+    for(i=0;i<res.data.length;i++)
+    {
+      image.push(res.data[i].image);
+      name.push(res.data[i].event_name);
+      timestamp.push(res.data[i].timestamp);
+      var str_sub = res.data[i].url_name.substr(res.data[i].url_name.lastIndexOf("/")+1);
+      var final_str = '/Events/'+str_sub;
+      url.push(final_str);
+      console.log(str_sub);
+    }
+    this.setState({event_time:timestamp,event_detail:name,photo:image,event_url:url});
 
+  });
+  }
 delete_cookies(){
   cookies.remove('name', { path: '/' });
+  cookies.remove('user', { path: '/' });
+  cookies.remove('auth_token', { path: '/' });
+  cookies.remove('event_id', { path: '/' });
   this.setState({name:cookies.get('name')});
 }
+organiser(){
+  this.setState({organiser:true});
+}
+customer(){
+  this.setState({customer:true});
+}
+dashboard(){
+  this.setState({dashboard:true});
+}
+
+
 
   render() {
 
@@ -50,22 +98,22 @@ marginTop: '17px',
 };
     const menu_default = (
   <Menu style={{marginLeft:'140px',marginTop:'12px'}}>
-    <Link to={`User/org/signin`}><Menu.Item style={{marginTop:'5px'}}>
-      <a>&nbsp;&nbsp;ORGANISER</a>
-    </Menu.Item></Link>
-    <Link to={`User/cust/signin`}><Menu.Item style={{marginTop:'5px'}}>
-      <a>&nbsp;&nbsp;CUSTOMER</a>
-    </Menu.Item></Link>
+    <Menu.Item key="1" style={{marginTop:'5px'}}>
+      <a onClick={this.organiser}>&nbsp;&nbsp;ORGANISER</a>
+    </Menu.Item>
+    <Menu.Item key="2" style={{marginTop:'5px'}}>
+      <a onClick={this.customer}>&nbsp;&nbsp;CUSTOMER</a>
+    </Menu.Item>
 
 
   </Menu>
 );
 const menu_organiser = (
 <Menu style={{marginLeft:'140px',marginTop:'12px'}}>
-<Menu.Item style={{marginTop:'5px'}}>
-  <a>&nbsp;&nbsp;DASHBOARD</a>
+<Menu.Item key="1" style={{marginTop:'5px'}}>
+  <a onClick={this.dashboard}>&nbsp;&nbsp;DASHBOARD</a>
 </Menu.Item>
-<Menu.Item style={{marginTop:'5px'}}>
+<Menu.Item key="2" style={{marginTop:'5px'}}>
   <a onClick={this.delete_cookies}>&nbsp;&nbsp;LOGOUT</a>
 </Menu.Item>
 
@@ -74,7 +122,7 @@ const menu_organiser = (
 );
 const menu_customer = (
 <Menu style={{marginLeft:'140px',marginTop:'12px'}}>
-<Menu.Item style={{marginTop:'2px'}}>
+<Menu.Item key="1" style={{marginTop:'2px'}}>
   <a onClick={this.delete_cookies}>&nbsp;&nbsp;LOGOUT</a>
 </Menu.Item>
 
@@ -87,18 +135,35 @@ const menu_customer = (
   };
 
     const dropdown_default=(  <Dropdown overlay={menu_default}>
-    <a style={fontdrop} className="ant-dropdown-link" href="#">
-      <button className="btn btn-primary" style={{marginLeft:'140px'}}><i style={{fontSize:'14px'}} className="fa fa-user"></i>&nbsp;&nbsp;SIGNIN</button>
-    </a>
+
+      <button className="btn btn-primary" style={{marginLeft:'140px'}}><i style={{fontSize:'14px'}} className="fa fa-user"></i>&nbsp;&nbsp;SIGNIN
+</button>
+
   </Dropdown>);
   const dropdown_customer=(  <Dropdown overlay={menu_customer}>
   <a style={fontdrop} className="ant-dropdown-link" href="#">
-    <button className="btn btn-primary" style={{marginLeft:'140px'}}><i style={{fontSize:'14px'}} className="fa fa-user"></i>&nbsp;&nbsp;{this.state.name}</button>
+    <button className="btn btn-primary" style={{marginLeft:'140px'}}><i style={{fontSize:'14px'}} className="fa fa-user"></i>&nbsp;&nbsp;{this.state.user}</button>
   </a>
 </Dropdown>);
 const dropdown_organiser=(  <Dropdown overlay={menu_organiser}>
 <a style={fontdrop} className="ant-dropdown-link" href="#">
-  <button className="btn btn-primary" style={{marginLeft:'140px'}}><i style={{fontSize:'14px'}} className="fa fa-user"></i>&nbsp;&nbsp;{this.state.name}</button>
+  <button className="btn btn-primary" style={{marginLeft:'140px'}}><i style={{fontSize:'14px'}} className="fa fa-user"></i>&nbsp;&nbsp;{this.state.user}</button>
+</a>
+</Dropdown>);
+const dropdown_default_m=(  <Dropdown overlay={menu_default}>
+
+  <button className="btn btn-primary" style={{marginLeft:'263px'}}><i style={{fontSize:'14px'}} className="fa fa-user"></i>&nbsp;&nbsp;SIGNIN
+</button>
+
+</Dropdown>);
+const dropdown_customer_m=(  <Dropdown overlay={menu_customer}>
+<a style={fontdrop} className="ant-dropdown-link" href="#">
+<button className="btn btn-primary" style={{marginLeft:'263px'}}><i style={{fontSize:'14px'}} className="fa fa-user"></i>&nbsp;&nbsp;{this.state.user}</button>
+</a>
+</Dropdown>);
+const dropdown_organiser_m=(  <Dropdown overlay={menu_organiser}>
+<a style={fontdrop} className="ant-dropdown-link" href="#">
+<button className="btn btn-primary" style={{marginLeft:'263px'}}><i style={{fontSize:'14px'}} className="fa fa-user"></i>&nbsp;&nbsp;{this.state.user}</button>
 </a>
 </Dropdown>);
     const searchTime =(
@@ -112,10 +177,10 @@ const dropdown_organiser=(  <Dropdown overlay={menu_organiser}>
     const cards=this.state.photo.map((photo,i)=>
 
 
-      <div className="rows" id="saran1">
+      <div className="rows" key={i} id="saran1">
 
-<Link to= {{pathname:'/Events', state:{value:'hello',gel:'summa'}}}  >
-          <div className="column_main777 col-sm-3">
+<Link to= {{pathname:this.state.event_url[i], state:{value:this.state.event_url[i].substr(this.state.event_url[i].lastIndexOf("/")+1)}}}  >
+          <div className="column_main777 col-sm-6">
 
               <div className="box">
 
@@ -125,6 +190,7 @@ const dropdown_organiser=(  <Dropdown overlay={menu_organiser}>
 
 
                         <div className="helllo">
+
                         <span className="helllo1">&nbsp;&nbsp;{this.state.event_detail[i]}</span>
                         <br/>
                         <span className="helllo2">&nbsp;&nbsp;&nbsp;&nbsp;{this.state.event_time[i]}</span>
@@ -140,13 +206,7 @@ const dropdown_organiser=(  <Dropdown overlay={menu_organiser}>
 
 
 
-    const LogoStyle={
-      height:'120px',
-      marginTop : '-13px',
-      float:'letf',
-      marginLeft:'20px',
-      marginBottom:'-20px'
-    };
+
     const iconStyle={
       color:'black',
       fontSize:'18px',
@@ -160,24 +220,38 @@ const dropdown_organiser=(  <Dropdown overlay={menu_organiser}>
       marginTop:'30px'
     };
 
+    if(this.state.organiser)
+    {
+      return <Redirect to='/User/org/signin' />
+    }
+    if(this.state.customer)
+    {
+      return <Redirect to='/User/cust/signin' />
+    }
+    if(this.state.dashboard)
+    {
+      return <Redirect to='/Us1' />
+    }
     return (
+      <div>
+      <MediaQuery query="(min-device-width: 1224px)">
      <div>
 
      <div className="row" id="head_main">
        <div className="col-sm-3">
        <Link to={`/`}>
-         <img style={LogoStyle} src={logo}/>
+         <img id="LogoStyle" src={logo}/>
          </Link>
        </div>
-       <div className="col-sm-6" id="head_tab1">
-       <a className="hvr-bob">HOME</a>
-       <a className="hvr-bob">EVENTS</a>
-       <a className="hvr-bob">TRENDING</a>
-       <a className="hvr-bob">UPCOMING</a>
+       <div className="col-sm-7" id="head_tab1">
+       <a className="hvr-bob1">HOME</a>
+       <Link to='/Events'><a className="hvr-bob">EVENTS</a></Link>
+       <Link to='/Trending'><a className="hvr-bob">TRENDING</a></Link>
+       <Link to='/Upcoming_Events'><a className="hvr-bob">UPCOMING</a></Link>
        <a className="hvr-bob">GET STARTED</a>
        <a className="hvr-bob">ABOUT US</a>
        </div>
-       <div className="col-sm-3 signinBlock">
+       <div className="col-sm-2 signinBlock">
        {this.state.name=='customer'?dropdown_customer:this.state.name=='organiser'?dropdown_organiser:dropdown_default}
 
        </div>
@@ -203,11 +277,7 @@ const dropdown_organiser=(  <Dropdown overlay={menu_organiser}>
         ))}
       </Slider>
       <br/>
-      <div className="row">
-      <div className="col-sm-5"><input id="deadpool1" type="text" placeholder="  search events"/></div>
-      <div className="col-sm-5"><input id="deadpool2" type="text" placeholder="area"/></div>
-      <div className="col-sm-2"><button id="deadpool3"onClick={this.hello} className="btn btn-primary">GO</button></div>
-      </div>
+
       <div>
         {cards}
       </div>
@@ -216,11 +286,77 @@ const dropdown_organiser=(  <Dropdown overlay={menu_organiser}>
         <div className="col-md-6">
           <a className="menuOption">Privacy Policy</a>
         </div>
-        <div className="col-md-6">
-          <a href="http://www.facebook.com/The-Tickets-212290419409526/?modal=admin_todo_tour"  target="_blank"><i className="fa fa-facebook fa-3x iconStyle" aria-hidden="true"></i></a>
-
+        <div className="col-md-5">
+          <a href="https://www.facebook.com/thetickets.in"  target="_blank"><i className="fa fa-facebook fa-3x iconStyle" aria-hidden="true"></i></a>
+        </div>
+        <div id="instagram" className="col-md-1">
+          <a href="https://www.instagram.com/thetickets.in"  target="_blank"><i style={{color:'#e95950'}} className="fa fa-instagram fa-3x iconStyle" aria-hidden="true"></i></a>
         </div>
       </div>
+  </div>
+  </MediaQuery>
+
+  <MediaQuery query="(max-device-width: 1224px)">
+ <div>
+
+ <div className="row" id="head_main">
+   <div className="col-sm-3">
+   <Link to={`/`}>
+     <img id="LogoStyle" src={logo}/>
+     </Link>
+   </div>
+   <div className="col-sm-7" id="head_tab1">
+   <a className="hvr-bob1">HOME</a>
+   <Link to='/Events'><a className="hvr-bob">EVENTS</a></Link>
+   <Link to='/Trending'><a className="hvr-bob">TRENDING</a></Link>
+   <Link to='/Upcoming_Events'><a className="hvr-bob">UPCOMING</a></Link>
+   <a className="hvr-bob">GET STARTED</a>
+   <a className="hvr-bob">ABOUT US</a>
+   </div>
+   <div className="col-sm-2 signinBlock">
+   {this.state.name=='customer'?dropdown_customer_m:this.state.name=='organiser'?dropdown_organiser_m:dropdown_default_m}
+
+   </div>
+ </div>
+  <Slider className="slider-wrapper" autoplay={2000}>
+    {content.map((item, index) => (
+      <div
+        key={index}
+        className="slider-content"
+        style={{ background: `url('${item.image}') no-repeat center center` }} >
+        <div className="inner">
+          <h1>{item.title}</h1>
+          <p>{item.description}</p>
+          <button>{item.button}</button>
+        </div>
+        <section>
+          <img src={item.userProfile} alt={item.user} />
+          <span>
+            Posted by <strong>{item.user}</strong>
+          </span>
+        </section>
+      </div>
+    ))}
+  </Slider>
+  <br/>
+
+  <div>
+    {cards}
+  </div>
+  <br/> <br/>  <br/>  <br/>
+  <div id="footer" className="col-md-12">
+    <div className="col-md-4">
+      <a className="menuOption">Privacy Policy</a>
+    </div>
+    <div className="col-md-4">
+      <a href="https://www.facebook.com/thetickets.in"  target="_blank"><i className="fa fa-facebook fa-3x iconStyle" aria-hidden="true"></i></a>
+    </div>
+    <div id="instagram" className="col-md-4">
+      <a href="https://www.instagram.com/thetickets.in"  target="_blank"><i style={{color:'#e95950'}} className="fa fa-instagram fa-3x iconStyle1" aria-hidden="true"></i></a>
+    </div>
+  </div>
+</div>
+  </MediaQuery>
   </div>
     );
   }

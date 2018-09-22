@@ -1,0 +1,30 @@
+@media only screen and (max-width: 1224px) {
+  .column_main777{
+    width:40%;
+    margin-left: -58px;
+    margin-top:25px;
+    float:left
+  }
+  #LogoStyle{
+    height:120px;
+    margin-top : -13px;
+    float:left;
+    margin-left:115px !important;
+    margin-bottom:-20px;
+    margin-right: 65px !important;
+  };
+  #login_button{
+    margin-left:250px !important;
+  }
+
+}
+#LogoStyle{
+  height:120px;
+  margin-top : -13px;
+  float:left;
+  margin-left:20px;
+  margin-bottom:-20px;
+};
+#login_button{
+  margin-left:140px;
+}

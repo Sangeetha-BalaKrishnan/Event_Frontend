@@ -1,0 +1,115 @@
+#input_width{
+  width:27% !important;
+}
+
+#ticket_details{
+  margin-left:67px;
+  margin-top:-40px;
+}
+
+#close_mark{
+  margin-left:40%;
+  margin-top:25px;
+  font-size:25px;
+  cursor:pointer
+}
+
+#add_ticket_style{
+  border:1px solid black;
+  border-style:dashed;
+  width:32%;
+  cursor:pointer;
+  margin-left:324px;
+}
+
+#add_ticket{
+  margin-top:30px;
+  margin-left:149px;
+  margin-bottom:10px;
+}
+
+#plus_mark{
+  margin-top:-10px;
+  font-size: 35px;
+  color: #08c;
+}
+
+#add_ticket_text{
+  margin-left:-34px;
+}
+
+#show_ticket{
+  margin-top:30px;
+  margin-left:100px;
+  margin-bottom:10px;
+}
+
+#show_ticket_style{
+  border:1px solid black;
+  border-style:dashed;
+  width:32%;
+  margin-top:25px;
+  margin-left:324px;
+}
+
+@media only screen and (max-width: 1224px) {
+  #input_width{
+    width:75% !important;
+  }
+
+  #ticket_details{
+    margin-left:25px;
+    margin-top:-40px;
+  }
+
+  #close_mark{
+    margin-left:85%;
+    margin-top:25px;
+    font-size:25px;
+    cursor:pointer
+  }
+
+  #add_ticket_style{
+    border:1px solid black;
+    border-style:dashed;
+    width:80%;
+    cursor:pointer;
+    margin-left:25px;
+    margin-right: -50px;
+  }
+
+  #add_ticket{
+    margin-top:30px;
+    margin-left:50px;
+    margin-right: 50px;
+    margin-bottom:10px;
+  }
+  #show_ticket{
+    margin-top:30px;
+    margin-left:30px;
+    margin-right: 50px;
+    margin-bottom:10px;
+  }
+
+  #show_ticket_style{
+    border:1px solid black;
+    border-style:dashed;
+    width:80%;
+    margin-top:25px;
+    margin-left:25px;
+  }
+
+
+  #add_ticket_text{
+    margin-left:-15px;
+  }
+
+  #plus_mark{
+    margin-top:-10px;
+    margin-left: 25px;
+    font-size: 35px;
+    color: #08c;
+  }
+
+
+}

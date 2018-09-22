@@ -1,0 +1,198 @@
+#logo{
+  height:120px;
+  margin-top: -13px;
+
+  margin-left:577px;
+  margin-bottom:-14px;
+}
+#btt:hover{
+  background-color: white;
+  color:black;
+}
+#btt{
+  border:1px solid black;
+  outline: none;
+  width: 111px;
+height: 36px;
+  background-color: #e8e8e8;
+  border-radius:30px;
+}
+#list1{
+  margin-top: 29px;
+  font-family: Roboto;
+  font-size:14px;
+}
+#list2{
+  margin-top: 21px;
+margin-left: 15px;
+}
+.head222{
+  border: 2px solid #e8e8e8;
+border-top-color: white;
+border-right-color: white;
+border-left-color: white;
+}
+#bkground{
+  background: #e8e8e8;
+  height: 100%;
+
+}
+#logform{
+  background: white;
+  width:40%;
+  border: 1px solid #e5e5e5;
+  border-top-color: white;
+  border-bottom-color: white;
+  border-left-color: white;
+  margin-left:233px;
+  margin-top: 90px;
+  margin-bottom: 100px;
+}
+#logform1{
+  background: white;
+  margin-top: 90px;
+  width:26% !important;
+  height: 347px !important;
+
+}
+ul#signup{
+   list-style-type: none;
+   display: inline-flex;
+    margin-left: -633px;
+}
+ul#googlesign{
+   list-style-type: none;
+   display: inline-flex;
+}
+#goosign1{
+  margin-left:10px;
+  margin-top: 20px;
+}
+
+.or-space {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    bottom: 100%;
+    margin-bottom: -143px;
+    left: 50%;
+    margin-left: -207px;
+    border-radius: 100%;
+    box-shadow: 0 2px 4px #999;
+    background: white;
+}
+.or-spacer{
+  height:41px;
+  width:42px;
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 4px;
+    right: 4px;
+    border-radius: 100%;
+    border: 1px dashed #aaa;
+    text-align: center;
+    line-height: 40px;
+    font-style: normal;
+    color: #999;
+}
+
+#goosign2{
+  margin-top: 90px;
+  margin-left: 70px;
+  font-size: 17px;
+  font-family: Roboto;
+}
+
+#bullet2{
+  margin-top: 7px;
+  margin-left: 301px;
+  color:red;
+  font-family: Roboto;
+  font-size:12px;
+}
+
+#bttfb_signin{
+  border:1px solid #3B5998;
+  outline: none;
+  width: 215px;
+  margin-left: 64px;
+height: 38px;
+  background-color: white;
+  border-radius:30px;
+}
+#bttfb_signin:hover{
+  background-color: #3B5998;
+  color:white;
+}
+@media only screen and (max-width: 1224px) {
+  #logo{
+    height:120px;
+    margin-top: -13px;
+
+    margin-left:123px;
+    margin-bottom:-14px;
+  }
+  #email{
+    width:92% !important;
+  }
+  #logform{
+    background: white;
+    width:78%;
+    border: 1px solid #e5e5e5;
+    border-top-color: white;
+    border-right-color: white;
+    border-left-color: white;
+    margin-left:55px;
+    margin-top: 40px;
+    margin-bottom: 100px;
+  }
+  ul#signup{
+     list-style-type: none;
+     display: inline-flex;
+      margin-left: 56px;
+  }
+  #logform1{
+    background: white;
+    margin-top: -100px;
+    width:79% !important;
+    height: 161px !important;
+    margin-left:54px;
+
+  }
+
+  .or-space {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      bottom: 100%;
+      margin-bottom: -26px;
+      left: 50%;
+      margin-left: -28px;
+      border-radius: 100%;
+      box-shadow: 0 2px 4px #999;
+      background: white;
+  }
+  #bullet2{
+    margin-top: 7px;
+    margin-left: 83px;
+    color:red;
+    font-family: Roboto;
+    font-size:12px;
+  }
+  #goosign2{
+    margin-top: 67px;
+    margin-left: 66px;
+    font-size: 17px;
+    font-family: Roboto;
+  }
+  #bttfb_signin{
+    border:1px solid #3B5998;
+    outline: none;
+    width: 215px;
+    margin-left: 53px;
+  height: 38px;
+    background-color: white;
+    border-radius:30px;
+  }
+}

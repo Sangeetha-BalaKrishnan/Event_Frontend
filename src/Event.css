@@ -1,0 +1,27 @@
+.numb{
+margin-left: 10px;
+margin-right: 12px;
+border: 1px solid grey;
+padding: 0px 17px;
+font-size: 23px;
+}
+
+.outer{
+  border:1px solid #ddd;
+  box-shadow: 0px 0px 4px #e2e2e2;
+  height:100px;
+  width:60%;
+  margin-left:45px;
+  margin-bottom: 30px;
+  border-radius:5px;
+}
+
+.book_ticket{
+  background: #d7343a;
+padding: 10px 50px;
+border: none;
+font-size: 14px;
+color: #fff;
+border-radius: 5px;
+cursor: pointer;
+}
