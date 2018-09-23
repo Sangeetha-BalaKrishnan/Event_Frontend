@@ -313,11 +313,11 @@ handleClick = (e) => {
               <Breadcrumb.Item>User</Breadcrumb.Item>
               <Breadcrumb.Item>Bill</Breadcrumb.Item>
             </Breadcrumb>
-            <div id="support" class="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+            <div id="support" className="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
             <Menu
     onClick={this.handleClick}
-    defaultSelectedKeys={'toggle2'}
+    defaultSelectedKeys={['toggle2']}
     mode="horizontal" style={{marginLeft:'20px'}}
   >
   <Menu.Item disabled key="toggle1">
@@ -343,25 +343,25 @@ handleClick = (e) => {
 <br/>
 <div>
 <h4>Event Venue</h4>
-<input style={this.state.check_venue} name="venue" value={this.state.venue} onChange={this.state.check_venue==after?this.handleChange_toggle:this.handleChange} type="text" placeholder="enter the venue" id="email2" class="form-control" required/>
+<input style={this.state.check_venue} name="venue" value={this.state.venue} onChange={this.state.check_venue==after?this.handleChange_toggle:this.handleChange} type="text" placeholder="enter the venue" id="email2" className="form-control" required/>
 {this.state.check_venue==after?message:''}
 <br/>
 <h4>Street Line1</h4>
-<input name="add1" style={this.state.check_add1} value={this.state.add1} onChange={this.state.check_add1==after?this.handleChange_toggle:this.handleChange}   id="email2" class="form-control" placeholder="Street Line1" />
+<input name="add1" style={this.state.check_add1} value={this.state.add1} onChange={this.state.check_add1==after?this.handleChange_toggle:this.handleChange}   id="email2" className="form-control" placeholder="Street Line1" />
 {this.state.check_add1==after?message:''}
 <br/>
 <h4>Street Line2</h4>
-<input name="add2" value={this.state.add2} onChange={this.handleChange} class="form-control" id="email2" placeholder="Street Line2" />
+<input name="add2" value={this.state.add2} onChange={this.handleChange} className="form-control" id="email2" placeholder="Street Line2" />
 <br/>
 <h4>City</h4>
-<input name="city" style={this.state.check_city} value={this.state.city} onChange={this.state.check_city==after?this.handleChange_toggle:this.handleChange} id="email2" class="form-control" placeholder="City" />
+<input name="city" style={this.state.check_city} value={this.state.city} onChange={this.state.check_city==after?this.handleChange_toggle:this.handleChange} id="email2" className="form-control" placeholder="City" />
 {this.state.check_city==after?message:''}
 <br/><br/>
 </div>
 
-<button type="button" style={bt} onClick={this.previous} class="btn btn-primary">Previous</button>
+<button type="button" style={bt} onClick={this.previous} className="btn btn-primary">Previous</button>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<button type="button" style={bt} onClick={this.next} class="btn btn-primary">Next</button>
+<button type="button" style={bt} onClick={this.next} className="btn btn-primary">Next</button>
 </div>
   </div>
             </div>
@@ -403,11 +403,11 @@ handleClick = (e) => {
               <Breadcrumb.Item>User</Breadcrumb.Item>
               <Breadcrumb.Item>Bill</Breadcrumb.Item>
             </Breadcrumb>
-            <div id="support" class="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+            <div id="support" className="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
             <Menu
     onClick={this.handleClick}
-    defaultSelectedKeys={'toggle2'}
+    defaultSelectedKeys={['toggle2']}
     mode="horizontal" style={{marginLeft:'20px'}}
   >
   <Menu.Item disabled key="toggle1">
@@ -432,26 +432,26 @@ handleClick = (e) => {
 <br/>
 <div>
 <h4>Event Venue</h4>
-<input style={this.state.check_venue} name="venue" value={this.state.venue} onChange={this.state.check_venue==after?this.handleChange_toggle:this.handleChange} type="text" placeholder="enter the venue" id="email3" class="form-control" required/>
+<input style={this.state.check_venue} name="venue" value={this.state.venue} onChange={this.state.check_venue==after?this.handleChange_toggle:this.handleChange} type="text" placeholder="enter the venue" id="email3" className="form-control" required/>
 {this.state.check_venue==after?message:''}
 <br/>
 <h4>Street Line1</h4>
-<input name="add1" style={this.state.check_add1} value={this.state.add1} onChange={this.state.check_add1==after?this.handleChange_toggle:this.handleChange}   id="email3" class="form-control" placeholder="Street Line1" />
+<input name="add1" style={this.state.check_add1} value={this.state.add1} onChange={this.state.check_add1==after?this.handleChange_toggle:this.handleChange}   id="email3" className="form-control" placeholder="Street Line1" />
 {this.state.check_add1==after?message:''}
 <br/>
 <h4>Street Line2</h4>
-<input name="add2" value={this.state.add2} onChange={this.handleChange} class="form-control" id="email3" placeholder="Street Line2" />
+<input name="add2" value={this.state.add2} onChange={this.handleChange} className="form-control" id="email3" placeholder="Street Line2" />
 <br/>
 <h4>City</h4>
-<input name="city" style={this.state.check_city} value={this.state.city} onChange={this.state.check_city==after?this.handleChange_toggle:this.handleChange} id="email3" class="form-control" placeholder="City" />
+<input name="city" style={this.state.check_city} value={this.state.city} onChange={this.state.check_city==after?this.handleChange_toggle:this.handleChange} id="email3" className="form-control" placeholder="City" />
 {this.state.check_city==after?message:''}
 <br/><br/>
 
 </div>
 
-<button type="button" style={bt} onClick={this.previous} class="btn btn-primary">Previous</button>
+<button type="button" style={bt} onClick={this.previous} className="btn btn-primary">Previous</button>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<button type="button" style={bt} onClick={this.next} class="btn btn-primary">Next</button>
+<button type="button" style={bt} onClick={this.next} className="btn btn-primary">Next</button>
 </div>
 
 

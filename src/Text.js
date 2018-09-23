@@ -249,11 +249,11 @@ class TextEditor extends React.Component {
               <Breadcrumb.Item>User</Breadcrumb.Item>
               <Breadcrumb.Item>Bill</Breadcrumb.Item>
             </Breadcrumb>
-            <div id="support" class="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+            <div id="support" className="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
             <Menu
     onClick={this.handleClick}
-    defaultSelectedKeys={'toggle3'}
+    defaultSelectedKeys={['toggle3']}
     mode="horizontal" style={{marginLeft:'20px'}}
   >
   <Menu.Item disabled key="toggle1">
@@ -283,9 +283,9 @@ class TextEditor extends React.Component {
       	placeholder={'Write Something....'} />
         {this.state.error?message:''}
         <br/><br/>
-        <button type="button" style={bt} onClick={this.previous} class="btn btn-primary">Previous</button>
+        <button type="button" style={bt} onClick={this.previous} className="btn btn-primary">Previous</button>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <button type="button" style={bt} onClick={this.next} class="btn btn-primary">Next</button>
+        <button type="button" style={bt} onClick={this.next} className="btn btn-primary">Next</button>
         </div>
         </div>
       </Content>
@@ -326,11 +326,11 @@ class TextEditor extends React.Component {
           <Breadcrumb.Item>User</Breadcrumb.Item>
           <Breadcrumb.Item>Bill</Breadcrumb.Item>
         </Breadcrumb>
-        <div id="support" class="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+        <div id="support" className="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
         <Menu
 onClick={this.handleClick}
-defaultSelectedKeys={'toggle3'}
+defaultSelectedKeys={['toggle3']}
 mode="horizontal" style={{marginLeft:'20px'}}
 >
 <Menu.Item disabled key="toggle1">
@@ -360,9 +360,9 @@ TICKETS
   placeholder={'Write Something....'} />
   {this.state.error?message:''}
   <br/><br/>
-  <button type="button" style={bt} onClick={this.previous} class="btn btn-primary">Previous</button>
+  <button type="button" style={bt} onClick={this.previous} className="btn btn-primary">Previous</button>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <button type="button" style={bt} onClick={this.next} class="btn btn-primary">Next</button>
+  <button type="button" style={bt} onClick={this.next} className="btn btn-primary">Next</button>
   <br/><br/><br/>
     </div>
     </div>

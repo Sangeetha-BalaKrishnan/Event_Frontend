@@ -23,6 +23,7 @@ import Hello from './Hello';
 import Text from './Text';
 import Trending from './Trending';
 import Event_main from './Event_Main';
+import tic from './Tikct_demo';
 import Upcoming_Events from './Upcoming_Events'
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
@@ -82,6 +83,7 @@ class Router_link extends Component {
              <Route exact path="/dummy" component={Hello} />
              <Route exact path="/dummy1" component={Text} />
              <Route exact path="/Upcoming_Events" component={Upcoming_Events} />
+             <Route exact path="/Ticket" component={tic} />
            </div>
            </Switch>
 

@@ -244,22 +244,22 @@ summa()
     };
     const general_info=(
       <div>
-      <div id="cat" class="row">
-        <div  class="col-sm-6">
-            <input  name="event_name" style={this.state.check_event_name} value={this.state.event_name} onChange={this.state.check_event_name==after?this.handleChange_toggle:this.handleChange2} type="text" placeholder="Event Name" id="email1" class="form-control" required/>
-            <label  class="form-control-placeholder" for="name">Event Name</label>
+      <div id="cat" className="row">
+        <div  className="col-sm-6">
+            <input  name="event_name" style={this.state.check_event_name} value={this.state.event_name} onChange={this.state.check_event_name==after?this.handleChange_toggle:this.handleChange2} type="text" placeholder="Event Name" id="email1" className="form-control" required/>
+            <label  className="form-control-placeholder" for="name">Event Name</label>
             {this.state.check_event_name==after?message:''}
         </div>
-        <div class="col-sm-6">
-              <input name="event_org_name" style={this.state.check_event_org_name} value={this.state.event_org_name} onChange={this.state.check_event_org_name==after?this.handleChange_toggle:this.handleChange2} type="text"  placeholder="Event Organiser Name" id="inbox" class="form-control" required/>
-              <label class="form-control-placeholder" for="password">Event Org Name</label>
+        <div className="col-sm-6">
+              <input name="event_org_name" style={this.state.check_event_org_name} value={this.state.event_org_name} onChange={this.state.check_event_org_name==after?this.handleChange_toggle:this.handleChange2} type="text"  placeholder="Event Organiser Name" id="inbox" className="form-control" required/>
+              <label className="form-control-placeholder" for="password">Event Org Name</label>
               {this.state.check_event_org_name==after?message:''}
           </div>
       </div>
-      <div id="cat1" class="row">
-      <div class="col-sm-6">
-      <input name="event_url" style={this.state.check_event_url} value={this.state.event_url} onChange={this.state.check_event_url==after?this.handleChange_toggle:this.handleChange2} onMouseOut={this.value_check} type="text"  placeholder="Event URL" id="email1" class="form-control" required/>
-      <label class="form-control-placeholder" for="password">Event URL</label>
+      <div id="cat1" className="row">
+      <div className="col-sm-6">
+      <input name="event_url" style={this.state.check_event_url} value={this.state.event_url} onChange={this.state.check_event_url==after?this.handleChange_toggle:this.handleChange2} onMouseOut={this.value_check} type="text"  placeholder="Event URL" id="email1" className="form-control" required/>
+      <label className="form-control-placeholder" for="password">Event URL</label>
       {this.state.check_event_url==after?this.state.event_url_backend?'':message:''}
       <span style={{fontFamily:'Roboto',fontSize:'14px'}}>{this.state.event_url_backend?this.state.event_url_backend_msg:''}</span>
         </div>
@@ -267,8 +267,8 @@ summa()
 
       </div>
       <div style={{marginTop:'8px',fontFamily:'Roboto',fontSize:'15px'}}>Thetickets.com/Events/</div>
-      <div id="cat1" class="row">
-        <div  class="col-sm-6">
+      <div id="cat1" className="row">
+        <div  className="col-sm-6">
         <h5>START DATE</h5>
         {cookies.get('event_id')==undefined?
                   <DatePicker
@@ -292,7 +292,7 @@ summa()
           }
             <br/>{this.state.check_event_start==after?message:''}
         </div>
-        <div class="col-sm-6">
+        <div className="col-sm-6">
         <h5>END DATE</h5>
         {cookies.get('event_id')==undefined?
         <DatePicker
@@ -316,8 +316,8 @@ summa()
             <br/>{this.state.check_event_end==after?message:''}
           </div>
       </div>
-      <div id="cat1" class="row">
-        <div  class="col-sm-6">
+      <div id="cat1" className="row">
+        <div  className="col-sm-6">
           <label>Category</label>
           <div>
           <label>
@@ -340,7 +340,7 @@ summa()
       <br/><br/>
 
       &nbsp;&nbsp;&nbsp;&nbsp;
-      <button type="button" style={bt} onClick={this.send_values} class="btn btn-primary">Next</button>&nbsp;&nbsp;
+      <button type="button" style={bt} onClick={this.send_values} className="btn btn-primary">Next</button>&nbsp;&nbsp;
 
       </div>
     );
@@ -348,7 +348,7 @@ summa()
     const show_ticket=(
       <div>
       <br/><br/>
-        <button type="button" class="btn btn-primary">ADD SHOW</button>
+        <button type="button" className="btn btn-primary">ADD SHOW</button>
       </div>
     );
     const awesome={
@@ -450,11 +450,11 @@ summa()
               <Breadcrumb.Item>User</Breadcrumb.Item>
               <Breadcrumb.Item>Bill</Breadcrumb.Item>
             </Breadcrumb>
-            <div id="support" class="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+            <div id="support" className="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
             <Menu
 
-    defaultSelectedKeys={'toggle1'}
+    defaultSelectedKeys={['toggle1']}
     mode="horizontal" style={{marginLeft:'20px'}}
   >
     <Menu.Item key="toggle1">
@@ -521,11 +521,11 @@ summa()
         <Breadcrumb.Item>User</Breadcrumb.Item>
         <Breadcrumb.Item>Bill</Breadcrumb.Item>
       </Breadcrumb>
-      <div id="support" class="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+      <div id="support" className="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
       <Menu
 
-defaultSelectedKeys={'toggle1'}
+defaultSelectedKeys={['toggle1']}
 mode="horizontal" style={{marginLeft:'20px'}}
 >
 <Menu.Item key="toggle1">

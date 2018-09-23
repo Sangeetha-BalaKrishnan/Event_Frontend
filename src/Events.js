@@ -56,7 +56,7 @@ class Events extends Component{
     const  value =this.props.location.state;
 console.log(value.value);
 window.scrollTo(0, 0);
-fetch('https://admin.thetickets.in/api/event_create/d851346e', {
+fetch('https://admin.thetickets.in/event/'+value.value, {
 method: 'get',
 headers: {
 'Accept': 'application/json, text/plain, */*',
@@ -66,26 +66,11 @@ headers: {
 }).then(res=>res.json())
 .then(res => {console.log(res);
 
-  this.setState({event_name:res.data.event_name,start:res.data.start,end:res.data.end});
+  this.setState({event_name:res.data.event_details.name,start:res.data.event_details.start_time,end:res.data.event_details.end_time,editorHtml:res.data.event_details.description});
 
 });
 
-  fetch('https://admin.thetickets.in/api/event_description/d851346e', {
-method: 'get',
-headers: {
-  'Accept': 'application/json, text/plain, */*',
-  'Content-Type': 'application/json',
-  'Authorization':'Bearer '+this.state.auth_token
-}
-}).then(res=>res.json())
-.then(res => {console.log(res);
-  if(res.data.description!=null)
-  {
 
-    this.setState({editorHtml:res.data.description});
-}
-
-});
 }
 add(x){
 var array=this.state.value;

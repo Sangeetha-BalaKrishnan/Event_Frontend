@@ -41,6 +41,7 @@ class Ticket extends React.Component {
     ticket_name:'',
     price:'',
     quantity:'',
+    show:[][4],
     ticket_name_array:[],
     price_array:[],
     quantity_array:[],
