@@ -24,4 +24,43 @@ font-size: 14px;
 color: #fff;
 border-radius: 5px;
 cursor: pointer;
+margin-left:673px;
+}
+
+.outer_box{
+  border: 1px solid #ddd;
+border-radius: 5px;
+box-shadow: 0px 0px 4px #e2e2e2;
+width: calc(100% - 104px);
+margin-left:54px;
+}
+
+.header1{
+  font-size: 40px;
+    color: deepskyblue;
+    width: 200px !important;
+    display: inline-block;
+    margin-left:550px;
+}
+.header2{
+  font-size: 17px;
+    width: 366px !important;
+    display: inline-block;
+    margin-left:35px;
+
+}
+
+.contact{
+  margin-left: 475px;
+    font-size: 20px;
+}
+.contact1{
+  margin-left: 440px;
+    font-size: 20px;
+}
+
+.maps{
+  margin-left: 147px;
+    font-size: 28px;
+    font-family: 'Roboto';
 }

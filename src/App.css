@@ -45,6 +45,13 @@ html{
   margin-left:20px;
   margin-bottom:-20px;
 };
+#LogoStyle_sales{
+  height:120px;
+  margin-top : -13px;
+  float:left;
+  margin-left:590px;
+  margin-bottom:-20px;
+};
 #login_button{
   margin-left:140px !important;
 }
@@ -712,8 +719,8 @@ Clear floats after the columns */
   float:left
 }
 .column_main777{
-  width:40%;
-  margin-left: 50px;
+  width:31%;
+  margin-left: -6px;
   margin-top:25px;
   float:left
 }

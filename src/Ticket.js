@@ -141,7 +141,7 @@ next(){
     'Content-Type': 'application/json',
     'Authorization':'Bearer '+this.state.auth_token
   },
-  body: JSON.stringify({eventid:key,ticket_name:this.state.ticket_name_array,ticket_max:this.state.quantity_array,ticket_price:this.state.price_array})
+  body: JSON.stringify({eventid:key,ticket_name:this.state.ticket_name_array,ticket_max:this.state.quantity_array,ticket_price:this.state.price_array,total:this.state.ticket_name_array.length})
 }).then(res=>res.json())
   .then(res => {console.log(res);
     if(res.status==false)

@@ -180,7 +180,7 @@ const dropdown_organiser_m=(  <Dropdown overlay={menu_organiser}>
       <div className="rows" key={i} id="saran1">
 
 <Link to= {{pathname:this.state.event_url[i], state:{value:this.state.event_url[i].substr(this.state.event_url[i].lastIndexOf("/")+1)}}}  >
-          <div className="column_main777 col-sm-6">
+          <div className="column_main777 col-sm-4">
 
               <div className="box">
 

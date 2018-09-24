@@ -50,7 +50,7 @@ class Demo extends React.Component {
       event_url:'',
       start_date:'',
       end_date:'',
-      category:'Jack',
+      category:'',
       render:'',
       collapsed:false,
       ismobile:false,
@@ -69,6 +69,7 @@ class Demo extends React.Component {
   };
   this.handleChange_toggle = this.handleChange_toggle.bind(this);
   this.handleChange2 = this.handleChange2.bind(this);
+  this.handleChange222 = this.handleChange222.bind(this);
   this.handleChange1 = this.handleChange1.bind(this);
   this.summa = this.summa.bind(this);
   this.value_check = this.value_check.bind(this);
@@ -88,9 +89,13 @@ componentDidMount() {
   }
   }).then(res=>res.json())
   .then(res => {console.log(res);
+    if(res.data != null)
+    {
     console.log(res.data.start.length);
-    this.setState({event_name:res.data.event_name,event_url:res.data.url,event_org_name:res.data.organizer,start_date:res.data.start,end_date:res.data.end});
+    this.setState({event_name:res.data.event_name,event_url:res.data.url,event_org_name:res.data.organizer,start_date:res.data.start,end_date:res.data.end,Category:res.data.category});
     console.log(this.state.start_date);
+    console.log(this.state.Category);
+  }
 
   });
   }
@@ -131,7 +136,8 @@ send_values(){
   else {
     key=cookies.get('event_id');
   }
-  if(this.state.event_name != '' && this.state.event_org_name != '' && this.state.event_url != '' && this.state.start_date != '' && this.state.end_date != '')
+  console.log(this.state.Category);
+  if(this.state.event_name != '' && this.state.event_org_name != '' && this.state.event_url != '' && this.state.start_date != '' && this.state.end_date != '' && this.state.event_url_backend==false)
   {
     fetch('https://admin.thetickets.in/api/event_create', {
   method: 'post',
@@ -140,7 +146,7 @@ send_values(){
     'Content-Type': 'application/json',
     'Authorization':'Bearer '+this.state.auth_token
   },
-  body: JSON.stringify({event_name:this.state.event_name,event_url:this.state.event_url,event_organizer:this.state.event_org_name,start:this.state.start_date,end:this.state.end_date,event_id:key})
+  body: JSON.stringify({event_name:this.state.event_name,event_url:this.state.event_url,event_organizer:this.state.event_org_name,start:this.state.start_date,end:this.state.end_date,event_id:key,category:this.state.Category})
 }).then(res=>res.json())
   .then(res => {console.log(res);
     if(res.status==false)
@@ -205,6 +211,12 @@ handleChange2(event){
 }
 
 
+handleChange222(event){
+
+  console.log(event.target.value);
+  this.setState({Category:event.target.value});
+
+}
 
 handleChange1(){
   alert("hello");
@@ -321,10 +333,16 @@ summa()
           <label>Category</label>
           <div>
           <label>
-            <select name="category" value={this.state.category} style={{ width: '200px',height:'27px',borderRadius:'5px' }} onChange={this.handleChange2} >
-              <option value="jack">Jack</option>
-              <option value="lucy">Lucy</option>
-              <option value="Yiminghe">yiminghe</option>
+            <select name="category" value={this.state.Category} style={{ width: '200px',height:'27px',borderRadius:'5px' }} onChange={this.handleChange222} >
+              <option value=" ">Please Select</option>
+              <option value="cultural">cultural</option>
+              <option value="sports">sports</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Marathon">Marathon</option>
+              <option value="Cycling">Cycling</option>
+              <option value="Music Festival">Music fest</option>
+              <option value="Dance">Dance</option>
+              <option value="others">Others</option>
               </select>
               </label>
 

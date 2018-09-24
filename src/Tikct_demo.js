@@ -6,6 +6,8 @@ import Signup from './Signup';
 import Events from './Events';
 import { BrowserRouter as Router, Route, Link,Redirect } from "react-router-dom";
 import { render } from 'react-dom';
+import moment from 'moment';
+import { DatePicker } from 'antd';
 import MediaQuery from 'react-responsive';
 import './Ticket.css';
 import Cookies from 'universal-cookie';
@@ -38,13 +40,22 @@ class Ticket extends React.Component {
     super(props);
     this.state={
     toggle:false,
+    toggle_show:false,
     ticket_name:'',
+    show_name:'',
+    start_date:'',
+    end_date:'',
     price:'',
     quantity:'',
-    show:[][4],
+    show_name_array:[],
+    start:[],
+    end:[],
     ticket_name_array:[],
     price_array:[],
     quantity_array:[],
+    check_show_name:before,
+    check_event_start:before,
+    check_event_end:before,
     check_ticket_name:before,
     check_quantity:before,
     check_price:before,
@@ -56,9 +67,14 @@ class Ticket extends React.Component {
     redirect_logout:false
   };
   this.handleToggle = this.handleToggle.bind(this);
+  this.add_show = this.add_show.bind(this);
+  this.onChange = this.onChange.bind(this);
+  this.onChange1 = this.onChange1.bind(this);
   this.handleChange = this.handleChange.bind(this);
   this.push_details = this.push_details.bind(this);
+  this.push_details1 = this.push_details1.bind(this);
   this.close = this.close.bind(this);
+  this.close1 = this.close1.bind(this);
   this.previous = this.previous.bind(this);
   this.next = this.next.bind(this);
   this.delete_ticket = this.delete_ticket.bind(this);
@@ -114,7 +130,22 @@ handleToggle(){
   this.setState({toggle:true});
   console.log(this.state.ticket_name_array);
 }
-
+add_show(){
+  this.setState({toggle_show:true});
+}
+onChange(value, dateString) {
+  console.log('Selected Time: ', value);
+  console.log('Formatted Selected Time: ', dateString);
+  this.setState({start_date:dateString});
+}
+onChange1(value, dateString) {
+  console.log('Selected Time: ', value);
+  console.log('Formatted Selected Time: ', dateString);
+  this.setState({end_date:dateString});
+}
+onOk(value) {
+  console.log('onOk: ', value);
+}
 previous(){
   this.setState({redirect_prev:true});
 }
@@ -221,6 +252,41 @@ push_details()
 
 }
 
+push_details1()
+{
+  if(this.state.show_name ==''|| this.state.start_date=='' || this.state.end_date=='')
+  {
+    if(this.state.show_name =='')
+    {
+      this.setState({check_show_name:after});
+    }
+    if(this.state.start_date=='')
+    {
+      this.setState({check_event_start:after});
+    }
+    if(this.state.end_date=='')
+    {
+      this.setState({check_event_end:after});
+    }
+  }
+  else
+  {
+    this.setState({
+      show_name_array:[...this.state.show_name_array,this.state.show_name],
+      start:[...this.state.start,this.state.start_date],
+      end:[...this.state.end,this.state.end_date],
+      show_name:'',
+      start_date:'',
+      end_date:'',
+      toggle_show:false
+    });
+    console.log(this.state.show_name_array,this.state.start,this.state.end);
+
+
+  }
+
+}
+
 close()
 {
   this.setState({
@@ -228,6 +294,15 @@ close()
     price:'',
     quantity:'',
     toggle:false
+  });
+}
+close1()
+{
+  this.setState({
+    show_name:'',
+    start_date:'',
+    end_date:'',
+    toggle_show:false
   });
 }
 
@@ -338,6 +413,67 @@ handleClick = (e) => {
       {this.state.check_price==after?message:''}
       <br/><br/>
       <button onClick={this.push_details} className="btn btn-primary">SUBMIT</button>
+    </div>
+  );
+  const add_show=(
+    <div id="ticket_details">
+
+      <i className="fa fa-close" id="close_mark" onClick={this.close1}></i>
+      <h5>Show NAME</h5>
+      <Input type="text" style={this.state.check_show_name} id="input_width" name="show_name" value={this.state.show_name} onChange={this.state.check_ticket_name==after?this.handleChange_toggle:this.handleChange} placeholder="Ticket Name" className="form-control" required/><br/>
+      {this.state.check_ticket_name==after?message:''}
+      <br/>
+      <div id="cat1" className="row">
+        <div  className="col-sm-6">
+        <h5>START DATE</h5>
+        {cookies.get('event_id')==undefined?
+                  <DatePicker
+                showTime
+                format="YYYY-MM-DD HH:mm:ss"
+                placeholder="Select Time"
+                onChange={this.onChange.bind(this)}
+                onOk={this.onOk.bind(this)}
+                style={{width:'270px'}}
+              />:
+
+        <DatePicker
+              showTime
+              format="YYYY-MM-DD HH:mm:ss"
+              placeholder="Select Time"
+              value={moment(this.state.start_date, 'YYYY-MM-DD HH:mm:ss')}
+              onChange={this.onChange.bind(this)}
+              onOk={this.onOk.bind(this)}
+              style={{width:'270px'}}
+            />
+          }
+            <br/>{this.state.check_event_start==after?message:''}
+        </div>
+        <div className="col-sm-6">
+        <h5>END DATE</h5>
+        {cookies.get('event_id')==undefined?
+        <DatePicker
+              showTime
+              format="YYYY-MM-DD HH:mm:ss"
+              placeholder="Select Time"
+              onChange={this.onChange1.bind(this)}
+
+              onOk={this.onOk.bind(this)}
+              style={{width:'270px'}}
+            />:
+        <DatePicker
+              showTime
+              format="YYYY-MM-DD HH:mm:ss"
+              placeholder="Select Time"
+              onChange={this.onChange1.bind(this)}
+              value={moment(this.state.end_date, 'YYYY-MM-DD HH:mm:ss')}
+              onOk={this.onOk.bind(this)}
+              style={{width:'270px'}}
+            />}
+            <br/>{this.state.check_event_end==after?message:''}
+          </div>
+      </div>
+      <br/><br/>
+      <button onClick={this.push_details1} className="btn btn-primary">SUBMIT</button>
     </div>
   );
   const awesome1={
@@ -452,7 +588,10 @@ handleClick = (e) => {
   </Menu.Item>
   </Menu>
   <div id="contain" style={{height:'400px',overflow:'auto'}}>
+  <br/>
+  <button type="button" style={bt} onClick={this.add_show} className="btn btn-primary">ADD Show</button>
   {this.state.error?message1:''}
+  {this.state.toggle_show?add_show:''}
   {this.state.toggle?'':show_ticket}
   <br/><br/>
   {this.state.toggle?add_ticket_details:add_ticket}

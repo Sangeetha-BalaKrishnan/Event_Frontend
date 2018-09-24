@@ -24,6 +24,7 @@ import Text from './Text';
 import Trending from './Trending';
 import Event_main from './Event_Main';
 import tic from './Tikct_demo';
+import report from './Sales_Report';
 import Upcoming_Events from './Upcoming_Events'
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
@@ -84,6 +85,7 @@ class Router_link extends Component {
              <Route exact path="/dummy1" component={Text} />
              <Route exact path="/Upcoming_Events" component={Upcoming_Events} />
              <Route exact path="/Ticket" component={tic} />
+             <Route exact path="/sales_report" component={report} />
            </div>
            </Switch>
 

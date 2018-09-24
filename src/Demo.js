@@ -18,11 +18,13 @@ class Demo extends React.Component {
     super(props);
     this.state={
       name:cookies.get('user'),
-      event_name:['demo','summa'],
-      start_date:['2017-04-21 21:22:22','2017-04-21 21:22:22'],
-      end_date:['2017-04-22 01:22:22','2017-04-21 21:22:22'],
-      Check_box:[true,false],
-      event_id:['mikl1234nji','IndustryProgram'],
+      auth_token:cookies.get('auth_token'),
+      event_name:[],
+      start_date:[],
+      end_date:[],
+      Check_box:[],
+      event_id:[],
+      link:[],
       redirect_edit:false
     };
     this.handleChange = this.handleChange.bind(this);
@@ -31,7 +33,42 @@ class Demo extends React.Component {
 
   };
 
+  componentDidMount() {
 
+      fetch('https://admin.thetickets.in/api/publish/event', {
+    method: 'get',
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      'Authorization':'Bearer '+this.state.auth_token
+    }
+    }).then(res=>res.json())
+    .then(res => {console.log(res);
+      if(res.status==true)
+      {
+
+      console.log(res.data.length);
+      var a=[];
+      var b=[];
+      var c=[];
+      var d=[];
+      var e=[];
+      var f=[];
+      for(var i=0;i<res.data.length;i++)
+      {
+        a.push(res.data[i].event_name);
+        b.push(res.data[i].start);
+        c.push(res.data[i].end);
+        d.push(res.data[i].url);
+        e.push(res.data[i].event_id);
+        f.push(res.data[i].publish);
+      }
+      this.setState({event_name:a,start_date:b,end_date:c,link:d,event_id:e,Check_box:f});
+    }
+
+
+    });
+  }
 
   edit(x)
   {
@@ -75,7 +112,7 @@ class Demo extends React.Component {
     <span key={i} style={{fontSize:'20px',marginRight:'5px',color:'#ce2127',marginLeft:'15px'}}>{this.state.event_name[i]}</span>
     <span style={{fontSize:'14px',marginLeft:'20px'}}>{this.state.start_date[i]}</span>
     <br/><br/>
-    <span onClick={()=> window.open("https://admin.thetickets.in/event/"+this.state.event_id[i], "_blank")}  style={{fontSize:'20px',marginRight:'5px',marginLeft:'15px',cursor:'pointer'}}>Preview</span>
+    <span onClick={()=> window.open("https://admin.thetickets.in/event/"+this.state.link[i], "_blank")}  style={{fontSize:'20px',marginRight:'5px',marginLeft:'15px',cursor:'pointer'}}>Preview</span>
     <span key={i} onClick={() => this.edit(i)} style={{fontSize:'20px',marginRight:'5px',marginLeft:'100px',cursor:'pointer'}}>Edit</span>
     <span onClick={this.delete} style={{fontSize:'20px',marginRight:'5px',color:'#ce2127',marginLeft:'100px',cursor:'pointer'}}>Delete</span>
     <span style={{fontSize:'20px',marginRight:'5px',marginLeft:'100px'}}>Published</span>

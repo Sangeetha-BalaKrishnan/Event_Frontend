@@ -29,7 +29,9 @@ class Signin_cust extends Component{
       check_password:before,
       error:false,
       error_msg:'',
-      redirect:false
+      redirect:false,
+      link:'',
+      redirect_payment:false
 
   };
   this.handleChange = this.handleChange.bind(this);
@@ -84,7 +86,15 @@ class Signin_cust extends Component{
       cookies.set('name', 'customer', { path: '/' });
       cookies.set('user',res.name, { path: '/' });
       cookies.set('auth_token',res.token,{ path: '/' });
+      if(cookies.get('link')!=undefined)
+      {
+        var link = "/Events/"+cookies.get('link');
+        this.setState({redirect_payment:true,error:false,link:link});
+      }
+      else
+      {
       this.setState({redirect:true,error:false});
+    }
     }
     else if(res.status==false)
     {
@@ -116,6 +126,10 @@ class Signin_cust extends Component{
     if(this.state.redirect)
     {
       return <Redirect to='/' />
+    }
+    if(this.state.redirect_payment)
+    {
+      return <Redirect to={this.state.link} />
     }
     return(
       <div>
