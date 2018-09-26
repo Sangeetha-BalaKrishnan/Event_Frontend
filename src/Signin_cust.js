@@ -90,6 +90,7 @@ class Signin_cust extends Component{
       {
         var link = "/Events/"+cookies.get('link');
         this.setState({redirect_payment:true,error:false,link:link});
+        cookies.remove('link', { path: '/' });
       }
       else
       {

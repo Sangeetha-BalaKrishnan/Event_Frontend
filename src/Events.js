@@ -17,6 +17,7 @@ import { Menu, Dropdown,Button } from 'antd';
 import { Tabs } from 'antd';
 import PaypalExpressBtn from 'react-paypal-express-checkout';
 import Cookies from 'universal-cookie';
+import swal from 'sweetalert';
 
 const cookies = new Cookies();
 
@@ -33,8 +34,10 @@ class Events extends Component{
   constructor(props){
     super(props);
     this.state={summa:"",
+    toggle:false,
     image:'',
     event_name:'',
+    event_id:'',
     start:'',
     end:'',
     lat:'',
@@ -52,6 +55,13 @@ class Events extends Component{
     amount:[],
     quantity:[],
     total:0,
+    conv:0,
+    ticket_name_cpy:[],
+    amount_cpy:[],
+    quantity_cpy:[],
+    unique_id:[],
+    total_cpy:0,
+    conv_cpy:0,
   selectedPlace:{name:'summa'},
   editorHtml:""
 };
@@ -61,6 +71,7 @@ class Events extends Component{
   this.sub = this.sub.bind(this);
   this.add = this.add.bind(this);
   this.payment = this.payment.bind(this);
+  this.toggle = this.toggle.bind(this);
   this.delete_cookies = this.delete_cookies.bind(this);
   }
   componentDidMount() {
@@ -74,7 +85,7 @@ if(cookies.get('link')==undefined)
   else {
     var value = cookies.get('link');
   }
-console.log(value.value);
+console.log(value);
 window.scrollTo(0, 0);
 fetch('https://admin.thetickets.in/event/'+value, {
 method: 'get',
@@ -86,7 +97,8 @@ headers: {
 }).then(res=>res.json())
 .then(res => {console.log(res);
 
-  this.setState({event_name:res.data.event_details.name,start:res.data.event_details.start_time,end:res.data.event_details.end_time,editorHtml:res.data.event_details.description,lat:res.data.location.lat_long.substr(0,res.data.location.lat_long.indexOf(",")),long:res.data.location.lat_long.substr(res.data.location.lat_long.indexOf(",")+1),organizer:res.data.event_details.organizer,phone:res.data.event_details.phone,ticket_name:res.data.tickets[0],amount:res.data.tickets[2],quantity:res.data.tickets[1],value:res.data.tickets[3],address:res.data.location.address});
+  this.setState({event_name:res.data.event_details.name,start:res.data.event_details.start_time,end:res.data.event_details.end_time,editorHtml:res.data.event_details.description,lat:res.data.location.lat_long.substr(0,res.data.location.lat_long.indexOf(",")),long:res.data.location.lat_long.substr(res.data.location.lat_long.indexOf(",")+1),organizer:res.data.event_details.organizer,phone:res.data.event_details.phone,ticket_name:res.data.tickets[0],amount:res.data.tickets[2],quantity:res.data.tickets[1],value:res.data.tickets[3],address:res.data.location.address,event_id:res.data.eventid,image:res.data.image});
+  cookies.remove('link', { path: '/' });
 
 });
 
@@ -95,14 +107,18 @@ headers: {
 
 add(x){
 var array=this.state.value;
-array[x]+=1;
+if(this.state.value[x]<=this.state.quantity[x])
+{
+  array[x]+=1;
   this.setState({value:array,total:0});
+}
   var y=0;
 for(var i=0;i<this.state.ticket_name.length;i++)
 {
   y+=this.state.value[i]*this.state.amount[i];
 }
-this.setState({total:y});
+
+this.setState({total:y,conv:(y*6)/100});
 
 }
 
@@ -114,6 +130,79 @@ payment()
     this.setState({customer:true});
     cookies.set('link', this.props.location.state.value, { path: '/' });
   }
+  else
+  {
+    fetch('https://admin.thetickets.in/api/book_ticket', {
+  method: 'post',
+  headers: {
+    'Accept': 'application/json, text/plain, */*',
+    'Content-Type': 'application/json',
+    'Authorization':'Bearer '+this.state.auth_token
+  },
+  body: JSON.stringify({eventid:this.state.event_id,ticket_name:this.state.ticket_name,ticket_max:this.state.value,ticket_price:this.state.amount,total:this.state.quantity.length})
+}).then(res=>res.json())
+  .then(res => {console.log(res);
+    if(res.status==false)
+    {
+      swal("Oops", "try again after some time", "error");
+    }
+    if(res.status==true)
+    {
+      swal("super", "try again after some time", "success");
+    }
+    const a=[];
+    const b=[];
+    const c=[];
+    const d=[];
+    for(var i=0;i<res.data.length;i++)
+    {
+      a.push(res.data[i].ticket_name);
+      b.push(res.data[i].total_ticket);
+      c.push(res.data[i].cost);
+      d.push(res.data[i].uniqueid);
+    }
+    this.setState({ticket_name_cpy:a,quantity_cpy:b,amount_cpy:c,total_cpy:res.total,conv_cpy:res.convenince,toggle:true,uniqie_id:d});
+  });
+  }
+}
+
+onSuccess = (payment) => {
+           // Congratulation, it came here means everything's fine!
+               console.log("The payment was succeeded!", payment);
+
+               fetch('https://admin.thetickets.in/api/save_ticket', {
+               method: 'post',
+               headers: {
+               'Accept': 'application/json, text/plain, */*',
+               'Content-Type': 'application/json',
+               'Authorization':'Bearer '+this.state.auth_token
+             },
+             body: JSON.stringify({eventid:this.state.event_id,uniqueid:this.state.unique_id,transactionid:payment.paymentID,cost:this.state.total_cpy,charge:this.state.conv_cpy})
+               }).then(res=>res.json())
+               .then(res => {console.log(res);
+
+                 this.setState({event_name:res.data.event_details.name,start:res.data.event_details.start_time,end:res.data.event_details.end_time,editorHtml:res.data.event_details.description,lat:res.data.location.lat_long.substr(0,res.data.location.lat_long.indexOf(",")),long:res.data.location.lat_long.substr(res.data.location.lat_long.indexOf(",")+1),organizer:res.data.event_details.organizer,phone:res.data.event_details.phone,ticket_name:res.data.tickets[0],amount:res.data.tickets[2],quantity:res.data.tickets[1],value:res.data.tickets[3],address:res.data.location.address,event_id:res.data.eventid});
+
+               });
+
+               // You can bind the "payment" object's value to your state or props or whatever here, please see below for sample returned data
+       }
+onCancel = (data) => {
+           // User pressed "cancel" or close Paypal's popup!
+           console.log('The payment was cancelled!', data);
+           // You can bind the "data" object's value to your state or props or whatever here, please see below for sample returned data
+       }
+onError = (err) => {
+           // The main Paypal's script cannot be loaded or somethings block the loading of that script!
+           console.log("Error!", err);
+           // Because the Paypal's main script is loaded asynchronously from "https://www.paypalobjects.com/api/checkout.js"
+           // => sometimes it may take about 0.5 second for everything to get set, or for the button to appear
+       }
+
+
+toggle()
+{
+  this.setState({toggle:false});
 }
 sub(x){
   if(this.state.value[x] >0)
@@ -126,7 +215,7 @@ sub(x){
     {
       y+=this.state.value[i]*this.state.amount[i];
     }
-    this.setState({total:y});
+    this.setState({total:y,conv:(y*6)/100});
 }
 }
 delete_cookies(){
@@ -200,8 +289,8 @@ total(){
     const Ticket=this.state.ticket_name.map((name,i)=>
     <div key={i} className="outer">
     <br/>&nbsp;&nbsp;
-    <span style={{fontSize:'18px',display:'inline-block',width:'60px'}}>{this.state.ticket_name[i]}</span>
-    <span style={{fontSize:'16px',marginLeft:'340px'}}>Rs.{this.state.amount[i]}</span>
+    <span style={{fontSize:'18px',display:'inline-block',width:'200px'}}>{this.state.ticket_name[i]}</span>
+    <span style={{fontSize:'16px',marginLeft:'250px'}}>Rs.{this.state.amount[i]}</span>
     <Icon  onClick={() => this.sub(i)} style={{cursor:'pointer',fontSize:'18px',marginLeft:'40px'}} type="minus" theme="outlined" />
     <span className="numb">{this.state.value[i]}</span>
     <Icon  onClick={() => this.add(i)} style={{cursor:'pointer',fontSize:'18px'}} type="plus" theme="outlined" />
@@ -258,6 +347,22 @@ const dropdown_organiser=(  <Dropdown overlay={menu_organiser}>
 <button className="btn btn-primary" style={{marginLeft:'415px',marginTop:'19px'}}><i style={{fontSize:'14px'}} className="fa fa-user"></i>&nbsp;&nbsp;{this.state.user}</button>
 </a>
 </Dropdown>);
+
+const payment_ticket=this.state.ticket_name_cpy.map((name,i)=>
+<div key={i} style={{border:'1px solid #e9e9e9'}}>
+<br/>
+<span className="ticket">TICKET NAME :</span>
+<span style={{marginLeft:'40px',fontSize:'18px',fontFamily:'Roboto'}}>{this.state.ticket_name_cpy[i]}</span>
+<br/>
+<span className="ticket">NO OF TICKETS :</span>
+<span style={{marginLeft:'40px',fontSize:'18px',fontFamily:'Roboto'}}>{this.state.quantity_cpy[i]}</span>
+<br/>
+<span className="ticket">PRICE :</span>
+<span style={{marginLeft:'40px',fontSize:'18px',fontFamily:'Roboto'}}>{this.state.amount_cpy[i]}</span>
+<br/><br/>
+</div>);
+
+
 const client = {
           sandbox:    'AS9PVrED-sm90G_eBsEJuCQfOLw2kSpmfDa5vXqBwiBocBQu8Gf_dKeFjzKnYjxJcADcIkzssKcAqIDD',
           production: 'ATWGX0hmD1kHroTRshr2_9GQf5Wnneh58lQGY9HzW-prkYi67RD6T5kKD-XlXisBxDyomgJe2CEKuXMJ',
@@ -283,18 +388,28 @@ if(this.state.redirect_login)
     return(
       <div>
 
-        <div className="head222">
+      <div className="row" id="head_main">
+        <div className="col-sm-4">
         <Link to={`/`}>
           <img style={awesome} src={logo}/>
           </Link>
-          {this.state.name=='customer'?dropdown_customer:this.state.name=='organiser'?dropdown_organiser:dropdown_default}
         </div>
+
+        <div className="col-sm-4 signinBlock1">
+        {this.state.name=='customer'?dropdown_customer:this.state.name=='organiser'?dropdown_organiser:dropdown_default}
+
+        </div>
+      </div>
+
+
+
         <div style={col}>
         <img style={awesome1} src={this.state.image}/>
         </div>
         <div>
         <Tabs defaultActiveKey="1" onChange={this.callback}>
       <TabPane tab="About Event" key="1">
+      <div style={{marginBottom:'50px'}}>
       <div className="outer_box">
       <div>
       <span className="header1">{this.state.event_name}</span>
@@ -316,18 +431,61 @@ if(this.state.redirect_login)
       </div>
       </div>
 
-
+</div>
       </TabPane>
 
       <TabPane tab="Buy Tickets" key="2">
+      {this.state.toggle==false?<div style={{marginBottom:'50px'}}>
       {Ticket}
-      {this.state.total>=1?<span style={{marginLeft:'600px',fontSize:'23px'}}>TOTAL</span>:''}
-      {this.state.total>=1?<span style={{marginLeft:'40px',fontSize:'23px'}}>{this.state.total}</span>:''}
+      {this.state.total>=1?<span style={{marginLeft:'600px',fontSize:'18px',fontFamily:'Roboto'}}>TICKET PRICE</span>:''}
+      {this.state.total>=1?<span style={{marginLeft:'40px',fontSize:'18px',fontFamily:'Roboto'}}>{this.state.total}</span>:''}
       <br/>
+      {this.state.total>=1?<span style={{marginLeft:'600px',fontSize:'18px',width:'149px !important',display:'inline-block',fontFamily:'Roboto'}}>CONVENIENCE</span>:''}
+      {this.state.total>=1?<span style={{marginLeft:'40px',fontSize:'18px',fontFamily:'Roboto'}}>{this.state.conv}</span>:''}
+      <br/>
+      <br/>
+      {this.state.total>=1?<div style={{borderTop: '1px solid #CCC',
+    borderBottom: '1px solid #CCC',
+    margin: '0 !important',
+    padding: '20px 0 !important',width:'60%',marginLeft:'46px'}}></div>:''}<br/>
+    {this.state.total>=1?<span style={{marginLeft:'661px',fontSize:'18px',width:'149px !important',display:'inline-block',fontFamily:'Roboto'}}>TOTAL</span>:''}
+    {this.state.total>=1?<span style={{marginLeft:'40px',fontSize:'18px',fontFamily:'Roboto'}}>{this.state.total+this.state.conv}</span>:''}<br/>
+    {this.state.total>=1?<div style={{borderTop: '1px solid #CCC',
+  borderBottom: '1px solid #CCC',
+  margin: '0 !important',
+  padding: '20px 0 !important',width:'60%',marginLeft:'46px'}}></div>:''}<br/>
       <br/>
       {this.state.total>0?<button  onClick={this.payment} className="btn btn-primary book_ticket">BOOK TICKET</button> :''}
-      {this.state.user==undefined?this.state.total>0?message:'':this.state.total>0?<div style={{marginLeft:'600px'}}><PaypalExpressBtn client={client} onSuccess={(payment)=>{message.success("Payment Succeeded"); console.log(payment); }} currency={'INR'} total={this.state.total} /></div>:''}
+
       <b/><br/>
+      </div>:
+      <div style={{marginBottom:'80px'}}>
+      <div style={{backgroundColor:'#e8e8e8'}}>
+      <br/><br/>
+      <div style={{width:'60%',marginLeft:'239px',backgroundColor:'white',border:'1px solid #e9e9e9'}}>
+      <h1 style={{marginLeft:'283px'}}>Order Summary</h1>
+
+      {payment_ticket}
+      <br/>
+      <span className="ticket">TICKET PRICE :</span>
+      <span style={{marginLeft:'40px',fontSize:'18px',fontFamily:'Roboto'}}>{this.state.total_cpy}</span>
+      <br/>
+      <span className="ticket">CONVENIENCE :</span>
+      <span style={{marginLeft:'40px',fontSize:'18px',fontFamily:'Roboto'}}>{this.state.conv_cpy}</span>
+      <br/><br/>
+      <div style={{backgroundColor:'#e8e8e8',border:'1px solid black'}}>
+      <span className="ticket">TOTAL :</span>
+      <span style={{marginLeft:'40px',fontSize:'18px',fontFamily:'Roboto'}}>{this.state.conv_cpy+this.state.total_cpy}</span>
+      <br/>
+      </div>
+      </div>
+      <br/>
+
+      </div>
+      <br/>
+      <div style={{marginLeft:'500px'}}><PaypalExpressBtn client={client} onError={this.onError} onSuccess={this.onSuccess} onCancel={this.onCancel} currency={'INR'} total={this.state.total_cpy+this.state.conv_cpy} /></div>
+      <button  onClick={this.toggle} className="btn btn-primary" id="book_ticket1">CANCEL</button>
+    </div>}
       </TabPane>
 
       <TabPane tab="Get Direction" key="3">

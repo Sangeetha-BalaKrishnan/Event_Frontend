@@ -2,10 +2,11 @@ html{
   width:100%;
   overflow-x: hidden;
 }
+
 @media only screen and (max-width: 1224px) {
   .column_main777{
     width:40%;
-    margin-left: -58px;
+    margin-left: -38px;
     margin-top:25px;
     float:left
   }
@@ -21,7 +22,7 @@ html{
     margin-left:250px !important;
   }
   #saran1{
-    width:400px !important;
+    width:350px !important;
     height:400px;
   }
   .iconStyle
@@ -158,6 +159,16 @@ top: 0;*/
 {
   margin-top:28px;
   margin-left: -103px;
+}
+.signinBlock1
+{
+  margin-top: 18px;
+  margin-left: 286px;
+}
+.signinBlock2
+{
+  margin-top: 4px;
+  margin-left: 250px;
 }
 .LogoStyle
 {
@@ -483,8 +494,8 @@ ul#signup22{
 }
 
 #ironman{
-  width:380px;
-  height:230px;
+  width:340px;
+  height:185px;
   border-radius: 7px;
 }
 
@@ -596,10 +607,7 @@ html, body {height: 100%;}
 .sample{
   margin-right:30px;
 }
-#saran1{
-  width:480px;
-  height:400px;
-}
+
 
 #demo3{
   margin-bottom: 10px;
@@ -720,7 +728,7 @@ Clear floats after the columns */
 }
 .column_main777{
   width:31%;
-  margin-left: -6px;
+  margin-left: -2px;
   margin-top:25px;
   float:left
 }
@@ -766,7 +774,7 @@ Clear floats after the columns */
 background-color: #ffffff;
 background-color: #ffffff;
   border:1px solid #B2BEB5;
-  width:382px;
+  width:342px;
   border-radius: 7px;
   margin-left:60px;
 }

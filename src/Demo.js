@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Layout, Menu, Breadcrumb, Icon,Switch } from 'antd';
+import { Layout, Menu, Breadcrumb, Icon,Switch,Dropdown } from 'antd';
 import logo from './images/new.png';
 import ReactDOM from 'react-dom';
 import Signup from './Signup';
@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Route, Link ,Redirect } from "react-router-dom
 import './Demo.css';
 import { render } from 'react-dom';
 import Cookies from 'universal-cookie';
+import swal from 'sweetalert';
 const cookies = new Cookies();
 const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -18,6 +19,7 @@ class Demo extends React.Component {
     super(props);
     this.state={
       name:cookies.get('user'),
+      user:cookies.get('user'),
       auth_token:cookies.get('auth_token'),
       event_name:[],
       start_date:[],
@@ -69,7 +71,10 @@ class Demo extends React.Component {
 
     });
   }
-
+  manage(i){
+    cookies.set('manage_event',this.state.event_id[i], { path: '/' });
+    window.open("/sales_report");
+  }
   edit(x)
   {
     cookies.set('event_id',this.state.event_id[x], { path: '/' });
@@ -95,10 +100,52 @@ class Demo extends React.Component {
     var array=[];
     array=this.state.Check_box;
     array[event.target.name]=event.target.checked;
+    console.log(event.target.checked)
     this.setState({Check_box:array});
     console.log(this.state.Check_box)
+    if(event.target.checked==true)
+    {
+      fetch('https://admin.thetickets.in/api/publish_the_event/'+this.state.event_id[event.target.name], {
+    method: 'get',
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      'Authorization':'Bearer '+this.state.auth_token
+    }
+    }).then(res=>res.json())
+    .then(res => {console.log(res);
+      if(res.status==true)
+      {
+        swal('Event', "Has been successfully published!", "success");
+      }
+
+
+    });
+    }
+    else {
+      fetch('https://admin.thetickets.in/api/unpublish_the_event/'+this.state.event_id[event.target.name], {
+    method: 'get',
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      'Authorization':'Bearer '+this.state.auth_token
+    }
+    }).then(res=>res.json())
+    .then(res => {console.log(res);
+      if(res.status==true)
+      {
+        swal('Event', "Has been successfully unpublished!", "success");
+      }
+
+
+    });
+    }
   };
   render() {
+    const fontdrop={
+      fontFamily:'Roboto',
+      fontSize:'18px'
+    };
     const awesome={
       height:'120px',
       marginTop : '-27px',
@@ -106,16 +153,52 @@ class Demo extends React.Component {
       marginLeft:'490px',
       marginBottom:'-14px'
     };
+    const menu_organiser = (
+    <Menu style={{marginLeft:'327px',marginTop:'12px'}}>
+    <Menu.Item key="1" style={{marginTop:'5px'}}>
+      <a onClick={this.dashboard}>&nbsp;&nbsp;DASHBOARD</a>
+    </Menu.Item>
+    <Menu.Item key="2" style={{marginTop:'5px'}}>
+      <a onClick={this.delete_cookies}>&nbsp;&nbsp;LOGOUT</a>
+    </Menu.Item>
+
+
+    </Menu>
+    );
+    const menu_organiser_m = (
+    <Menu style={{marginLeft:'10px',marginTop:'12px'}}>
+    <Menu.Item key="1" style={{marginTop:'5px'}}>
+      <a onClick={this.dashboard}>&nbsp;&nbsp;DASHBOARD</a>
+    </Menu.Item>
+    <Menu.Item key="2" style={{marginTop:'5px'}}>
+      <a onClick={this.delete_cookies}>&nbsp;&nbsp;LOGOUT</a>
+    </Menu.Item>
+
+
+    </Menu>
+    );
+    const dropdown_organiser=(  <Dropdown overlay={menu_organiser}>
+    <a style={fontdrop} className="ant-dropdown-link" href="#">
+      <button className="btn btn-primary" style={{marginLeft:'327px'}}><i style={{fontSize:'14px'}} className="fa fa-user"></i>&nbsp;&nbsp;{this.state.user}</button>
+    </a>
+    </Dropdown>);
+    const dropdown_organiser_m=(  <Dropdown overlay={menu_organiser_m}>
+    <a style={fontdrop} className="ant-dropdown-link" href="#">
+      <button className="btn btn-primary" style={{marginLeft:'10px'}}><i style={{fontSize:'14px'}} className="fa fa-user"></i>&nbsp;&nbsp;{this.state.user}</button>
+    </a>
+    </Dropdown>);
     const Event=this.state.event_name.map((name,i)=>
 
-    <div className="box-width">
-    <span key={i} style={{fontSize:'20px',marginRight:'5px',color:'#ce2127',marginLeft:'15px'}}>{this.state.event_name[i]}</span>
+    <div key={i} className="box-width">
+    <span style={{fontSize:'20px',marginRight:'5px',color:'#ce2127',marginLeft:'15px'}}>{this.state.event_name[i]}</span>
     <span style={{fontSize:'14px',marginLeft:'20px'}}>{this.state.start_date[i]}</span>
+    <button class="btn btn-primary" onClick={() => this.manage(i)}  style={{fontSize:'20px',marginRight:'5px',marginLeft:'15px',cursor:'pointer',height:'28px',paddingTop:'0px'}}>Manage</button>
     <br/><br/>
-    <span onClick={()=> window.open("https://admin.thetickets.in/event/"+this.state.link[i], "_blank")}  style={{fontSize:'20px',marginRight:'5px',marginLeft:'15px',cursor:'pointer'}}>Preview</span>
-    <span key={i} onClick={() => this.edit(i)} style={{fontSize:'20px',marginRight:'5px',marginLeft:'100px',cursor:'pointer'}}>Edit</span>
-    <span onClick={this.delete} style={{fontSize:'20px',marginRight:'5px',color:'#ce2127',marginLeft:'100px',cursor:'pointer'}}>Delete</span>
-    <span style={{fontSize:'20px',marginRight:'5px',marginLeft:'100px'}}>Published</span>
+    <button class="btn btn-primary" onClick={()=> window.open("https://admin.thetickets.in/event/"+this.state.link[i], "_blank")}  style={{fontSize:'20px',marginRight:'5px',marginLeft:'15px',cursor:'pointer',height:'32px',paddingTop:'2px'}}>Preview</button>
+    <button class="btn btn-primary" onClick={() => this.edit(i)} style={{fontSize:'20px',marginRight:'5px',marginLeft:'80px',cursor:'pointer',height:'32px',paddingTop:'2px'}}>Edit</button>
+    <button class="btn btn-primary" onClick={this.delete} style={{fontSize:'20px',marginRight:'5px',background:'#ce2127',marginLeft:'80px',cursor:'pointer',height:'32px',paddingTop:'2px'}}>Delete</button>
+
+    <span style={{fontSize:'20px',marginRight:'5px',marginLeft:'80px'}}>Published</span>
     <input name={i} style={{width:'23px',height:'17px'}} type="checkbox"  checked={this.state.Check_box[i]}  onChange={this.handleChange} />
 
     </div>
@@ -149,13 +232,23 @@ class Demo extends React.Component {
         </Sider>
         <Layout>
           <Header style={{ background: '#fff', padding: 0 }}  >
-          <Link to='/'><img style={awesome} src={logo}/></Link>
+          <div className="row">
+            <div className="col-sm-4">
+            <Link to={`/`}>
+              <img style={awesome} src={logo}/>
+              </Link>
+            </div>
+
+            <div className="col-sm-4 signinBlock2">
+            {dropdown_organiser}
+
+            </div>
+          </div>
           </Header>
 
           <Content style={{ margin: '0 16px' }}>
             <Breadcrumb style={{ margin: '16px 0' }}>
-              <Breadcrumb.Item>User</Breadcrumb.Item>
-              <Breadcrumb.Item>Bill</Breadcrumb.Item>
+            
             </Breadcrumb>
             <div id="support" class="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
               <h1 style={{marginLeft:'450px',marginRight:'300px'}}>Welcome {this.state.name}</h1>
@@ -163,7 +256,7 @@ class Demo extends React.Component {
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>
-            Ant Design ©2016 Created by Ant UED
+
           </Footer>
         </Layout>
       </Layout>

@@ -12,13 +12,14 @@ class Sales extends Component {
     super(props);
     this.state={
       ans:[],
+      event_id:cookies.get('manage_event'),
       auth_token:cookies.get('auth_token'),
     };
     this.download = this.download.bind(this);
   }
   componentDidMount() {
     window.scrollTo(-10, -10);
-    fetch('https://admin.thetickets.in/api/manage_event/e535860e', {
+    fetch('https://admin.thetickets.in/api/manage_event/'+this.state.event_id, {
   method: 'get',
   headers: {
     'Accept': 'application/json, text/plain, */*',
@@ -26,16 +27,17 @@ class Sales extends Component {
     'Authorization':'Bearer '+this.state.auth_token
   }
   }).then(res=>res.json())
-  .then(res => {console.log(res.data);
+  .then(res => {console.log(res);
 
     this.setState({ans:res.data});
-    console.log(this.state.ans)
+    console.log(this.state.ans);
+    cookies.remove('manage_event', { path: '/' });
 
   });
   }
   download()
   {
-    fetch('https://admin.thetickets.in/api/report_download/e535860e', {
+    fetch('https://admin.thetickets.in/api/report_download/'+this.state.event_id, {
   method: 'get',
   headers: {
     'Accept': 'application/json, text/plain, */*',

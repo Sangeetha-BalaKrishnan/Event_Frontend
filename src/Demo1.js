@@ -459,14 +459,24 @@ summa()
         </Sider>
         <Layout>
           <Header style={{ background: '#fff', padding: 0 }}  >
-          <Link to={`/`}><img style={awesome} src={logo}/></Link>
-          {dropdown_organiser}
+          <div className="row">
+            <div className="col-sm-4">
+            <Link to={`/`}>
+              <img style={awesome} src={logo}/>
+              </Link>
+            </div>
+
+            <div className="col-sm-4 signinBlock2">
+            {dropdown_organiser}
+
+            </div>
+          </div>
+
           </Header>
 
           <Content style={{ margin: '0 16px' }}>
             <Breadcrumb style={{ margin: '16px 0' }}>
-              <Breadcrumb.Item>User</Breadcrumb.Item>
-              <Breadcrumb.Item>Bill</Breadcrumb.Item>
+
             </Breadcrumb>
             <div id="support" className="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
@@ -499,7 +509,7 @@ summa()
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>
-            Ant Design ©2016 Created by Ant UED
+
           </Footer>
         </Layout>
       </Layout>
@@ -536,8 +546,7 @@ summa()
 
     <Content style={{ margin: '0 16px' }}>
       <Breadcrumb style={{ margin: '16px 0' }}>
-        <Breadcrumb.Item>User</Breadcrumb.Item>
-        <Breadcrumb.Item>Bill</Breadcrumb.Item>
+        
       </Breadcrumb>
       <div id="support" className="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
@@ -569,7 +578,7 @@ TICKETS
       </div>
     </Content>
     <Footer style={{ textAlign: 'center' }}>
-      Ant Design ©2016 Created by Ant UED
+
     </Footer>
   </Layout>
 </Layout>

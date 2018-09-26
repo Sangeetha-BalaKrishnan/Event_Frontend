@@ -6,21 +6,23 @@ import './App.css';
 import logo from './images/new.png';
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 import Cookies from 'universal-cookie';
+import axios from 'axios';
 const cookies = new Cookies();
 const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
-
+const instance = axios.create();
 class Up extends Component {
   constructor(props) {
     super(props);
   this.state = {
     collapsed: false,
     file: '',
-    imagePreviewUrl: '',
+    imagePreviewUrl: 'https://via.placeholder.com/380x230',
     name:cookies.get('name'),
     user:cookies.get('user'),
     auth_token:cookies.get('auth_token'),
   };
+  instance.defaults.headers.common['Authorization'] = `Bearer ${this.state.auth_token}` ;
   this._handleImageChange = this._handleImageChange.bind(this);
   this._handleSubmit = this._handleSubmit.bind(this);
 }
@@ -32,6 +34,28 @@ class Up extends Component {
   _handleSubmit(e) {
     e.preventDefault();
     // TODO: do something with -> this.state.file
+    var eventid = cookies.get('event_id');
+    console.log(this.state.file,eventid);
+
+    if(eventid)
+    {
+      var formData = new FormData();
+   formData.append('eventid',eventid);
+   formData.append('url','');
+     formData.append('import_image', this.state.file);
+     for (var key of formData.entries()) {
+       console.log(key[0] , key[1]);
+   }
+
+
+    let url='https://admin.thetickets.in/api/create_image';
+
+  axios.post(url, formData)
+
+    .then(res => {console.log(res);
+
+    });
+    }
   }
     _handleImageChange(e) {
       e.preventDefault();
@@ -55,9 +79,9 @@ class Up extends Component {
     let {imagePreviewUrl} = this.state;
     let $imagePreview = null;
     if (imagePreviewUrl) {
-      $imagePreview = (<img src={imagePreviewUrl} />);
+      $imagePreview = (<img src={imagePreviewUrl} width="380" height="230"/>);
     }
-
+//dont keep names as awesome ,awesome 1 -_- @saravanan
     const awesome={
       height:'120px',
       marginTop : '-27px',
@@ -142,11 +166,21 @@ class Up extends Component {
             </Breadcrumb>
             <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
             <div>
+            <div className="row">
+              <div className="col-xs-4 image-form" >
               <form onSubmit={this._handleSubmit}>
                 <input type="file" onChange={this._handleImageChange} />
-                <button type="submit" onClick={this._handleSubmit}>Upload Image</button>
+                <br/>
+                <br/>
+                <button className="btn btn-primary" type="submit" onClick={this._handleSubmit}>Upload Image</button>
               </form>
+              </div>
+              <div className="col-xs-8" align="center">
               {$imagePreview}
+              <br/>
+              <span>Please upload image at 16:9 aspect ratio</span>
+              </div>
+              </div>
             </div>
             </div>
           </Content>
