@@ -213,12 +213,12 @@ check_all()
           </div>
           <div id="cat1" class="row">
             <div  class="col-sm-6">
-                <input name="password" style={this.state.check_password} value={this.state.password} onMouseOut={this.length_check} onChange={this.state.check_password==after?this.handleChange_toggle:this.handleChange} type="text" placeholder="Password" id="email1" class="form-control" required/>
+                <input name="password" style={this.state.check_password} value={this.state.password} onMouseOut={this.length_check} onChange={this.state.check_password==after?this.handleChange_toggle:this.handleChange} type="password" placeholder="Password" id="email1" class="form-control" required/>
                 <label  class="form-control-placeholder" for="name">Password</label>
                 {this.state.check_password==after?this.state.pass_length==true?password_msg1:message:''}
             </div>
             <div class="col-sm-6">
-                  <input name="cpassword" style={this.state.check_cpassword} value={this.state.cpassword} onMouseOut={this.check_all} onChange={this.state.check_cpassword==after?this.handleChange_toggle:this.handleChange} type="text"  placeholder="Confirm Password" id="email1" class="form-control" required/>
+                  <input name="cpassword" style={this.state.check_cpassword} value={this.state.cpassword} onMouseOut={this.check_all} onChange={this.state.check_cpassword==after?this.handleChange_toggle:this.handleChange} type="password"  placeholder="Confirm Password" id="email1" class="form-control" required/>
                   <label class="form-control-placeholder" for="password">Confirm Password</label>
                   {this.state.check_cpassword==after?this.state.pass_crct==true?password_msg:message:''}
               </div>

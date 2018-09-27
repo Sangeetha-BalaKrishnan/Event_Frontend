@@ -300,17 +300,16 @@ total(){
     const sign={
       marginTop:'36px'
     };
-    let env = 'production'; // you can set here to 'production' for production
-	let currency = 'IN'; // or you can set this value from your props or state
+  
 		
     const Ticket=this.state.ticket_name.map((name,i)=>
     <div key={i} className="outer">
     <br/>&nbsp;&nbsp;
     <span style={{fontSize:'18px',display:'inline-block',width:'200px'}}>{this.state.ticket_name[i]}</span>
     <span style={{fontSize:'16px',marginLeft:'250px'}}>Rs.{this.state.amount[i]}</span>
-    <Icon  onClick={() => this.sub(i)} style={{cursor:'pointer',fontSize:'18px',marginLeft:'40px'}} type="minus" theme="outlined" />
+    <button> className="sign-design"><Icon  onClick={() => this.sub(i)} style={{cursor:'pointer',fontSize:'18px',marginLeft:'40px'}} type="minus" theme="outlined" /></button>
     <span className="numb">{this.state.value[i]}</span>
-    <Icon  onClick={() => this.add(i)} style={{cursor:'pointer',fontSize:'18px'}} type="plus" theme="outlined" />
+    <button> className="sign-design"><Icon  onClick={() => this.add(i)} style={{cursor:'pointer',fontSize:'18px'}} type="plus" theme="outlined" /></button>
     <span style={{fontSize:'18px',marginLeft:'20px'}} >Rs.{this.state.amount[i]*this.state.value[i]}</span>
     </div>
   );
@@ -320,9 +319,9 @@ total(){
   <span style={{fontSize:'18px',display:'inline-block',width:'200px'}}>{this.state.ticket_name[i]}</span>
   <br/>
   <span style={{fontSize:'16px',marginLeft:'31px'}}>Rs.{this.state.amount[i]}</span>
-  <Icon  onClick={() => this.sub(i)} style={{cursor:'pointer',fontSize:'18px',marginLeft:'40px'}} type="minus" theme="outlined" />
+  <button> className="sign-design"><Icon  onClick={() => this.sub(i)} style={{cursor:'pointer',fontSize:'18px',marginLeft:'40px'}} type="minus" theme="outlined" /></button>
   <span className="numb">{this.state.value[i]}</span>
-  <Icon  onClick={() => this.add(i)} style={{cursor:'pointer',fontSize:'18px'}} type="plus" theme="outlined" />
+  <button> className="sign-design"><Icon  onClick={() => this.add(i)} style={{cursor:'pointer',fontSize:'18px'}} type="plus" theme="outlined" /></button>
   <span style={{fontSize:'18px',marginLeft:'20px'}} >Rs.{this.state.amount[i]*this.state.value[i]}</span>
   </div>
 );
@@ -441,12 +440,6 @@ const payment_ticket=this.state.ticket_name_cpy.map((name,i)=>
 </div>);
 
 
-const client = {
-          production: 'ATWGX0hmD1kHroTRshr2_9GQf5Wnneh58lQGY9HzW-prkYi67RD6T5kKD-XlXisBxDyomgJe2CEKuXMJ',
-          sandbox:    'AS9PVrED-sm90G_eBsEJuCQfOLw2kSpmfDa5vXqBwiBocBQu8Gf_dKeFjzKnYjxJcADcIkzssKcAqIDD'
-          
-      }
-
 if(this.state.organiser)
 {
   return <Redirect to='/User/org/signin' />
@@ -468,6 +461,17 @@ if(this.state.redirect_payment)
 {
   return <Redirect to='/' />
 }
+
+        let env = 'production'; // you can set here to 'production' for production
+        let currency = 'INR'; // or you can set this value from your props or state
+        let total = 10; // same as above, this is the total amount (based on currency) to be paid by using Paypal express checkout
+        // Document on Paypal's currency code: https://developer.paypal.com/docs/classic/api/currency_codes/
+ 
+        const client = {
+            sandbox:    'Aa2y_9921vWrSgo_1dP52Dw_pTjpjZQfjD47D0CdgbSKtVvr7dvh5SVSPq7HIchmEtM526HVpIRHydLq',
+            production: 'AY2EyPEs0uTNjoMySfEfhw0_kuEXs7IZOzhTGjZDWHW3MkmI5sb660FA9pYHY_i4Pzm301wcMCdZT7uk',
+        }
+
 
     return(
 
@@ -570,7 +574,7 @@ if(this.state.redirect_payment)
 
       </div>
       <br/>
-      <div style={{marginLeft:'500px'}}><PaypalExpressBtn client={client} onError={this.onError} onSuccess={this.onSuccess} onCancel={this.onCancel} currency={'INR'} total={1} /></div>
+      <div style={{marginLeft:'500px'}}><PaypalExpressBtn env ={env} client={client} onError={this.onError} onSuccess={this.onSuccess} onCancel={this.onCancel} currency={'INR'} total={this.state.total_cpy+this.state.conv_cpy} /></div>
       <button  onClick={this.toggle} className="btn btn-primary" id="book_ticket1">CANCEL</button>
     </div>}
       </TabPane>
@@ -708,7 +712,7 @@ if(this.state.redirect_payment)
 
       </div>
       <br/>
-      <div style={{marginLeft:'120px'}}><PaypalExpressBtn client={client} onError={this.onError} onSuccess={this.onSuccess} onCancel={this.onCancel} currency={'INR'} total={1} /></div>
+      <div style={{marginLeft:'120px'}}><PaypalExpressBtn env ={env} client={client} onError={this.onError} onSuccess={this.onSuccess} onCancel={this.onCancel} currency={'INR'} total={this.state.total_cpy+this.state.conv_cpy} /></div>
       <br/><br/><br/>
       <button  onClick={this.toggle} className="btn btn-primary" id="book_ticket1_m">CANCEL</button>
     </div>}
