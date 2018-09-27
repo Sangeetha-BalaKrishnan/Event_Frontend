@@ -27,7 +27,8 @@ class Trending extends Component{
     'Content-Type': 'application/json'
   }
 }).then(res=>res.json())
-  .then(res => {console.log(res);
+  .then(res => {
+    // console.log(res);
     const image=[];
     const name=[];
     const timestamp=[];
@@ -41,7 +42,7 @@ class Trending extends Component{
       var str_sub = res.data[i].url_name.substr(res.data[i].url_name.lastIndexOf("/")+1);
       var final_str = '/Events/'+str_sub;
       url.push(final_str);
-      console.log(url);
+      // console.log(url);
 
     }
     this.setState({event_time:timestamp,event_detail:name,photo:image,event_url:url});

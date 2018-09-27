@@ -33,7 +33,7 @@ const message=(
 
 
 function handleChange(value) {
-  console.log(`selected ${value}`);
+  // console.log(`selected ${value}`);
 }
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -88,13 +88,14 @@ componentDidMount() {
     'Authorization':'Bearer '+this.state.auth_token
   }
   }).then(res=>res.json())
-  .then(res => {console.log(res);
+  .then(res => {
+    // console.log(res);
     if(res.data != null)
     {
-    console.log(res.data.start.length);
+    // console.log(res.data.start.length);
     this.setState({event_name:res.data.event_name,event_url:res.data.url,event_org_name:res.data.organizer,start_date:res.data.start,end_date:res.data.end,Category:res.data.category});
-    console.log(this.state.start_date);
-    console.log(this.state.Category);
+    // console.log(this.state.start_date);
+    // console.log(this.state.Category);
   }
 
   });
@@ -136,7 +137,7 @@ send_values(){
   else {
     key=cookies.get('event_id');
   }
-  console.log(this.state.Category);
+  // console.log(this.state.Category);
   if(this.state.event_name != '' && this.state.event_org_name != '' && this.state.event_url != '' && this.state.start_date != '' && this.state.end_date != '' && this.state.event_url_backend==false)
   {
     fetch('https://admin.thetickets.in/api/event_create', {
@@ -148,7 +149,8 @@ send_values(){
   },
   body: JSON.stringify({event_name:this.state.event_name,event_url:this.state.event_url,event_organizer:this.state.event_org_name,start:this.state.start_date,end:this.state.end_date,event_id:key,category:this.state.Category})
 }).then(res=>res.json())
-  .then(res => {console.log(res);
+  .then(res => {
+    // console.log(res);
     if(res.status==false)
     {
       swal("Oops", "try again after some time", "error");

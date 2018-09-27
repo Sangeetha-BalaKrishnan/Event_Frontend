@@ -27,7 +27,7 @@ class Events extends Component{
     <Spin indicator={antIcon} />
 
     const  value =this.props.location.state;
-console.log(value);
+// console.log(value);
 window.scrollTo(0, 0);
 }
   render(){

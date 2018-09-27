@@ -48,7 +48,8 @@ class Demo extends React.Component {
       'Authorization':'Bearer '+this.state.auth_token
     }
     }).then(res=>res.json())
-    .then(res => {console.log(res);
+    .then(res => {
+      // console.log(res);
       if(res.status==true)
       {
 

@@ -43,7 +43,7 @@ handleChange_toggle(event){
   this.setState({[event.target.name] : event.target.value});
 
 var temp="check_"+event.target.name;
-console.log(temp);
+// console.log(temp);
   if((event.target.value).length>0)
   {
     this.setState({[temp]:before});
@@ -64,7 +64,7 @@ reset(){
 }
 
 handleClick = (e) => {
-  console.log('click ', e);
+  // console.log('click ', e);
   this.setState({
     current: e.key,
   });
@@ -75,7 +75,7 @@ handleClick = (e) => {
   };
 
   onCollapse = (collapsed) => {
-    console.log(collapsed);
+    // console.log(collapsed);
     this.setState({ collapsed });
   };
 

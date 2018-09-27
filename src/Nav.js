@@ -30,14 +30,14 @@ class App extends Component {
       fetch("https://cors-anywhere.herokuapp.com/"+"http://admin.thetickets.in/show/upcoming_events")
         .then(response => response.json())
         .then(data=>{
-          console.log(data);
+          // console.log(data);
           const arr=[];
           var i;
           for(i=0;i<data.length;i++)
           {
             arr.push(data[i].timestamp);
           }
-          console.log(arr);
+          // console.log(arr);
           this.setState({event_time:arr});
         }
         );

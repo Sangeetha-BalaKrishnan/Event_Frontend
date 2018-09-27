@@ -77,7 +77,8 @@ componentDidMount() {
     'Authorization':'Bearer '+this.state.auth_token
   }
   }).then(res=>res.json())
-  .then(res => {console.log(res);
+  .then(res => {
+    // console.log(res);
     if(res.data.address != null)
     {
     var myarray = res.data.address.split(',');

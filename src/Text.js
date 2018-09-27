@@ -59,7 +59,8 @@ class TextEditor extends React.Component {
       'Authorization':'Bearer '+this.state.auth_token
     }
     }).then(res=>res.json())
-    .then(res => {console.log(res);
+    .then(res => {
+      // console.log(res);
       if(res.data.description!=null)
       this.setState({editorHtml:res.data.description});
 
@@ -95,7 +96,8 @@ class TextEditor extends React.Component {
     },
     body: JSON.stringify({event_id:cookies.get('event_id'),description:this.state.editorHtml})
   }).then(res=>res.json())
-    .then(res => {console.log(res);
+    .then(res => {
+      // console.log(res);
       if(res.status==false)
       {
         swal("Oops", "try again after some time", "error");
@@ -110,7 +112,7 @@ class TextEditor extends React.Component {
 
   handleChange (html) {
   	this.setState({ editorHtml: html });
-    console.log(this.state.editorHtml,'saran');
+    // console.log(this.state.editorHtml,'saran');
     if(this.state.editorHtml != '')
     {
       this.setState({error:false});
@@ -125,11 +127,11 @@ class TextEditor extends React.Component {
   handleThemeChange (newTheme) {
     if (newTheme === "core") newTheme = null;
     this.setState({ theme: newTheme })
-    console.log(this.state.theme);
+    // console.log(this.state.theme);
   }
 
   handleClick = (e) => {
-    console.log('click ', e);
+    // console.log('click ', e);
     this.setState({
       current: e.key,
     });
@@ -140,7 +142,7 @@ class TextEditor extends React.Component {
     };
 
     onCollapse = (collapsed) => {
-      console.log(collapsed);
+      // console.log(collapsed);
       this.setState({ collapsed });
     };
 

@@ -27,7 +27,8 @@ class Sales extends Component {
     'Authorization':'Bearer '+this.state.auth_token
   }
   }).then(res=>res.json())
-  .then(res => {console.log(res);
+  .then(res => {
+    // console.log(res);
 
     this.setState({ans:res.data});
     console.log(this.state.ans);

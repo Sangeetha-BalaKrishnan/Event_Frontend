@@ -80,7 +80,8 @@ componentDidMount() {
     'Authorization':'Bearer '+this.state.auth_token
   }
   }).then(res=>res.json())
-  .then(res => {console.log(res.data);
+  .then(res => {
+    // console.log(res.data);
     if(res.data != null)
     {
     var a=[];
@@ -116,7 +117,7 @@ handleChange_dash(){
 }
 handleToggle(){
   this.setState({toggle:true});
-  console.log(this.state.ticket_name_array);
+  // console.log(this.state.ticket_name_array);
 }
 
 previous(){
@@ -125,7 +126,7 @@ previous(){
 next(){
   if(this.state.ticket_name_array.length==0)
   {
-    console.log("hello");
+    // console.log("hello");
     this.setState({error:true})
   }
   else
@@ -148,7 +149,8 @@ next(){
   },
   body: JSON.stringify({eventid:key,ticket_name:this.state.ticket_name_array,ticket_max:this.state.quantity_array,ticket_price:this.state.price_array,total:this.state.ticket_name_array.length})
 }).then(res=>res.json())
-  .then(res => {console.log(res);
+  .then(res => {
+    // console.log(res);
     if(res.status==false)
     {
       swal("Oops", "try again after some time", "error");
@@ -176,7 +178,7 @@ handleChange_toggle(event){
   this.setState({[event.target.name] : event.target.value});
 
 var temp="check_"+event.target.name;
-console.log(temp);
+// console.log(temp);
   if((event.target.value).length>0)
   {
     this.setState({[temp]:before});
@@ -254,7 +256,7 @@ delete_ticket(event)
 
 
 handleClick = (e) => {
-  console.log('click ', e);
+  // console.log('click ', e);
   this.setState({
     current: e.key,
   });
@@ -265,7 +267,7 @@ handleClick = (e) => {
   };
 
   onCollapse = (collapsed) => {
-    console.log(collapsed);
+    // console.log(collapsed);
     this.setState({ collapsed });
   };
 

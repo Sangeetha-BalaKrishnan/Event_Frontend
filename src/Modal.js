@@ -70,7 +70,7 @@ class Hello extends Component{
     this.setState({[event.target.name] : event.target.value});
 
   var temp="check_"+event.target.name;
-  console.log(temp);
+  // console.log(temp);
     if((event.target.value).length>0)
     {
       this.setState({[temp]:before});
@@ -89,7 +89,7 @@ class Hello extends Component{
 
   handleChange(event){
   this.setState({checkbox:event.target.checked,toggleFirst:!this.state.toggleFirst});
-  console.log(this.state.checkbox);
+  // console.log(this.state.checkbox);
 }
 delete_cookies(){
   cookies.remove('name', { path: '/' });
@@ -119,7 +119,7 @@ delete_cookies(){
       category_option_arr : temp2
 
     });
-    console.log(this.state.name_arr);
+    // console.log(this.state.name_arr);
 
   }
 
@@ -203,7 +203,7 @@ if(this.state.checkbox_mand)
 else {
   check="NO";
 }
-console.log(value);
+// console.log(value);
   this.setState({
       name_arr:[...this.state.name_arr,this.state.name],
       category_option_arr:[...this.state.category_option_arr,this.state.category_option],
@@ -217,7 +217,7 @@ console.log(value);
       toggle:false,
       toggleAfter:true
     })
-  console.log(this.state.name_arr);
+  // console.log(this.state.name_arr);
 }
 }
 
@@ -226,7 +226,7 @@ statechange(){
 }
 
 handleClick = (e) => {
-  console.log('click ', e);
+  // console.log('click ', e);
   this.setState({
     current: e.key,
   });
@@ -237,7 +237,7 @@ handleClick = (e) => {
   };
 
   onCollapse = (collapsed) => {
-    console.log(collapsed);
+    // console.log(collapsed);
     this.setState({ collapsed });
   };
 

@@ -27,7 +27,8 @@ class Event extends Component{
     'Content-Type': 'application/json'
   }
 }).then(res=>res.json())
-  .then(res => {console.log(res.data[0].event_id);
+  .then(res => {
+    // console.log(res.data[0].event_id);
     const image=[];
     const name=[];
     const timestamp=[];

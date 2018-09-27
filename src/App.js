@@ -51,7 +51,8 @@ class App extends Component {
     'Content-Type': 'application/json'
   }
   }).then(res=>res.json())
-  .then(res => {console.log(res);
+  .then(res => {
+    // console.log(res);
     const image=[];
     const name=[];
     const timestamp=[];

@@ -86,7 +86,7 @@ if(cookies.get('link')==undefined)
   else {
     var value = cookies.get('link');
   }
-console.log(value);
+// console.log(value);
 window.scrollTo(0, 0);
 fetch('https://admin.thetickets.in/event/'+value, {
 method: 'get',
@@ -96,7 +96,8 @@ headers: {
 'Authorization':'Bearer '+this.state.auth_token
 }
 }).then(res=>res.json())
-.then(res => {console.log(res);
+.then(res => {
+
 
   this.setState({event_name:res.data.event_details.name,start:res.data.event_details.start_time,end:res.data.event_details.end_time,editorHtml:res.data.event_details.description,lat:res.data.location.lat_long.substr(0,res.data.location.lat_long.indexOf(",")),long:res.data.location.lat_long.substr(res.data.location.lat_long.indexOf(",")+1),organizer:res.data.event_details.organizer,phone:res.data.event_details.phone,ticket_name:res.data.tickets[0],amount:res.data.tickets[2],quantity:res.data.tickets[1],value:res.data.tickets[3],address:res.data.location.address,event_id:res.data.eventid,image:res.data.image});
   cookies.remove('link', { path: '/' });
@@ -125,7 +126,7 @@ this.setState({total:y,conv:(y*6)/100});
 
 payment()
 {
-  console.log(this.state.name);
+  // console.log(this.state.name);
   if(this.state.name==undefined || this.state.name=='')
   {
     this.setState({customer:true});
@@ -142,7 +143,8 @@ payment()
   },
   body: JSON.stringify({eventid:this.state.event_id,ticket_name:this.state.ticket_name,ticket_max:this.state.value,ticket_price:this.state.amount,total:this.state.quantity.length})
 }).then(res=>res.json())
-  .then(res => {console.log(res);
+  .then(res => {
+    // console.log(res);
     if(res.status==false)
     {
       swal("Oops", "try again after some time", "error");
@@ -170,7 +172,7 @@ payment()
 
 onSuccess = (payment) => {
            // Congratulation, it came here means everything's fine!
-               console.log("The payment was succeeded!", payment);
+               // console.log("The payment was succeeded!", payment);
 
                fetch('https://admin.thetickets.in/api/save_ticket', {
                method: 'post',
@@ -181,7 +183,8 @@ onSuccess = (payment) => {
              },
              body: JSON.stringify({eventid:this.state.event_id,uniqueid:this.state.unique_id,transactionid:payment.paymentID,cost:this.state.total_cpy,charge:this.state.conv_cpy})
                }).then(res=>res.json())
-               .then(res => {console.log(res);
+               .then(res => {
+                // console.log(res);
 
                  if(res.status==true)
                  {
@@ -241,7 +244,7 @@ dashboard(){
   this.setState({dashboard:true});
 }
 callback(key) {
-  console.log(key);
+  // console.log(key);
 }
 total(){
   for(var i=0;i<this.state.value.length;i++)
@@ -249,11 +252,22 @@ total(){
     if(this.state.value[i]>0)
     {
       this.state.total+=(this.state.value[i]*this.state.amount[i]);
-      console.log(this.state.total);
+      // console.log(this.state.total);
     }
   }
 }
   render(){
+
+    let env = 'production'; // you can set here to 'production' for production
+        let currency = 'INR'; // or you can set this value from your props or state
+        let total = 10; // same as above, this is the total amount (based on currency) to be paid by using Paypal express checkout
+        // Document on Paypal's currency code: https://developer.paypal.com/docs/classic/api/currency_codes/
+ 
+        const client = {
+            sandbox:    'Aa2y_9921vWrSgo_1dP52Dw_pTjpjZQfjD47D0CdgbSKtVvr7dvh5SVSPq7HIchmEtM526HVpIRHydLq',
+            production: 'AY2EyPEs0uTNjoMySfEfhw0_kuEXs7IZOzhTGjZDWHW3MkmI5sb660FA9pYHY_i4Pzm301wcMCdZT7uk',
+        }
+
     const fontdrop={
       fontFamily:'Roboto',
       fontSize:'18px'
@@ -307,9 +321,9 @@ total(){
     <br/>&nbsp;&nbsp;
     <span style={{fontSize:'18px',display:'inline-block',width:'200px'}}>{this.state.ticket_name[i]}</span>
     <span style={{fontSize:'16px',marginLeft:'250px'}}>Rs.{this.state.amount[i]}</span>
-    <button> className="sign-design"><Icon  onClick={() => this.sub(i)} style={{cursor:'pointer',fontSize:'18px',marginLeft:'40px'}} type="minus" theme="outlined" /></button>
+    <Icon  onClick={() => this.sub(i)} style={{cursor:'pointer',fontSize:'18px',marginLeft:'40px'}} type="minus" theme="outlined" />
     <span className="numb">{this.state.value[i]}</span>
-    <button> className="sign-design"><Icon  onClick={() => this.add(i)} style={{cursor:'pointer',fontSize:'18px'}} type="plus" theme="outlined" /></button>
+    <Icon  onClick={() => this.add(i)} style={{cursor:'pointer',fontSize:'18px'}} type="plus" theme="outlined" />
     <span style={{fontSize:'18px',marginLeft:'20px'}} >Rs.{this.state.amount[i]*this.state.value[i]}</span>
     </div>
   );
@@ -319,9 +333,9 @@ total(){
   <span style={{fontSize:'18px',display:'inline-block',width:'200px'}}>{this.state.ticket_name[i]}</span>
   <br/>
   <span style={{fontSize:'16px',marginLeft:'31px'}}>Rs.{this.state.amount[i]}</span>
-  <button> className="sign-design"><Icon  onClick={() => this.sub(i)} style={{cursor:'pointer',fontSize:'18px',marginLeft:'40px'}} type="minus" theme="outlined" /></button>
+  <Icon  onClick={() => this.sub(i)} style={{cursor:'pointer',fontSize:'18px',marginLeft:'40px'}} type="minus" theme="outlined" />
   <span className="numb">{this.state.value[i]}</span>
-  <button> className="sign-design"><Icon  onClick={() => this.add(i)} style={{cursor:'pointer',fontSize:'18px'}} type="plus" theme="outlined" /></button>
+  <Icon  onClick={() => this.add(i)} style={{cursor:'pointer',fontSize:'18px'}} type="plus" theme="outlined" />
   <span style={{fontSize:'18px',marginLeft:'20px'}} >Rs.{this.state.amount[i]*this.state.value[i]}</span>
   </div>
 );
@@ -462,16 +476,7 @@ if(this.state.redirect_payment)
   return <Redirect to='/' />
 }
 
-        let env = 'production'; // you can set here to 'production' for production
-        let currency = 'INR'; // or you can set this value from your props or state
-        let total = 10; // same as above, this is the total amount (based on currency) to be paid by using Paypal express checkout
-        // Document on Paypal's currency code: https://developer.paypal.com/docs/classic/api/currency_codes/
- 
-        const client = {
-            sandbox:    'Aa2y_9921vWrSgo_1dP52Dw_pTjpjZQfjD47D0CdgbSKtVvr7dvh5SVSPq7HIchmEtM526HVpIRHydLq',
-            production: 'AY2EyPEs0uTNjoMySfEfhw0_kuEXs7IZOzhTGjZDWHW3MkmI5sb660FA9pYHY_i4Pzm301wcMCdZT7uk',
-        }
-
+        
 
     return(
 

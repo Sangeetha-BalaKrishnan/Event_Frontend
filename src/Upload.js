@@ -65,7 +65,8 @@ componentDidMount() {
     'Authorization':'Bearer '+this.state.auth_token
   }
   }).then(res=>res.json())
-  .then(res => {console.log(res);
+  .then(res => {
+    // console.log(res);
     if(res.status == true && res.url!=null)
     {
     this.setState({imagePreviewUrl:res.url});
@@ -78,7 +79,7 @@ componentDidMount() {
 
 
   onCollapse = (collapsed) => {
-    console.log(collapsed);
+    // console.log(collapsed);
     this.setState({ collapsed });
   }
 
@@ -86,7 +87,7 @@ componentDidMount() {
     e.preventDefault();
     // TODO: do something with -> this.state.file
     var eventid = cookies.get('event_id');
-    console.log(this.state.file,eventid);
+    // console.log(this.state.file,eventid);
 
     if(eventid)
     {
@@ -95,7 +96,7 @@ componentDidMount() {
    formData.append('url','');
      formData.append('import_image', this.state.file);
      for (var key of formData.entries()) {
-       console.log(key[0] , key[1]);
+       // console.log(key[0] , key[1]);
    }
 
 
@@ -103,7 +104,8 @@ componentDidMount() {
 
   axios.post(url, formData)
 
-    .then(res => {console.log(res.data);
+    .then(res => {
+      // console.log(res.data);
       if(this.state.imagePreviewUrl == 'https://via.placeholder.com/380x230' && res.data.status == false)
       {
         this.setState({error:true});
@@ -126,7 +128,7 @@ componentDidMount() {
           file: file,
           imagePreviewUrl: reader.result
         });
-        console.log(file,reader.result);
+        // console.log(file,reader.result);
       }
 
       reader.readAsDataURL(file)

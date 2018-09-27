@@ -43,7 +43,7 @@ class Signin_org extends Component{
     this.setState({[event.target.name] : event.target.value});
 
   var temp="check_"+event.target.name;
-  console.log(temp);
+  // console.log(temp);
     if((event.target.value).length>0)
     {
       this.setState({[temp]:before});
@@ -70,7 +70,7 @@ class Signin_org extends Component{
     }
     if(this.state.email!='' && this.state.password!='')
     {
-    console.log(this.state.email,this.state.password);
+    // console.log(this.state.email,this.state.password);
     fetch('https://admin.thetickets.in/api/login', {
   method: 'post',
   headers: {
@@ -79,7 +79,8 @@ class Signin_org extends Component{
   },
   body: JSON.stringify({email: this.state.email, password: this.state.password})
 }).then(res=>res.json())
-  .then(res => {console.log(res.status);
+  .then(res => {
+    // console.log(res.status);
     if(res.status==true)
     {
 

@@ -55,7 +55,7 @@ handleChange_toggle(event){
   this.setState({[event.target.name] : event.target.value});
 
 var temp="check_"+event.target.name;
-console.log(temp);
+// console.log(temp);
   if((event.target.value).length>0)
   {
     this.setState({[temp]:before});
@@ -103,7 +103,8 @@ handleClick()
   },
   body: JSON.stringify({name:this.state.organisation_name,role:'organiser',email: this.state.email,phone:this.state.phone, password: this.state.password})
 }).then(res=>res.json())
-  .then(res => {console.log(res);
+  .then(res => {
+    // console.log(res);
     var name='Organisation '+this.state.organisation_name;
     if(res.status==true)
     {
@@ -131,7 +132,7 @@ length_check()
 }
 check_all()
 {
-  console.log(this.state.password,this.state.cpassword);
+  // console.log(this.state.password,this.state.cpassword);
     if( this.state.password!==this.state.cpassword && this.state.password!=='')
     {
         this.setState({check_cpassword:after,pass_crct:true});
