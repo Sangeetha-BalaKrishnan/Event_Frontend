@@ -300,6 +300,9 @@ total(){
     const sign={
       marginTop:'36px'
     };
+    let env = 'production'; // you can set here to 'production' for production
+	let currency = 'IN'; // or you can set this value from your props or state
+		
     const Ticket=this.state.ticket_name.map((name,i)=>
     <div key={i} className="outer">
     <br/>&nbsp;&nbsp;
@@ -439,8 +442,9 @@ const payment_ticket=this.state.ticket_name_cpy.map((name,i)=>
 
 
 const client = {
-          sandbox:    'AS9PVrED-sm90G_eBsEJuCQfOLw2kSpmfDa5vXqBwiBocBQu8Gf_dKeFjzKnYjxJcADcIkzssKcAqIDD',
           production: 'ATWGX0hmD1kHroTRshr2_9GQf5Wnneh58lQGY9HzW-prkYi67RD6T5kKD-XlXisBxDyomgJe2CEKuXMJ',
+          sandbox:    'AS9PVrED-sm90G_eBsEJuCQfOLw2kSpmfDa5vXqBwiBocBQu8Gf_dKeFjzKnYjxJcADcIkzssKcAqIDD'
+          
       }
 
 if(this.state.organiser)
@@ -566,7 +570,7 @@ if(this.state.redirect_payment)
 
       </div>
       <br/>
-      <div style={{marginLeft:'500px'}}><PaypalExpressBtn client={client} onError={this.onError} onSuccess={this.onSuccess} onCancel={this.onCancel} currency={'INR'} total={this.state.total_cpy+this.state.conv_cpy} /></div>
+      <div style={{marginLeft:'500px'}}><PaypalExpressBtn client={client} onError={this.onError} onSuccess={this.onSuccess} onCancel={this.onCancel} currency={'INR'} total={1} /></div>
       <button  onClick={this.toggle} className="btn btn-primary" id="book_ticket1">CANCEL</button>
     </div>}
       </TabPane>
@@ -704,7 +708,7 @@ if(this.state.redirect_payment)
 
       </div>
       <br/>
-      <div style={{marginLeft:'120px'}}><PaypalExpressBtn client={client} onError={this.onError} onSuccess={this.onSuccess} onCancel={this.onCancel} currency={'INR'} total={this.state.total_cpy+this.state.conv_cpy} /></div>
+      <div style={{marginLeft:'120px'}}><PaypalExpressBtn client={client} onError={this.onError} onSuccess={this.onSuccess} onCancel={this.onCancel} currency={'INR'} total={1} /></div>
       <br/><br/><br/>
       <button  onClick={this.toggle} className="btn btn-primary" id="book_ticket1_m">CANCEL</button>
     </div>}
