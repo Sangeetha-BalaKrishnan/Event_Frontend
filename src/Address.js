@@ -339,7 +339,7 @@ handleClick = (e) => {
     <Link to={`/dummy1`}>DESCRIPTION</Link>
   </Menu.Item>
   <Menu.Item disabled key="toggle4" style={{marginLeft:'40px'}}>
-    DEPENDENCY
+    UPLOAD
   </Menu.Item>
   <Menu.Item disabled key="toggle5" style={{marginLeft:'40px'}}>
     TICKETS
@@ -428,7 +428,7 @@ handleClick = (e) => {
     <Link to={`/dummy1`}>DESCRIPTION</Link>
   </Menu.Item>
   <Menu.Item disabled key="toggle4" style={{marginLeft:'40px'}}>
-    DEPENDENCY
+    UPLOAD
   </Menu.Item>
   <Menu.Item disabled key="toggle5" style={{marginLeft:'40px'}}>
     TICKETS
@@ -467,7 +467,7 @@ handleClick = (e) => {
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>
-            
+
           </Footer>
         </Layout>
       </Layout>

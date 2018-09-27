@@ -27,11 +27,14 @@ class Demo extends React.Component {
       Check_box:[],
       event_id:[],
       link:[],
-      redirect_edit:false
+      redirect_edit:false,
+      redirect_logout:false
     };
     this.handleChange = this.handleChange.bind(this);
     this.edit = this.edit.bind(this);
     this.delete = this.delete.bind(this);
+    this.delete_cookies = this.delete_cookies.bind(this);
+    this.preview = this.preview.bind(this);
 
   };
 
@@ -71,6 +74,19 @@ class Demo extends React.Component {
 
     });
   }
+preview(i){
+  cookies.set('link',this.state.link[i],{ path: '/'});
+  window.open("/Events/"+this.state.link[i]);
+}
+  delete_cookies(){
+    cookies.remove('name', { path: '/' });
+    cookies.remove('user', { path: '/' });
+    cookies.remove('auth_token', { path: '/' });
+    cookies.remove('event_id', { path: '/' });
+    this.setState({name:cookies.get('name'),redirect_logout:true});
+  }
+
+
   manage(i){
     cookies.set('manage_event',this.state.event_id[i], { path: '/' });
     window.open("/sales_report");
@@ -81,7 +97,7 @@ class Demo extends React.Component {
     this.setState({redirect_edit:true});
   }
 
-  delete()
+  delete(x)
   {
 
   }
@@ -194,7 +210,7 @@ class Demo extends React.Component {
     <span style={{fontSize:'14px',marginLeft:'20px'}}>{this.state.start_date[i]}</span>
     <button class="btn btn-primary" onClick={() => this.manage(i)}  style={{fontSize:'20px',marginRight:'5px',marginLeft:'15px',cursor:'pointer',height:'28px',paddingTop:'0px'}}>Manage</button>
     <br/><br/>
-    <button class="btn btn-primary" onClick={()=> window.open("https://admin.thetickets.in/event/"+this.state.link[i], "_blank")}  style={{fontSize:'20px',marginRight:'5px',marginLeft:'15px',cursor:'pointer',height:'32px',paddingTop:'2px'}}>Preview</button>
+    <button class="btn btn-primary" onClick={()=>this.preview(i)}  style={{fontSize:'20px',marginRight:'5px',marginLeft:'15px',cursor:'pointer',height:'32px',paddingTop:'2px'}}>Preview</button>
     <button class="btn btn-primary" onClick={() => this.edit(i)} style={{fontSize:'20px',marginRight:'5px',marginLeft:'80px',cursor:'pointer',height:'32px',paddingTop:'2px'}}>Edit</button>
     <button class="btn btn-primary" onClick={this.delete} style={{fontSize:'20px',marginRight:'5px',background:'#ce2127',marginLeft:'80px',cursor:'pointer',height:'32px',paddingTop:'2px'}}>Delete</button>
 
@@ -209,6 +225,12 @@ class Demo extends React.Component {
   {
     return <Redirect to='/Us1' />
   }
+
+  if(this.state.redirect_logout)
+  {
+    return <Redirect to='/' />
+  }
+
 
     return (
       <Layout style={{ minHeight: '100vh' }}>
@@ -248,7 +270,7 @@ class Demo extends React.Component {
 
           <Content style={{ margin: '0 16px' }}>
             <Breadcrumb style={{ margin: '16px 0' }}>
-            
+
             </Breadcrumb>
             <div id="support" class="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
               <h1 style={{marginLeft:'450px',marginRight:'300px'}}>Welcome {this.state.name}</h1>

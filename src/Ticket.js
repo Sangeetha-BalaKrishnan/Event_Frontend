@@ -52,10 +52,12 @@ class Ticket extends React.Component {
     user:cookies.get('user'),
     auth_token:cookies.get('auth_token'),
     redirect_prev:false,
-    redirect_logout:false
+    redirect_logout:false,
+    redirect:false
   };
   this.handleToggle = this.handleToggle.bind(this);
   this.handleChange = this.handleChange.bind(this);
+  this.handleChange_dash = this.handleChange_dash.bind(this);
   this.push_details = this.push_details.bind(this);
   this.close = this.close.bind(this);
   this.previous = this.previous.bind(this);
@@ -109,6 +111,9 @@ componentDidMount() {
   }
 }
 
+handleChange_dash(){
+  this.setState({redirect:true});
+}
 handleToggle(){
   this.setState({toggle:true});
   console.log(this.state.ticket_name_array);
@@ -151,6 +156,8 @@ next(){
     if(res.status==true)
     {
       swal("success", "Event created", "success");
+      this.setState({redirect:true});
+      cookies.remove('event_id', { path: '/' });
     }
 
   });
@@ -317,7 +324,7 @@ handleClick = (e) => {
     <br/><br/>
     <button type="button" style={bt} onClick={this.previous} className="btn btn-primary">Previous</button>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <button type="button" style={bt} onClick={this.next} className="btn btn-primary">Next</button>
+    <button type="button" style={bt} onClick={this.next} className="btn btn-primary">Finish</button>
     </div>
   );
   const add_ticket_details=(
@@ -386,11 +393,15 @@ handleClick = (e) => {
   };
   if(this.state.redirect_prev)
   {
-    return <Redirect to='/dummy1' />
+    return <Redirect to='/H2' />
   }
   if(this.state.redirect_logout)
   {
     return <Redirect to='/' />
+  }
+  if(this.state.redirect)
+  {
+    return <Redirect to='/Us' />
   }
 
 
@@ -405,7 +416,7 @@ handleClick = (e) => {
         >
           <div className="logo" />
           <Menu theme="dark" defaultSelectedKeys={['2']} mode="inline">
-            <Menu.Item key="1" onClick={this.handleChange}>
+            <Menu.Item key="1" onClick={this.handleChange_dash}>
               <Link to={`/Us`}><Icon type="dashboard" theme="outlined" />
               <span >Home</span></Link>
             </Menu.Item>
@@ -453,7 +464,7 @@ handleClick = (e) => {
     DESCRIPTION
   </Menu.Item>
   <Menu.Item disabled key="toggle4" style={{marginLeft:'40px'}}>
-    <Link to={`/H`}>DEPENDENCY</Link>
+    <Link to={`/H`}>UPLOAD</Link>
   </Menu.Item>
   <Menu.Item key="toggle5" style={{marginLeft:'40px'}}>
     TICKETS
@@ -522,7 +533,7 @@ handleClick = (e) => {
     DESCRIPTION
   </Menu.Item>
   <Menu.Item disabled key="toggle4" style={{marginLeft:'40px'}}>
-    <Link to={`/H`}>DEPENDENCY</Link>
+    <Link to={`/H`}>UPLOAD</Link>
   </Menu.Item>
   <Menu.Item key="toggle5" style={{marginLeft:'40px'}}>
     TICKETS
@@ -539,7 +550,7 @@ handleClick = (e) => {
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>
-            
+
           </Footer>
         </Layout>
       </Layout>

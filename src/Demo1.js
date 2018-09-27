@@ -495,7 +495,7 @@ summa()
       DESCRIPTION
     </Menu.Item>
     <Menu.Item disabled key="toggle4" style={{marginLeft:'40px'}}>
-      DEPENDENCY
+      UPLOAD
     </Menu.Item>
     <Menu.Item disabled key="toggle5" style={{marginLeft:'40px'}}>
       TICKETS
@@ -546,7 +546,7 @@ summa()
 
     <Content style={{ margin: '0 16px' }}>
       <Breadcrumb style={{ margin: '16px 0' }}>
-        
+
       </Breadcrumb>
       <div id="support" className="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
@@ -565,7 +565,7 @@ General INFO
 DESCRIPTION
 </Menu.Item>
 <Menu.Item disabled key="toggle4" >
-DEPENDENCY
+UPLOAD
 </Menu.Item>
 <Menu.Item disabled key="toggle5" >
 TICKETS

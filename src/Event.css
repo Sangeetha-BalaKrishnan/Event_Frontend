@@ -11,10 +11,20 @@ font-size: 23px;
   box-shadow: 0px 0px 4px #e2e2e2;
   height:100px;
   width:60%;
-  margin-left:45px;
+  margin-left:271px;
   margin-bottom: 30px;
   border-radius:5px;
 }
+.outer1{
+  border:1px solid #ddd;
+  box-shadow: 0px 0px 4px #e2e2e2;
+  height:100px;
+  width:83%;
+  margin-left:30px;
+  margin-bottom: 30px;
+  border-radius:5px;
+}
+
 
 .book_ticket{
   background: #d7343a;
@@ -24,7 +34,17 @@ font-size: 14px;
 color: #fff;
 border-radius: 5px;
 cursor: pointer;
-margin-left:673px;
+margin-left:629px;
+}
+.book_ticket_m{
+  background: #d7343a;
+padding: 10px 50px;
+border: none;
+font-size: 14px;
+color: #fff;
+border-radius: 5px;
+cursor: pointer;
+margin-left:115px;
 }
 
 #book_ticket1{
@@ -36,6 +56,17 @@ color: #fff;
 border-radius: 5px;
 cursor: pointer;
 margin-left:793px;
+margin-top:-73px;
+}
+#book_ticket1_m{
+  background: #d7343a;
+padding: 10px 50px;
+border: none;
+font-size: 14px;
+color: #fff;
+border-radius: 5px;
+cursor: pointer;
+margin-left:123px;
 margin-top:-73px;
 }
 
@@ -50,7 +81,7 @@ margin-left:54px;
 .header1{
   font-size: 40px;
     color: deepskyblue;
-    
+
     display: inline-block;
     margin-left:550px;
 }
@@ -59,6 +90,20 @@ margin-left:54px;
     width: 366px !important;
     display: inline-block;
     margin-left:35px;
+
+}
+.header1_m{
+  font-size: 40px;
+    color: deepskyblue;
+
+    display: inline-block;
+    margin-left:10px;
+}
+.header2_m{
+  font-size: 17px;
+    width: 366px !important;
+    display: inline-block;
+    margin-left:10px;
 
 }
 
@@ -70,7 +115,10 @@ margin-left:54px;
   margin-left: 440px;
     font-size: 20px;
 }
-
+.contact1_m{
+  margin-left: 10px;
+    font-size: 20px;
+}
 .maps{
   margin-left: 147px;
     font-size: 28px;

@@ -51,7 +51,7 @@ class App extends Component {
     'Content-Type': 'application/json'
   }
   }).then(res=>res.json())
-  .then(res => {console.log(res.data[0].event_id);
+  .then(res => {console.log(res);
     const image=[];
     const name=[];
     const timestamp=[];
@@ -257,20 +257,19 @@ const dropdown_organiser_m=(  <Dropdown overlay={menu_organiser}>
        </div>
      </div>
       <Slider className="slider-wrapper" autoplay={2000}>
-        {content.map((item, index) => (
+        {content.map((photo, index) => (
           <div
             key={index}
             className="slider-content"
-            style={{ background: `url('${item.image}') no-repeat center center` }} >
+            style={{ background: `url('${this.state.photo[index]}') no-repeat center center` }} >
             <div className="inner">
-              <h1>{item.title}</h1>
-              <p>{item.description}</p>
-              <button>{item.button}</button>
-            </div>
+                      <h1>{this.state.event_detail[index]}</h1>
+
+                    </div>
             <section>
-              <img src={item.userProfile} alt={item.user} />
+
               <span>
-                Posted by <strong>{item.user}</strong>
+
               </span>
             </section>
           </div>
@@ -323,16 +322,12 @@ const dropdown_organiser_m=(  <Dropdown overlay={menu_organiser}>
       <div
         key={index}
         className="slider-content"
-        style={{ background: `url('${item.image}') no-repeat center center` }} >
-        <div className="inner">
-          <h1>{item.title}</h1>
-          <p>{item.description}</p>
-          <button>{item.button}</button>
-        </div>
+        style={{ background: `url('${this.state.photo[index]}') no-repeat center center` }} >
+
         <section>
-          <img src={item.userProfile} alt={item.user} />
+
           <span>
-            Posted by <strong>{item.user}</strong>
+
           </span>
         </section>
       </div>
