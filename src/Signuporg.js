@@ -5,6 +5,10 @@ import { BrowserRouter as Router, Route, Link,Redirect} from "react-router-dom";
 import './Signup_org.css';
 import swal from 'sweetalert';
 import MediaQuery from 'react-responsive';
+import SocialButton from './SocialButton';
+
+
+
 const after={
   borderColor:'red'
 };
@@ -145,7 +149,44 @@ check_all()
     }
 
 }
+
+facebookDataLogin(user) {
+    var name = user['_profile']['name'];
+    var email = user['_profile']['email'];
+    var password = '12345678';
+    var role = 'customer';
+    var phone = null;
+    fetch('https://admin.thetickets.in/api/register1', {
+    method: 'post',
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({name:name,role:'organiser',email:email,phone:phone, password:password})
+  }).then(res=>res.json())
+    .then(res => {
+      // console.log(res);
+      var name='Organisation '+this.state.organisation_name;
+      if(res.status==true)
+      {
+        swal(name, "Has been successfully created!", "success");
+        this.setState({redirect:true});
+      }
+      else
+      {
+        swal(res.error, "error");
+      }
+    });
+  }
+
   render(){
+  const handleSocialLogin = (user) => {
+    console.log(user);
+    this.facebookDataLogin(user);
+  }
+    const handleSocialLoginFailure = (err) => {
+        console.error(err)
+      }
     const hello={
       height:'20px',
       width:'21px',
@@ -187,9 +228,16 @@ check_all()
       <div id="logform2" class="col-sm-6">
       <br/><br/><br/><br/>
         <div class="col-sm-6" id="signup1">
-
-
-        <button id="bttfb" class="btn btn-default">FaceBook</button>
+          <SocialButton
+              provider='facebook'
+              appId='246946452678768'
+              onLoginSuccess={handleSocialLogin}
+              onLoginFailure={handleSocialLoginFailure}
+              id="bttfb"
+              className="btn btn-default"
+            >
+              Signup with Facebook
+            </SocialButton>
         </div>
 
       <div className="or-space1">

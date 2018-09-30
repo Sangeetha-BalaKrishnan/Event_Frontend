@@ -296,14 +296,24 @@ height: 38px;
   background-color: white;
   border-radius:30px;
 }
-#bttfb{
+#bttfb1{
+  border:1px solid #3B5998;
+  outline: none;
+  width: 215px;
+  margin-left: 24%;
+height: 38px;
+  background-color: white;
+  border-radius:30px;
+}
+#bttfb
+{
   border:1px solid #3B5998;
   outline: none;
   width: 215px;
   margin-left: 38%;
-height: 38px;
+  height: 38px;
   background-color: white;
-  border-radius:30px;
+  border-radius:30px;  
 }
 
 #btt3{

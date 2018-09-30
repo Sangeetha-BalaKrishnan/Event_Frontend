@@ -3,6 +3,7 @@ import './App.css';
 import logo from './images/new.png';
 import { BrowserRouter as Router, Route, Link,Redirect } from "react-router-dom";
 import Cookies from 'universal-cookie';
+import SocialButton from './SocialButton';
 
 import './signin_org.css';
 
@@ -77,7 +78,7 @@ class Signin_org extends Component{
     'Accept': 'application/json, text/plain, */*',
     'Content-Type': 'application/json'
   },
-  body: JSON.stringify({email: this.state.email, password: this.state.password})
+  body: JSON.stringify({email: this.state.email, password: this.state.password,role:'organiser'})
 }).then(res=>res.json())
   .then(res => {
     // console.log(res.status);
@@ -96,6 +97,35 @@ class Signin_org extends Component{
   });
 }
   }
+
+  facebookDataLogin(user){
+        console.log(user)
+        var email = user['_profile']['email'];
+        var password = '12345678';
+        fetch('https://admin.thetickets.in/api/login', {
+          method: 'post',
+          headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({email: user['_profile']['email'], password:'12345678',role:'organiser'})
+        }).then(res=>res.json())
+          .then(res => {
+            // console.log(res.status);
+            if(res.status==true)
+            {
+
+              cookies.set('name', 'organiser', { path: '/' });
+              cookies.set('user',res.name, { path: '/' });
+              cookies.set('auth_token',res.token,{ path: '/' });
+              this.setState({redirect:true});
+            }
+            else if(res.status==false)
+            {
+              this.setState({error:true,error_msg:res.error});
+            }
+          });
+      }
   render(){
     const hello={
       height:'20px',
@@ -114,6 +144,14 @@ class Signin_org extends Component{
     {
       return <Redirect to='/' />
     }
+    const handleSocialLogin = (user) => {
+        console.log(user);
+        this.facebookDataLogin(user);
+        
+      }
+      const handleSocialLoginFailure = (err) => {
+        console.error(err)
+      }
 
     return(
 
@@ -170,7 +208,17 @@ class Signin_org extends Component{
   </ul>
 <br/>
 
-  <button style={{marginLeft:'64px !important'}} id="bttfb_signin" class="btn btn-default">FaceBook</button>
+  <SocialButton
+      provider='facebook'
+      appId='246946452678768'
+      onLoginSuccess={handleSocialLogin}
+      onLoginFailure={handleSocialLoginFailure}
+      id="bttfb1"
+      className="btn btn-default"
+    >
+      Login with Facebook
+    </SocialButton>
+  
 
 </div>
 </div>

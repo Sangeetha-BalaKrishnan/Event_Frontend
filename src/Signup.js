@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom
 import './Signup_org.css';
 import MediaQuery from 'react-responsive';
 import swal from 'sweetalert';
+import SocialButton from './SocialButton';
+
 
 const after={
   borderColor:'red'
@@ -120,6 +122,36 @@ handleClick()
   }
 }
 
+facebookDataLogin(user) {
+    var name = user['_profile']['name'];
+    var email = user['_profile']['email'];
+    var password = '12345678';
+    var role = 'customer';
+    var phone = null;
+    console.log(JSON.stringify({name:user['_profile']['name'],role:'customer',email: user['_profile']['email'],phone:null, password:'12345678'}));
+    fetch('https://admin.thetickets.in/api/register1', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({name:user['_profile']['name'],role:'customer',email: user['_profile']['email'],phone:null, password:'12345678'})
+    }).then(res=>res.json())
+      .then(res => {
+        // console.log(res);
+        var name='user '+this.state.name_user;
+        if(res.status==true)
+        {
+          swal(name, "Has been successfully created!", "success");
+          this.setState({redirect:true});
+        }
+        else
+        {
+          swal(res.error, "error");
+        }
+      });
+  }
+
 length_check()
 {
   if(this.state.password.length<8 && this.state.password!=='')
@@ -147,6 +179,13 @@ check_all()
 
 }
   render(){
+    const handleSocialLogin = (user) => {
+    console.log(user);
+    this.facebookDataLogin(user);
+  }
+    const handleSocialLoginFailure = (err) => {
+        console.error(err)
+      }
     const hello={
       height:'20px',
       width:'21px',
@@ -188,9 +227,16 @@ check_all()
       <div id="logform2" class="col-sm-6">
       <br/><br/><br/><br/>
         <div class="col-sm-6" id="signup1">
-
-
-          <button id="bttfb" class="btn btn-default">FaceBook</button>
+           <SocialButton
+              provider='facebook'
+              appId='246946452678768'
+              onLoginSuccess={handleSocialLogin}
+              onLoginFailure={handleSocialLoginFailure}
+              id="bttfb"
+              className="btn btn-default"
+            >
+              Signup with Facebook
+            </SocialButton>
         </div>
 
       <div className="or-space1">
