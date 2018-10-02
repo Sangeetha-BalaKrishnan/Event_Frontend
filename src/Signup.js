@@ -7,7 +7,8 @@ import './Signup_org.css';
 import MediaQuery from 'react-responsive';
 import swal from 'sweetalert';
 import SocialButton from './SocialButton';
-
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 const after={
   borderColor:'red'
@@ -54,6 +55,9 @@ class Signin extends Component{
   this.length_check = this.length_check.bind(this);
   this.check_all = this.check_all.bind(this);
 
+}
+componentDidMount(){
+  cookies.remove('link', { path: '/' });
 }
 handleChange_toggle(event){
 

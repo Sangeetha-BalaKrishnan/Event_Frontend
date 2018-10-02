@@ -313,7 +313,7 @@ height: 38px;
   margin-left: 38%;
   height: 38px;
   background-color: white;
-  border-radius:30px;  
+  border-radius:30px;
 }
 
 #btt3{
@@ -340,6 +340,10 @@ height: 38px;
   color:white;
 }
 
+#bttfb1:hover{
+  background-color: #3B5998;
+  color:white;
+}
 #btt2:hover{
   background-color: #bd4537;
   color:white;

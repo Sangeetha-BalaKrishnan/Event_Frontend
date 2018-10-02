@@ -94,7 +94,7 @@ class Signin_cust extends Component{
       {
         var link = "/Events/"+cookies.get('link');
         this.setState({redirect_payment:true,error:false,link:link});
-        cookies.remove('link', { path: '/' });
+        
       }
       else
       {
@@ -133,7 +133,7 @@ class Signin_cust extends Component{
               {
                 var link = "/Events/"+cookies.get('link');
                 this.setState({redirect_payment:true,error:false,link:link});
-                cookies.remove('link', { path: '/' });
+
               }
               else
               {
@@ -150,7 +150,7 @@ class Signin_cust extends Component{
     const handleSocialLogin = (user) => {
         console.log(user);
         this.facebookDataLogin(user);
-        
+
       }
       const handleSocialLoginFailure = (err) => {
         console.error(err)
@@ -246,7 +246,7 @@ class Signin_cust extends Component{
     >
       Login with Facebook
     </SocialButton>
-  
+
 </div>
 </div>
 

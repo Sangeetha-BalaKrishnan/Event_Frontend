@@ -147,7 +147,7 @@ class Signin_org extends Component{
     const handleSocialLogin = (user) => {
         console.log(user);
         this.facebookDataLogin(user);
-        
+
       }
       const handleSocialLoginFailure = (err) => {
         console.error(err)
@@ -218,7 +218,7 @@ class Signin_org extends Component{
     >
       Login with Facebook
     </SocialButton>
-  
+
 
 </div>
 </div>

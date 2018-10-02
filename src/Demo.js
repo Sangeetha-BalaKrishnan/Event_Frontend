@@ -10,14 +10,17 @@ import './Demo.css';
 import { render } from 'react-dom';
 import Cookies from 'universal-cookie';
 import swal from 'sweetalert';
+import MediaQuery from 'react-responsive';
 const cookies = new Cookies();
 const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
-
+const antIcon = <Icon type="loading" style={{ fontSize: 135,marginLeft:"45%",marginTop:"18%" }} spin />;
+const antIcon1 = <Icon type="loading" style={{ fontSize: 70,marginLeft:"40%",marginTop:"50%" }} spin />;
 class Demo extends React.Component {
   constructor(props){
     super(props);
     this.state={
+      loading:true,
       name:cookies.get('user'),
       user:cookies.get('user'),
       auth_token:cookies.get('auth_token'),
@@ -69,11 +72,12 @@ class Demo extends React.Component {
         e.push(res.data[i].event_id);
         f.push(res.data[i].publish);
       }
-      this.setState({event_name:a,start_date:b,end_date:c,link:d,event_id:e,Check_box:f});
+      this.setState({event_name:a,start_date:b,end_date:c,link:d,event_id:e,Check_box:f,loading:false});
     }
 
-
+this.setState({loading:false});
     });
+    cookies.remove('event_id', { path: '/' });
   }
 preview(i){
   cookies.set('link',this.state.link[i],{ path: '/'});
@@ -221,6 +225,27 @@ preview(i){
     </div>
 
   );
+  const Event_m=this.state.event_name.map((name,i)=>
+
+  <div key={i} className="box-width_m">
+  <span style={{fontSize:'20px',marginRight:'5px',color:'#ce2127',marginLeft:'0px'}}>{this.state.event_name[i]}</span>
+  <br/>
+  <span style={{fontSize:'14px',marginLeft:'0px'}}>{this.state.start_date[i]}</span>
+  <br/><br/>
+  <button class="btn btn-primary" onClick={() => this.manage(i)}  style={{fontSize:'20px',marginRight:'5px',marginLeft:'15px',cursor:'pointer',height:'28px',paddingTop:'0px'}}>Manage</button>
+  <br/><br/>
+  <button class="btn btn-primary" onClick={()=>this.preview(i)}  style={{fontSize:'20px',marginRight:'5px',marginLeft:'15px',cursor:'pointer',height:'32px',paddingTop:'2px'}}>Preview</button>
+  <br/><br/>
+  <button class="btn btn-primary" onClick={() => this.edit(i)} style={{fontSize:'20px',marginRight:'5px',marginLeft:'15px',cursor:'pointer',height:'32px',paddingTop:'2px'}}>Edit</button>
+  <br/><br/>
+  <button class="btn btn-primary" onClick={this.delete} style={{fontSize:'20px',marginRight:'5px',background:'#ce2127',marginLeft:'15px',cursor:'pointer',height:'32px',paddingTop:'2px'}}>Delete</button>
+<br/><br/>
+  <span style={{fontSize:'20px',marginRight:'5px',marginLeft:'15px'}}>Published</span>
+  <input name={i} style={{width:'23px',height:'17px'}} type="checkbox"  checked={this.state.Check_box[i]}  onChange={this.handleChange} />
+
+  </div>
+
+);
 
   if(this.state.redirect_edit)
   {
@@ -234,6 +259,9 @@ preview(i){
 
 
     return (
+      <div>
+      <MediaQuery query="(min-device-width: 1224px)">
+      {this.state.loading==true?antIcon:
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
           collapsible
@@ -282,7 +310,64 @@ preview(i){
 
           </Footer>
         </Layout>
-      </Layout>
+      </Layout>}
+      </MediaQuery>
+
+
+      <MediaQuery query="(max-device-width: 1224px)">
+{this.state.loading==true?antIcon1:
+      <Layout style={{ minHeight: '100vh' }}>
+        <Sider
+          collapsible
+          collapsed={'true'}
+
+        >
+          <div className="logo" />
+          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+            <Menu.Item key="1" >
+              <Icon type="dashboard" theme="outlined" />
+              <span >Home</span>
+            </Menu.Item>
+            <Menu.Item key="2" >
+            <Link to={`/Us1`}>  <Icon type="desktop" />
+              <span>Create an Event</span></Link>
+            </Menu.Item>
+
+          </Menu>
+        </Sider>
+        <Layout>
+          <Header style={{ background: '#fff', padding: 0 }}  >
+          <div className="row">
+            <div className="col-sm-4">
+            <Link to={`/`}>
+              <img style={awesome} src={logo}/>
+              </Link>
+            </div>
+
+            <div className="col-sm-4 signinBlock2">
+            {dropdown_organiser}
+
+            </div>
+          </div>
+          </Header>
+
+          <Content style={{ margin: '0 16px' }}>
+            <Breadcrumb style={{ margin: '16px 0' }}>
+
+            </Breadcrumb>
+            <div id="support" class="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+              <h1 style={{marginLeft:'450px',marginRight:'300px'}}>Welcome {this.state.name}</h1>
+              {Event_m}
+            </div>
+          </Content>
+          <Footer style={{ textAlign: 'center' }}>
+
+          </Footer>
+        </Layout>
+      </Layout>}
+
+      </MediaQuery>
+      </div>
     );
   }
 }

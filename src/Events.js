@@ -22,7 +22,8 @@ import swal from 'sweetalert';
 
 const cookies = new Cookies();
 
-const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+const antIcon = <Icon type="loading" style={{ fontSize: 135,marginLeft:"45%",marginTop:"18%" }} spin />;
+const antIcon1 = <Icon type="loading" style={{ fontSize: 70,marginLeft:"40%",marginTop:"50%" }} spin />;
 
 const message=(
   <span style={{fontFamily:'Roboto',marginLeft:'600px',fontSize:'15px',color:'red'}}>&nbsp;You Must Login first</span>
@@ -34,7 +35,9 @@ const TabPane = Tabs.TabPane;
 class Events extends Component{
   constructor(props){
     super(props);
-    this.state={summa:"",
+    this.state={
+      summa:"",
+    loading:true,
     toggle:false,
     image:'',
     event_name:'',
@@ -81,7 +84,7 @@ class Events extends Component{
 
 if(cookies.get('link')==undefined)
 {
-    var  value =this.props.location.state.value;
+    var  value =this.props.match.params.value;
   }
   else {
     var value = cookies.get('link');
@@ -99,7 +102,7 @@ headers: {
 .then(res => {
 
 
-  this.setState({event_name:res.data.event_details.name,start:res.data.event_details.start_time,end:res.data.event_details.end_time,editorHtml:res.data.event_details.description,lat:res.data.location.lat_long.substr(0,res.data.location.lat_long.indexOf(",")),long:res.data.location.lat_long.substr(res.data.location.lat_long.indexOf(",")+1),organizer:res.data.event_details.organizer,phone:res.data.event_details.phone,ticket_name:res.data.tickets[0],amount:res.data.tickets[2],quantity:res.data.tickets[1],value:res.data.tickets[3],address:res.data.location.address,event_id:res.data.eventid,image:res.data.image});
+  this.setState({event_name:res.data.event_details.name,start:res.data.event_details.start_time,end:res.data.event_details.end_time,editorHtml:res.data.event_details.description,lat:res.data.location.lat_long.substr(0,res.data.location.lat_long.indexOf(",")),long:res.data.location.lat_long.substr(res.data.location.lat_long.indexOf(",")+1),organizer:res.data.event_details.organizer,phone:res.data.event_details.phone,ticket_name:res.data.tickets[0],amount:res.data.tickets[2],quantity:res.data.tickets[1],value:res.data.tickets[3],address:res.data.location.address,event_id:res.data.eventid,image:res.data.image,loading:false});
   cookies.remove('link', { path: '/' });
 
 });
@@ -262,7 +265,7 @@ total(){
         let currency = 'INR'; // or you can set this value from your props or state
         let total = 10; // same as above, this is the total amount (based on currency) to be paid by using Paypal express checkout
         // Document on Paypal's currency code: https://developer.paypal.com/docs/classic/api/currency_codes/
- 
+
         const client = {
             sandbox:    'Aa2y_9921vWrSgo_1dP52Dw_pTjpjZQfjD47D0CdgbSKtVvr7dvh5SVSPq7HIchmEtM526HVpIRHydLq',
             production: 'AY2EyPEs0uTNjoMySfEfhw0_kuEXs7IZOzhTGjZDWHW3MkmI5sb660FA9pYHY_i4Pzm301wcMCdZT7uk',
@@ -300,8 +303,10 @@ total(){
       marginBottom:'-20px'
     };
     const awesome1={
-      width:'40%',
-      marginLeft:'405px'
+      width:'67%',
+      marginLeft:'215px',
+      marginRight:'131px',
+      height:'362px'
     };
     const awesome2={
       width:'40%',
@@ -309,13 +314,14 @@ total(){
     };
     const awesome3={
       width:'88%',
-      marginLeft:'26px'
+      marginLeft:'26px',
+      height:'220px'
     };
     const sign={
       marginTop:'36px'
     };
-  
-		
+
+
     const Ticket=this.state.ticket_name.map((name,i)=>
     <div key={i} className="outer">
     <br/>&nbsp;&nbsp;
@@ -476,12 +482,14 @@ if(this.state.redirect_payment)
   return <Redirect to='/' />
 }
 
-        
+
 
     return(
 
 <div>
+
 <MediaQuery query="(min-device-width: 1224px)">
+{this.state.loading==true?antIcon:
       <div>
 
       <div className="row" id="head_main">
@@ -615,10 +623,11 @@ if(this.state.redirect_payment)
 
 
 
-      </div>
+      </div>}
       </MediaQuery>
 
       <MediaQuery query="(max-device-width: 1224px)">
+      {this.state.loading==true?antIcon1:
       <div>
 
       <div className="row" id="head_main">
@@ -754,7 +763,7 @@ if(this.state.redirect_payment)
 
 
 
-      </div>
+      </div>}
       </MediaQuery>
 
       </div>

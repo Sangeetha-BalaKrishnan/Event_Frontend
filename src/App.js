@@ -19,13 +19,14 @@ import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
 
-const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
-
+const antIcon = <Icon type="loading" style={{ fontSize: 135,marginLeft:"45%",marginTop:"18%" }} spin />;
+const antIcon1 = <Icon type="loading" style={{ fontSize: 70,marginLeft:"40%",marginTop:"50%" }} spin />;
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state={
+      loading:true,
       photo:[],
       event_detail:[],
       event_time:[],
@@ -68,9 +69,11 @@ class App extends Component {
       url.push(final_str);
       console.log(str_sub);
     }
-    this.setState({event_time:timestamp,event_detail:name,photo:image,event_url:url});
+    this.setState({event_time:timestamp,event_detail:name,photo:image,event_url:url,loading:false});
 
   });
+  cookies.remove('event_id', { path: '/' });
+  cookies.remove('link', { path: '/' });
   }
 delete_cookies(){
   cookies.remove('name', { path: '/' });
@@ -235,7 +238,9 @@ const dropdown_organiser_m=(  <Dropdown overlay={menu_organiser}>
     }
     return (
       <div>
+
       <MediaQuery query="(min-device-width: 1224px)">
+      {this.state.loading==true?antIcon:
      <div>
 
      <div className="row" id="head_main">
@@ -293,10 +298,11 @@ const dropdown_organiser_m=(  <Dropdown overlay={menu_organiser}>
           <a href="https://www.instagram.com/thetickets.in"  target="_blank"><i style={{color:'#e95950'}} className="fa fa-instagram fa-3x iconStyle" aria-hidden="true"></i></a>
         </div>
       </div>
-  </div>
+  </div>}
   </MediaQuery>
 
   <MediaQuery query="(max-device-width: 1224px)">
+  {this.state.loading==true?antIcon1:
  <div>
 
  <div className="row" id="head_main">
@@ -351,7 +357,7 @@ const dropdown_organiser_m=(  <Dropdown overlay={menu_organiser}>
       <a href="https://www.instagram.com/thetickets.in"  target="_blank"><i style={{color:'#e95950'}} className="fa fa-instagram fa-3x iconStyle1" aria-hidden="true"></i></a>
     </div>
   </div>
-</div>
+</div>}
   </MediaQuery>
   </div>
     );

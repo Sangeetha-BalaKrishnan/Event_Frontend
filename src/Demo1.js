@@ -30,6 +30,8 @@ const message=(
   <span style={{fontFamily:'Roboto',fontSize:'11px'}}>&nbsp;Enter this field</span>
 );
 
+const antIcon = <Icon type="loading" style={{ fontSize: 135,marginLeft:"45%",marginTop:"18%" }} spin />;
+const antIcon1 = <Icon type="loading" style={{ fontSize: 70,marginLeft:"40%",marginTop:"50%" }} spin />;
 
 
 function handleChange(value) {
@@ -45,6 +47,7 @@ class Demo extends React.Component {
   constructor(props){
     super(props);
     this.state={
+      loading:true,
       event_name:'',
       event_org_name:'',
       event_url:'',
@@ -93,13 +96,18 @@ componentDidMount() {
     if(res.data != null)
     {
     // console.log(res.data.start.length);
-    this.setState({event_name:res.data.event_name,event_url:res.data.url,event_org_name:res.data.organizer,start_date:res.data.start,end_date:res.data.end,Category:res.data.category});
+    this.setState({event_name:res.data.event_name,event_url:res.data.url,event_org_name:res.data.organizer,start_date:res.data.start,end_date:res.data.end,Category:res.data.category,loading:false});
     // console.log(this.state.start_date);
     // console.log(this.state.Category);
+  }
+  else {
+    this.setState({loading:false});
   }
 
   });
   }
+  this.setState({loading:false});
+
 }
 delete_cookies(){
   cookies.remove('name', { path: '/' });
@@ -437,6 +445,7 @@ summa()
 
 <div>
 <MediaQuery query="(min-device-width: 1224px)">
+{this.state.loading==true?antIcon:
       <Layout style={{ minHeight: '100vh' }}>
 
         <Sider
@@ -514,11 +523,12 @@ summa()
 
           </Footer>
         </Layout>
-      </Layout>
+      </Layout>}
 </MediaQuery>
 
 
 <MediaQuery query="(max-device-width: 1224px)">
+{this.state.loading==true?antIcon1:
 <Layout style={{ minHeight: '100vh' }}>
 
   <Sider
@@ -583,7 +593,7 @@ TICKETS
 
     </Footer>
   </Layout>
-</Layout>
+</Layout>}
 </MediaQuery>
 </div>
     );

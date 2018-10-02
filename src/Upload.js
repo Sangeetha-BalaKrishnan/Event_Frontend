@@ -17,10 +17,14 @@ const message=(
   <span style={{fontFamily:'Roboto',fontSize:'14px',color:'red'}}>&nbsp;Please Upload the IMAGE</span>
 );
 
+const antIcon = <Icon type="loading" style={{ fontSize: 135,marginLeft:"45%",marginTop:"18%" }} spin />;
+const antIcon1 = <Icon type="loading" style={{ fontSize: 70,marginLeft:"40%",marginTop:"50%" }} spin />;
+
 class Up extends Component {
   constructor(props) {
     super(props);
   this.state = {
+    loading:true,
     collapsed: false,
     file: '',
     imagePreviewUrl: 'https://via.placeholder.com/380x230',
@@ -69,12 +73,13 @@ componentDidMount() {
     // console.log(res);
     if(res.status == true && res.url!=null)
     {
-    this.setState({imagePreviewUrl:res.url});
+    this.setState({imagePreviewUrl:res.url,loading:false});
   }
 
 
   });
   }
+  this.setState({loading:false});
 }
 
 
@@ -227,6 +232,7 @@ const bt={
     return (
       <div>
       <MediaQuery query="(min-device-width: 1224px)">
+      {this.state.loading==true?antIcon:
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
           collapsible
@@ -307,10 +313,10 @@ const bt={
 
           </Footer>
         </Layout>
-      </Layout>
+      </Layout>}
       </MediaQuery>
       <MediaQuery query="(max-device-width: 1224px)">
-
+      {this.state.loading==true?antIcon1:
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
           collapsible
@@ -390,7 +396,7 @@ const bt={
 
           </Footer>
         </Layout>
-      </Layout>
+      </Layout>}
 
       </MediaQuery>
       </div>

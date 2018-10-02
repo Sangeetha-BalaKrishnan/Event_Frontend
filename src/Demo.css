@@ -12,3 +12,17 @@ width: calc(100% - 180px);
 height:110px;
 margin-bottom: 20px;
 }
+.box-width_m{
+  font-size: 13px;
+color: #000;
+padding: 20px;
+clear: both;
+display: inline-block;
+border: 1px solid #ddd;
+border-radius: 5px;
+margin-left: -8px;
+box-shadow: 0px 0px 4px #e2e2e2;
+width: calc(100% - 15px);
+height:350px;
+margin-bottom: 20px;
+}

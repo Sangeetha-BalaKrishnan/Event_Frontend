@@ -24,6 +24,10 @@ const message=(
 const message1=(
   <span style={{fontFamily:'Roboto',fontSize:'14px',color:'red'}}>&nbsp;Atleast one ticket should be there</span>
 );
+
+const antIcon = <Icon type="loading" style={{ fontSize: 135,marginLeft:"45%",marginTop:"18%" }} spin />;
+const antIcon1 = <Icon type="loading" style={{ fontSize: 70,marginLeft:"40%",marginTop:"50%" }} spin />;
+
 function handleChange(value) {
   console.log(`selected ${value}`);
 }
@@ -37,6 +41,7 @@ class Ticket extends React.Component {
   constructor(props){
     super(props);
     this.state={
+    loading:true,
     toggle:false,
     ticket_name:'',
     price:'',
@@ -105,11 +110,12 @@ componentDidMount() {
         }
       }
     }
-    this.setState({ticket_name_array:a,quantity_array:b,price_array:c});
+    this.setState({ticket_name_array:a,quantity_array:b,price_array:c,loading:false});
 
 }
   });
   }
+  this.setState({loading:false});
 }
 
 handleChange_dash(){
@@ -410,6 +416,7 @@ handleClick = (e) => {
     return (
       <div>
       <MediaQuery query="(min-device-width: 1224px)">
+      {this.state.loading==true?antIcon:
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
           collapsible
@@ -485,11 +492,12 @@ handleClick = (e) => {
 
           </Footer>
         </Layout>
-      </Layout>
+      </Layout>}
       </MediaQuery>
 
 
       <MediaQuery query="(max-device-width: 1224px)">
+      {this.state.loading==true?antIcon1:
       <Layout style={{ minHeight: '100vh' }}>
       <Sider
         collapsible
@@ -555,7 +563,7 @@ handleClick = (e) => {
 
           </Footer>
         </Layout>
-      </Layout>
+      </Layout>}
       </MediaQuery>
       </div>
     );

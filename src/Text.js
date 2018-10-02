@@ -26,11 +26,14 @@ const message=(
 
 const { Header, Content, Footer, Sider } = Layout;
 
+const antIcon = <Icon type="loading" style={{ fontSize: 135,marginLeft:"45%",marginTop:"18%" }} spin />;
+const antIcon1 = <Icon type="loading" style={{ fontSize: 70,marginLeft:"40%",marginTop:"50%" }} spin />;
 
 class TextEditor extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      loading:true,
       editorHtml: '',
       theme: 'snow',
       redirect_prev:false,
@@ -62,11 +65,12 @@ class TextEditor extends React.Component {
     .then(res => {
       // console.log(res);
       if(res.data.description!=null)
-      this.setState({editorHtml:res.data.description});
+      this.setState({editorHtml:res.data.description,loading:false});
 
 
     });
     }
+    this.setState({loading:false});
   }
 
   delete_cookies(){
@@ -221,6 +225,7 @@ class TextEditor extends React.Component {
     return (
       <div>
       <MediaQuery query="(min-device-width: 1224px)">
+      {this.state.loading==true?antIcon:
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
           collapsible
@@ -304,10 +309,11 @@ class TextEditor extends React.Component {
 
       </Footer>
     </Layout>
-  </Layout>
+  </Layout>}
   </MediaQuery>
 
   <MediaQuery query="(max-device-width: 1224px)">
+  {this.state.loading==true?antIcon1:
   <Layout style={{ minHeight: '100vh' }}>
   <Sider
     collapsible
@@ -382,7 +388,7 @@ TICKETS
 
   </Footer>
 </Layout>
-</Layout>
+</Layout>}
 </MediaQuery>
   </div>
     );
