@@ -270,7 +270,6 @@ const dropdown_organiser_m=(  <Dropdown overlay={menu_organiser}>
             style={{ background: `url('${this.state.photo[index]}') no-repeat center center` }} >
             <div className="inner">
                       <h1>{this.state.event_detail[index]}</h1>
-
                     </div>
             <section>
 

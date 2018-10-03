@@ -154,8 +154,6 @@ payment()
     }
     if(res.status==true)
     {
-
-
     const a=[];
     const b=[];
     const c=[];
@@ -167,16 +165,15 @@ payment()
       c.push(res.data[i].cost);
       d.push(res.data[i].uniqueid);
     }
-    this.setState({ticket_name_cpy:a,quantity_cpy:b,amount_cpy:c,total_cpy:res.total,conv_cpy:res.convenince,toggle:true,uniqie_id:d});
+    this.setState({ticket_name_cpy:a,quantity_cpy:b,amount_cpy:c,total_cpy:res.total,conv_cpy:res.convenince,toggle:true,unique_id:d});
+    console.log(d);
   }
   });
   }
 }
 
 onSuccess = (payment) => {
-           // Congratulation, it came here means everything's fine!
-               // console.log("The payment was succeeded!", payment);
-
+               
                fetch('https://admin.thetickets.in/api/save_ticket', {
                method: 'post',
                headers: {
