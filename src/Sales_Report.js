@@ -19,6 +19,7 @@ class Sales extends Component {
   }
   componentDidMount() {
     window.scrollTo(-10, -10);
+    // cookies.set('manage_event',this.state.event_id);
     fetch('https://admin.thetickets.in/api/manage_event/'+this.state.event_id, {
   method: 'get',
   headers: {
@@ -32,7 +33,7 @@ class Sales extends Component {
 
     this.setState({ans:res.data});
     console.log(this.state.ans);
-    cookies.remove('manage_event', { path: '/' });
+    // cookies.remove('manage_event', { path: '/' });
 
   });
   }
@@ -55,44 +56,46 @@ render() {
   const bt={
     width:'112px',
     marginBottom:'40px',
-    marginLeft:'1152px'
+    marginLeft:'1020px'
   };
   const columns = [{
-    Header: 'User_Name',
+    Header: 'User Name',
     accessor: 'username' // String-based value accessors!
   }, {
     Header: 'Phone',
     accessor: 'phone',
     Cell: props => <span className='number'>{props.value}</span> // Custom cell components!
   }, {
-    Header: 'email',
+    Header: 'Email Id',
     accessor: 'email'// Custom value accessors!
   }, {
-    Header: 'ticket_name', // Custom header components!
-    accessor: 'ticket_name,'
+    Header: 'Ticket Name', // Custom header components!
+    accessor: 'ticket_name',
   },{
-    Header: 'Total_ticket',
+    Header: 'Total Ticket',
     accessor: 'total_ticket',
     Cell: props => <span className='number'>{props.value}</span> // Custom cell components!
   },{
-    Header: 'cost', // Custom header components!
+    Header: 'Cost', // Custom header components!
     accessor: 'cost',
   },{
-    Header: 'booked_at', // Custom header components!
+    Header: 'Booked at', // Custom header components!
     accessor: 'booked_at',
   }]
 return(
   <div>
   <div className="row" id="head_main">
     <div className="col-sm-3">
+      <Link to={`/`}>
       <img id="LogoStyle_sales" src={logo}/>
+      </Link>
     </div>
 
     </div>
     <br/>
-    <button type="button" style={bt} onClick={()=> window.open("https://admin.thetickets.in/api/report_download/e535860e", "_blank")} className="btn btn-primary">Download</button>
+    <button type="button" style={bt} onClick={()=> window.open(`https://admin.thetickets.in/api/report_download/${this.state.event_id}`, "_blank")} className="btn btn-primary">Download</button>
     <br/>
-    <div style={{marginLeft:'20px'}}>
+    <div style={{marginLeft:'20px' , width:'90%', height:'70%'}}>
   <ReactTable
     data={this.state.ans}
     columns={columns}

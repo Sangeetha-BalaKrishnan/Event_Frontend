@@ -18,6 +18,11 @@
   }
 
 }
+.buttonStyle:hover
+{
+  text-decoration: none;
+}
+
 #LogoStyle{
   height:120px;
   margin-top : -13px;

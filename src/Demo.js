@@ -94,6 +94,7 @@ preview(i){
 
   manage(i){
     cookies.set('manage_event',this.state.event_id[i], { path: '/' });
+    console.log(this.state.event_id[i]);
     window.open("/sales_report");
   }
   edit(x)

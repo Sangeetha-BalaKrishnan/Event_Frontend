@@ -3,7 +3,8 @@ import { render } from 'react-dom';
 import { Menu, Dropdown,Button } from 'antd';
 import logo from './images/new.png';
 import Slider from 'react-animated-slider';
-import content from './content'
+import content from './content';
+// import customCss from 'custom.css';
 import 'react-animated-slider/build/horizontal.css';
 import 'normalize.css/normalize.css';
 import './slider-animations.css';
@@ -28,7 +29,10 @@ class App extends Component {
     this.state={
       loading:true,
       photo:[],
+      photo1:[],
       event_detail:[],
+      event_detail1:[],
+      event_url1:[],
       event_time:[],
       event_url:[],
       name:cookies.get('name'),
@@ -55,21 +59,34 @@ class App extends Component {
   .then(res => {
     // console.log(res);
     const image=[];
+    const image1 =[];
     const name=[];
+    const name1 = [];
     const timestamp=[];
     const url=[];
+    const url1 = [];
     var i;
     for(i=0;i<res.data.length;i++)
     {
       image.push(res.data[i].image);
+      image1.push(res.data[i].image);
+      image1.push(res.data[i].image);
+      image1.push(res.data[i].image);
+      name1.push(res.data[i].event_name);
+      name1.push(res.data[i].event_name);
+      name1.push(res.data[i].event_name);
       name.push(res.data[i].event_name);
       timestamp.push(res.data[i].timestamp);
       var str_sub = res.data[i].url_name.substr(res.data[i].url_name.lastIndexOf("/")+1);
       var final_str = '/Events/'+str_sub;
       url.push(final_str);
+      url1.push(final_str);
+      url1.push(final_str);
+      url1.push(final_str);
       console.log(str_sub);
     }
-    this.setState({event_time:timestamp,event_detail:name,photo:image,event_url:url,loading:false});
+    console.log(image);
+    this.setState({event_time:timestamp,event_detail:name,event_detail1:name1,photo:image,photo1:image1,event_url:url,event_url1:url1,loading:false});
 
   });
   cookies.remove('event_id', { path: '/' });
@@ -183,7 +200,7 @@ const dropdown_organiser_m=(  <Dropdown overlay={menu_organiser}>
 
       <div className="rows" key={i} id="saran1">
 
-<Link to= {{pathname:this.state.event_url[i], state:{value:this.state.event_url[i].substr(this.state.event_url[i].lastIndexOf("/")+1)}}}  >
+<Link to= {{pathname:this.state.event_url[i]}}  >
           <div className="column_main777 col-sm-4">
 
               <div className="box">
@@ -254,7 +271,6 @@ const dropdown_organiser_m=(  <Dropdown overlay={menu_organiser}>
        <Link to='/Events'><a className="hvr-bob">EVENTS</a></Link>
        <Link to='/Trending'><a className="hvr-bob">TRENDING</a></Link>
        <Link to='/Upcoming_Events'><a className="hvr-bob">UPCOMING</a></Link>
-       <a className="hvr-bob">GET STARTED</a>
        <a className="hvr-bob">ABOUT US</a>
        </div>
        <div className="col-sm-2 signinBlock">
@@ -262,15 +278,17 @@ const dropdown_organiser_m=(  <Dropdown overlay={menu_organiser}>
 
        </div>
      </div>
-      <Slider className="slider-wrapper" autoplay={2000}>
+     <Slider classNames="slider-wrapper" autoplay={2000}>
         {content.map((photo, index) => (
           <div
             key={index}
             className="slider-content"
-            style={{ background: `url('${this.state.photo[index]}') no-repeat center center` }} >
+            style={{ background: `url('${this.state.photo1[index]}') no-repeat center center` }} >
             <div className="inner">
-                      <h1>{this.state.event_detail[index]}</h1>
-                    </div>
+                <h1>{this.state.event_detail1[index]}</h1>
+                <br/>
+                <Link to ={this.state.event_url1[index]}><button className="buttonStyle">View More</button></Link>
+            </div>
             <section>
 
               <span>
@@ -315,7 +333,6 @@ const dropdown_organiser_m=(  <Dropdown overlay={menu_organiser}>
    <Link to='/Events'><a className="hvr-bob">EVENTS</a></Link>
    <Link to='/Trending'><a className="hvr-bob">TRENDING</a></Link>
    <Link to='/Upcoming_Events'><a className="hvr-bob">UPCOMING</a></Link>
-   <a className="hvr-bob">GET STARTED</a>
    <a className="hvr-bob">ABOUT US</a>
    </div>
    <div className="col-sm-2 signinBlock">
@@ -328,7 +345,7 @@ const dropdown_organiser_m=(  <Dropdown overlay={menu_organiser}>
       <div
         key={index}
         className="slider-content"
-        style={{ background: `url('${this.state.photo[index]}') no-repeat center center` }} >
+        style={{ background: `url('${this.state.photo1[index]}') no-repeat center center` }} >
 
         <section>
 

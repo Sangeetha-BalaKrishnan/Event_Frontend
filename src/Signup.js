@@ -151,7 +151,7 @@ facebookDataLogin(user) {
         }
         else
         {
-          swal(res.error, "error");
+          swal(res.error);
         }
       });
   }

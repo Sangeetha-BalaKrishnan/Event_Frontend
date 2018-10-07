@@ -4,6 +4,7 @@ import logo from './images/new.png';
 import { BrowserRouter as Router, Route, Link,Redirect } from "react-router-dom";
 import Cookies from 'universal-cookie';
 import SocialButton from './SocialButton';
+import swal from 'sweetalert';
 
 import './signin_org.css';
 
@@ -99,32 +100,81 @@ class Signin_org extends Component{
   }
 
   facebookDataLogin(user){
-        console.log(user)
+        var name = user['_profile']['name'];
         var email = user['_profile']['email'];
         var password = '12345678';
-        fetch('https://admin.thetickets.in/api/login', {
-          method: 'post',
-          headers: {
-            'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({email: user['_profile']['email'], password:'12345678',role:'organiser'})
-        }).then(res=>res.json())
-          .then(res => {
-            // console.log(res.status);
-            if(res.status==true)
-            {
+        var role = 'customer';
+        var phone = null;
+        fetch('https://admin.thetickets.in/api/register1', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({name:name,role:'organiser',email:email,phone:phone, password:password})
+      }).then(res=>res.json())
+        .then(res => {
+          if(res.status==true)
+          {
+            var email = user['_profile']['email'];
+            var password = '12345678';
+            fetch('https://admin.thetickets.in/api/login', {
+              method: 'post',
+              headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({email: user['_profile']['email'], password:'12345678',role:'organiser'})
+            }).then(res=>res.json())
+              .then(res => {
+                // console.log(res.status);
+                if(res.status==true)
+                {
 
-              cookies.set('name', 'organiser', { path: '/' });
-              cookies.set('user',res.name, { path: '/' });
-              cookies.set('auth_token',res.token,{ path: '/' });
-              this.setState({redirect:true});
-            }
-            else if(res.status==false)
-            {
-              this.setState({error:true,error_msg:res.error});
-            }
-          });
+                  cookies.set('name', 'organiser', { path: '/' });
+                  cookies.set('user',res.name, { path: '/' });
+                  cookies.set('auth_token',res.token,{ path: '/' });
+                  this.setState({redirect:true});
+                }
+                else if(res.status==false)
+                {
+                  this.setState({error:true,error_msg:res.error});
+                }
+              });
+          }
+          else if(res.status == null)
+          {
+            var email = user['_profile']['email'];
+            var password = '12345678';
+            fetch('https://admin.thetickets.in/api/login', {
+              method: 'post',
+              headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({email: user['_profile']['email'], password:'12345678',role:'organiser'})
+            }).then(res=>res.json())
+              .then(res => {
+                // console.log(res.status);
+                if(res.status==true)
+                {
+
+                  cookies.set('name', 'organiser', { path: '/' });
+                  cookies.set('user',res.name, { path: '/' });
+                  cookies.set('auth_token',res.token,{ path: '/' });
+                  this.setState({redirect:true});
+                }
+                else if(res.status==false)
+                {
+                  this.setState({error:true,error_msg:res.error});
+                }
+              });
+          }
+          else if(res.status == false)
+          {
+            swal(res.error);
+          }
+        });
       }
   render(){
     const hello={
@@ -145,12 +195,12 @@ class Signin_org extends Component{
       return <Redirect to='/' />
     }
     const handleSocialLogin = (user) => {
-        console.log(user);
+        // console.log(user);
         this.facebookDataLogin(user);
 
       }
       const handleSocialLoginFailure = (err) => {
-        console.error(err)
+        // console.error(err)
       }
 
     return(

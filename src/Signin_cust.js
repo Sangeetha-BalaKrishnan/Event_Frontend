@@ -110,41 +110,107 @@ class Signin_cust extends Component{
   }
 
   facebookDataLogin(user){
-        console.log(user)
+        
+        var name = user['_profile']['name'];
         var email = user['_profile']['email'];
         var password = '12345678';
-        fetch('https://admin.thetickets.in/api/login', {
+        var role = 'customer';
+        var phone = null;
+        console.log(JSON.stringify({name:user['_profile']['name'],role:'customer',email: user['_profile']['email'],phone:null, password:'12345678'}));
+        fetch('https://admin.thetickets.in/api/register1', {
           method: 'post',
           headers: {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({email: user['_profile']['email'], password:'12345678',role:'customer'})
+          body: JSON.stringify({name:user['_profile']['name'],role:'customer',email: user['_profile']['email'],phone:null, password:'12345678'})
         }).then(res=>res.json())
           .then(res => {
-            // console.log(res.status);
             if(res.status==true)
             {
+              var email = user['_profile']['email'];
+              var password = '12345678';
+              fetch('https://admin.thetickets.in/api/login', {
+                method: 'post',
+                headers: {
+                  'Accept': 'application/json, text/plain, */*',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({email: user['_profile']['email'], password:'12345678',role:'customer'})
+              }).then(res=>res.json())
+                .then(res => {
+                  // console.log(res.status);
+                  if(res.status==true)
+                  {
 
-              cookies.set('name', 'customer', { path: '/' });
-              cookies.set('user',res.name, { path: '/' });
-              cookies.set('auth_token',res.token,{ path: '/' });
-              if(cookies.get('link')!=undefined)
-              {
-                var link = "/Events/"+cookies.get('link');
-                this.setState({redirect_payment:true,error:false,link:link});
+                    cookies.set('name', 'customer', { path: '/' });
+                    cookies.set('user',res.name, { path: '/' });
+                    cookies.set('auth_token',res.token,{ path: '/' });
+                    if(cookies.get('link')!=undefined)
+                    {
+                      var link = "/Events/"+cookies.get('link');
+                      this.setState({redirect_payment:true,error:false,link:link});
 
-              }
-              else
-              {
-              this.setState({redirect:true,error:false});
+                    }
+                    else
+                    {
+                    this.setState({redirect:true,error:false});
+                  }
+                  }
+                  else if(res.status==false)
+                  {
+                    this.setState({error:true,error_msg:res.error});
+                  }
+                });  
             }
-            }
-            else if(res.status==false)
+            else if(res.status == null)
             {
-              this.setState({error:true,error_msg:res.error});
+              var email = user['_profile']['email'];
+              var password = '12345678';
+              fetch('https://admin.thetickets.in/api/login', {
+                method: 'post',
+                headers: {
+                  'Accept': 'application/json, text/plain, */*',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({email: user['_profile']['email'], password:'12345678',role:'customer'})
+              }).then(res=>res.json())
+                .then(res => {
+                  // console.log(res.status);
+                  if(res.status==true)
+                  {
+
+                    cookies.set('name', 'customer', { path: '/' });
+                    cookies.set('user',res.name, { path: '/' });
+                    cookies.set('auth_token',res.token,{ path: '/' });
+                    if(cookies.get('link')!=undefined)
+                    {
+                      var link = "/Events/"+cookies.get('link');
+                      this.setState({redirect_payment:true,error:false,link:link});
+
+                    }
+                    else
+                    {
+                    this.setState({redirect:true,error:false});
+                  }
+                  }
+                  else if(res.status==false)
+                  {
+                    this.setState({error:true,error_msg:res.error});
+                  }
+                });  
+
+
+
             }
+            else if(res.status == false)
+            {
+              swal(res.error);
+            }
+            
+            
           });
+        
       }
   render(){
     const handleSocialLogin = (user) => {

@@ -14,7 +14,7 @@ const TabPane = Tabs.TabPane;
 
 
 function handleChange(value) {
-  console.log(`selected ${value}`);
+  // console.log(`selected ${value}`);
 }
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;

@@ -33,7 +33,7 @@ const antIcon = <Icon type="loading" style={{ fontSize: 135,marginLeft:"45%",mar
 const antIcon1 = <Icon type="loading" style={{ fontSize: 70,marginLeft:"40%",marginTop:"50%" }} spin />;
 
 function handleChange(value) {
-  console.log(`selected ${value}`);
+  // console.log(`selected ${value}`);
 }
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -125,10 +125,10 @@ next(){
   }
   if(this.state.venue!='' && this.state.add1!='' && this.state.city!='')
   {
-    console.log(key);
+    // console.log(key);
     var location=this.state.venue+'+'+this.state.add1+'+'+this.state.add2+'+'+this.state.city;
     var location1=this.state.venue+','+this.state.add1+','+this.state.add2+','+this.state.city;
-    console.log(location1);
+    // console.log(location1);
     fetch('https://maps.googleapis.com/maps/api/geocode/json?address='+location+'&key=AIzaSyCWpEoKPyUDW7x3OnfX0slzlz4NfV-abBI', {
   method: 'get',
   headers: {
@@ -136,10 +136,11 @@ next(){
 
   }
   }).then(res=>res.json())
-  .then(res => {console.log(res);
-    console.log(res.results[0].geometry.location);
+  .then(res => {
+    // console.log(res);
+    // console.log(res.results[0].geometry.location);
     var summa=res.results[0].geometry.location.lat+","+res.results[0].geometry.location.lng;
-    console.log(summa);
+    // console.log(summa);
     fetch('https://admin.thetickets.in/api/create_address', {
   method: 'post',
   headers: {
@@ -149,7 +150,8 @@ next(){
   },
   body: JSON.stringify({eventid:key,address:location1,lat_long:summa})
 }).then(res=>res.json())
-  .then(res => {console.log(res);
+  .then(res => {
+    // console.log(res);
     if(res.status==false)
     {
       swal("Oops", "try again after some time", "error");
@@ -169,7 +171,7 @@ handleChange_toggle(event){
   this.setState({[event.target.name] : event.target.value});
 
 var temp="check_"+event.target.name;
-console.log(temp);
+// console.log(temp);
   if((event.target.value).length>0)
   {
     this.setState({[temp]:before});
@@ -191,7 +193,7 @@ reset(){
 }
 
 handleClick = (e) => {
-  console.log('click ', e);
+  // console.log('click ', e);
   this.setState({
     current: e.key,
   });
@@ -202,7 +204,7 @@ handleClick = (e) => {
   };
 
   onCollapse = (collapsed) => {
-    console.log(collapsed);
+    // console.log(collapsed);
     this.setState({ collapsed });
   };
 

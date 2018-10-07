@@ -756,22 +756,10 @@ if(this.state.redirect_payment)
     </Tabs>
         </div>
 
-
-
-
-
       </div>}
       </MediaQuery>
 
       </div>
-
-
-
-
-
-
-
-
 
     );
   }
