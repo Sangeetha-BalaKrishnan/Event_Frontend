@@ -5,7 +5,9 @@ border: 2px solid grey;
 padding: 0px 17px;
 font-size: 23px;
 }
-
+#width{
+  width:160% !important;
+}
 .outer{
   border:1px solid #ddd;
   box-shadow: 12px 15px 12px #e2e2e2;

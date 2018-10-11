@@ -744,7 +744,8 @@ Clear floats after the columns */
   width:31%;
   margin-left: -2px;
   margin-top:25px;
-  float:left
+  float:left;
+  cursor:default;
 }
 
 .column_main1_1{
@@ -791,6 +792,7 @@ background-color: #ffffff;
   width:342px;
   border-radius: 7px;
   margin-left:60px;
+  cursor:pointer;
 }
 .box2{
   /*box-shadow: 0 0 24px 5px rgba(0, 0, 0, 0.12);*/

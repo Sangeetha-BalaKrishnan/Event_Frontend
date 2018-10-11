@@ -344,7 +344,7 @@ handleClick = (e) => {
       {this.state.check_ticket_name==after?message:''}
       <br/>
       <h5>QUANTITY</h5>
-      <Input type="number" style={this.state.check_quantity} id="input_width" name="quantity" value={this.state.quantity} onChange={this.state.check_quantity==after?this.handleChange_toggle:this.handleChange} placeholder="Ticket price" /><br/>
+      <Input type="number" style={this.state.check_quantity} id="input_width" name="quantity" value={this.state.quantity} onChange={this.state.check_quantity==after?this.handleChange_toggle:this.handleChange} placeholder="Ticket quantity" /><br/>
       {this.state.check_quantity==after?message:''}
       <br/>
       <h5>TICKET PRICE</h5>
@@ -472,6 +472,9 @@ handleClick = (e) => {
   <Menu.Item disabled key="toggle3" style={{marginLeft:'40px'}}>
     DESCRIPTION
   </Menu.Item>
+  <Menu.Item disabled key="toggle6" style={{marginLeft:'40px'}}>
+    DEPENDENCY
+  </Menu.Item>
   <Menu.Item disabled key="toggle4" style={{marginLeft:'40px'}}>
     <Link to={`/H`}>UPLOAD</Link>
   </Menu.Item>
@@ -541,6 +544,9 @@ handleClick = (e) => {
   </Menu.Item>
   <Menu.Item disabled key="toggle3" style={{marginLeft:'40px'}}>
     DESCRIPTION
+  </Menu.Item>
+  <Menu.Item disabled key="toggle6" style={{marginLeft:'40px'}}>
+    DEPENDENCY
   </Menu.Item>
   <Menu.Item disabled key="toggle4" style={{marginLeft:'40px'}}>
     <Link to={`/H`}>UPLOAD</Link>

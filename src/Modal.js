@@ -43,16 +43,19 @@ class Hello extends Component{
       options:'',
       category_option:'Text box',
       category_option_ref:'',
-      category_option_ref1:'',
+      category_option_ref1:'Alpha numeric',
       category_option_arr:[],
       category_option_ref_arr:[],
       name_arr:[],
       check_name:before,
       checkbox_mand_arr:[],
+      checkbox_mand_arr_cpy:[],
       name_ch:cookies.get('name'),
       user:cookies.get('user'),
       auth_token:cookies.get('auth_token'),
-      redirect_logout:false
+      redirect_logout:false,
+      redirect_prev:false,
+      redirect_next:false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleChange_name1 = this.handleChange_name1.bind(this);
@@ -64,7 +67,47 @@ class Hello extends Component{
     this.delete_ticket = this.delete_ticket.bind(this);
     this.statechange = this.statechange.bind(this);
     this.delete_cookies = this.delete_cookies.bind(this);
+    this.previous = this.previous.bind(this);
+    this.next = this.next.bind(this);
   }
+
+  componentDidMount() {
+    var cookie = cookies.get('event_id');
+
+    if(cookie)
+    {
+      fetch('https://admin.thetickets.in/api/get_addon/'+cookie, {
+    method: 'get',
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      'Authorization':'Bearer '+this.state.auth_token
+    }
+    }).then(res=>res.json())
+    .then(res => {
+      console.log(res);
+      if(res.status==true)
+      {
+        var i;
+        var arr=[];
+        for(i=0;i<res.title.length;i++)
+        {
+          if(res.optional==1)
+          {
+            arr.push("YES");
+          }
+          else {
+            arr.push("NO");
+          }
+        }
+        this.setState({name_arr:res.title,category_option_arr:res.type,category_option_ref_arr:res.value,checkbox_mand_arr:arr,checkbox_mand_arr_cpy:res.optional});
+      }
+
+
+    });
+    }
+  }
+
   handleChange_toggle(event){
 
     this.setState({[event.target.name] : event.target.value});
@@ -91,6 +134,34 @@ class Hello extends Component{
   this.setState({checkbox:event.target.checked,toggleFirst:!this.state.toggleFirst});
   // console.log(this.state.checkbox);
 }
+previous(){
+  this.setState({redirect_prev:true});
+}
+next(){
+  console.log(this.state.name_arr,"tttttt");
+  fetch('https://admin.thetickets.in/api/store_addon', {
+method: 'post',
+headers: {
+  'Accept': 'application/json, text/plain, */*',
+  'Content-Type': 'application/json',
+  'Authorization':'Bearer '+this.state.auth_token
+},
+body: JSON.stringify({eventid:cookies.get('event_id'),
+	title:this.state.name_arr,
+	type:this.state.category_option_arr,
+	value:this.state.category_option_ref_arr,
+  optional:this.state.checkbox_mand_arr_cpy,
+	total:this.state.name_arr.length})
+}).then(res=>res.json())
+.then(res => {
+  console.log(res);
+  if(res.status==true)
+  {
+    this.setState({redirect_next:true});
+  }
+
+});
+}
 delete_cookies(){
   cookies.remove('name', { path: '/' });
   cookies.remove('user', { path: '/' });
@@ -100,23 +171,26 @@ delete_cookies(){
 }
   delete_ticket(event)
   {
-    alert(event.target.name);
+
 
     const temp1=this.state.name_arr;
     const temp2=this.state.category_option_arr;
-    if(this.state.category_option_arr.length!=1)
-    {
+    const temp3=this.state.category_option_ref_arr;
+    const temp4=this.state.checkbox_mand_arr;
+
     temp1.splice(event.target.name,1);
     temp2.splice(event.target.name,1);
-  }
-  else {
-    alert('Atleast one dependency should be der');
-  }
+    temp3.splice(event.target.name,1);
+    temp4.splice(event.target.name,1);
+
+
 
     this.setState({
 
       name_arr : temp1,
-      category_option_arr : temp2
+      category_option_arr : temp2,
+      category_option_ref_arr : temp3,
+      checkbox_mand_arr:temp4
 
     });
     // console.log(this.state.name_arr);
@@ -152,16 +226,16 @@ close()
 dynamic(){
   if(this.state.category_option=='Check_box'||this.state.category_option=='Select_box'||this.state.category_option=='Radio_button')
   {
-    return <div><input  name="category_option_ref" value={this.state.category_option_ref} onChange={this.handleChange_name} type="text" placeholder="options seperated by commas" id="email1" class="form-control" required/></div>;
+    return <div><input  name="category_option_ref" value={this.state.category_option_ref} onChange={this.handleChange_name} type="text" placeholder="options seperated by commas" id="email1" className="form-control" required/></div>;
   }
-  else if(this.state.category_option=='Date')
+  /*else if(this.state.category_option=='Date')
   {
-    return <div><input  name="category_option_ref" value={this.state.category_option_ref} onChange={this.handleChange_name} type="text" placeholder="Min,Max age by DOB" id="email1" class="form-control" required/></div>;
+    return <div><input  name="category_option_ref" value={this.state.category_option_ref} onChange={this.handleChange_name} type="text" placeholder="Min,Max age by DOB" id="email1" className="form-control" required/></div>;
   }
   else if(this.state.category_option=='Attachment')
   {
-    return <div><input  name="category_option_ref" value={this.state.category_option_ref} onChange={this.handleChange_name} type="text" placeholder="Enter file formats" id="email1" class="form-control" required/></div>;
-  }
+    return <div><input  name="category_option_ref" value={this.state.category_option_ref} onChange={this.handleChange_name} type="text" placeholder="Enter file formats" id="email1" className="form-control" required/></div>;
+  }*/
   else if(this.state.category_option=='Mobile'||this.state.category_option=='Text_area')
   {
     return <div>-</div>
@@ -186,11 +260,12 @@ clicked(){
 
   var value;
   var check;
+  var check_temp;
 if(this.state.category_option_ref!='')
 {
   value=this.state.category_option_ref;
 }
-else if(this.state.category_option_ref1!=''){
+else if(this.state.category_option_ref1!='' && this.state.category_option=="Text box" ){
   value=this.state.category_option_ref1;
 }
 else{
@@ -199,25 +274,28 @@ else{
 if(this.state.checkbox_mand)
 {
   check="YES";
+  check_temp=1;
 }
 else {
   check="NO";
+  check_temp=0;
 }
-// console.log(value);
+
   this.setState({
       name_arr:[...this.state.name_arr,this.state.name],
       category_option_arr:[...this.state.category_option_arr,this.state.category_option],
       category_option_ref_arr:[...this.state.category_option_ref_arr,value],
       checkbox_mand_arr:[...this.state.checkbox_mand_arr,check],
+      checkbox_mand_arr_cpy:[...this.state.checkbox_mand_arr_cpy,check_temp],
       name:'',
       category_option:'Text box',
       category_option_ref:'',
-      category_option_ref1:'',
+      category_option_ref1:'Alpha Numeric',
       checkbox_mand:'',
       toggle:false,
       toggleAfter:true
     })
-  // console.log(this.state.name_arr);
+   console.log(this.state.name,this.state.category_option,value,check);
 }
 }
 
@@ -244,6 +322,10 @@ handleClick = (e) => {
 
 
   render(){
+    const bt={
+      width:'112px',
+      marginBottom:'40px'
+    };
 
     const awesome={
       height:'120px',
@@ -289,7 +371,7 @@ handleClick = (e) => {
       <div className="rows">
       <div className="col-sm-3">
 
-            <input  name="name" style={this.state.check_name} value={this.state.name} onChange={this.state.check_name==after?this.handleChange_toggle:this.handleChange_name} type="text" placeholder="Event Name" id="email1" class="form-control" required/>
+            <input  name="name" style={this.state.check_name} value={this.state.name} onChange={this.state.check_name==after?this.handleChange_toggle:this.handleChange_name} type="text" placeholder="Event Name" id="email1" className="form-control" required/>
             {this.state.check_name==after?message:''}
       </div>
             <div className="col-sm-3">
@@ -301,8 +383,7 @@ handleClick = (e) => {
                   <option value="Check_box">Check box</option>
                   <option value="Select_box">Select box</option>
                   <option value="Text_area">Text area</option>
-                  <option value="Date">Date</option>
-                  <option value="Attachment">Attachment</option>
+
                   </select>
                   </label>
             </div>
@@ -314,7 +395,7 @@ handleClick = (e) => {
                  <input style={{marginLeft:'27px'}} type="checkbox" onChange={this.handleChange1} /><br/>
             </div>
             <br/><br/><br/><br/>
-          <button  style={{height:'25px',marginTop:'10px',paddingTop:'2px',marginLeft:'15px'}} type="button" onClick={this.clicked} class="btn btn-primary">save</button>
+          <button  style={{height:'25px',marginTop:'10px',paddingTop:'2px',marginLeft:'15px'}} type="button" onClick={this.clicked} className="btn btn-primary">save</button>
       </div>
       </div>
     );
@@ -322,10 +403,10 @@ handleClick = (e) => {
       <div>
 
       <div className="rows">
-      <i class="fa fa-close" style={{marginLeft:'89%',marginTop:'-8px',fontSize:25,cursor:'pointer'}} onClick={this.close}></i>
+      <i className="fa fa-close" style={{marginLeft:'89%',marginTop:'-8px',fontSize:25,cursor:'pointer'}} onClick={this.close}></i>
       <div className="col-sm-3">
             <h4>Name</h4>
-            <input  name="name" style={this.state.check_name} value={this.state.name} onChange={this.state.check_name==after?this.handleChange_toggle:this.handleChange_name} type="text" placeholder="Event Name" id="email1" class="form-control" required/>
+            <input  name="name" style={this.state.check_name} value={this.state.name} onChange={this.state.check_name==after?this.handleChange_toggle:this.handleChange_name} type="text" placeholder="Event Name" id="email1" className="form-control" required/>
             {this.state.check_name==after?message:''}
       </div>
             <div className="col-sm-3">
@@ -338,8 +419,7 @@ handleClick = (e) => {
                   <option value="Check_box">Check box</option>
                   <option value="Select_box">Select box</option>
                   <option value="Text_area">Text area</option>
-                  <option value="Date">Date</option>
-                  <option value="Attachment">Attachment</option>
+
                   </select>
                   </label>
             </div>
@@ -353,7 +433,7 @@ handleClick = (e) => {
                  <input style={{marginLeft:'27px'}} type="checkbox" onChange={this.handleChange1} /><br/>
             </div>
             <br/><br/><br/><br/>
-          <button  style={{height:'25px',marginTop:'10px',paddingTop:'2px',marginLeft:'15px'}} type="button" onClick={this.clicked} class="btn btn-primary">save</button>
+          <button  style={{height:'25px',marginTop:'10px',paddingTop:'2px',marginLeft:'15px'}} type="button" onClick={this.clicked} className="btn btn-primary">save</button>
       </div>
       </div>
     );
@@ -361,7 +441,7 @@ handleClick = (e) => {
       <div>
       <br/><br/>
 
-      <i class="fa fa-close" style={{marginLeft:'89%',marginTop:'-8px',fontSize:25,cursor:'pointer'}} onClick={this.close}></i>
+      <i className="fa fa-close" style={{marginLeft:'89%',marginTop:'-8px',fontSize:25,cursor:'pointer'}} onClick={this.close}></i>
       <div className="rows">
       <div className="col-sm-2">
           Name
@@ -452,6 +532,14 @@ const fontdrop={
   fontFamily:'Roboto',
   fontSize:'18px'
 };
+if(this.state.redirect_prev)
+{
+  return <Redirect to='/dummy1' />
+}
+if(this.state.redirect_next)
+{
+  return <Redirect to='/H2' />
+}
 if(this.state.redirect_logout)
 {
   return <Redirect to='/' />
@@ -487,14 +575,13 @@ if(this.state.redirect_logout)
 
           <Content style={{ margin: '0 16px' }}>
             <Breadcrumb style={{ margin: '16px 0' }}>
-              <Breadcrumb.Item>User</Breadcrumb.Item>
-              <Breadcrumb.Item>Bill</Breadcrumb.Item>
+
             </Breadcrumb>
-            <div id="support" class="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+            <div id="support" className="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
             <Menu
     onClick={this.handleClick}
-    defaultSelectedKeys={'toggle4'}
+    defaultSelectedKeys={['toggle4']}
     mode="horizontal" style={{marginLeft:'20px'}}
   >
   <Menu.Item disabled key="toggle1">
@@ -509,6 +596,9 @@ if(this.state.redirect_logout)
   <Menu.Item key="toggle4" style={{marginLeft:'40px'}}>
     DEPENDENCY
   </Menu.Item>
+  <Menu.Item disabled key="toggle6" style={{marginLeft:'40px'}}>
+  <Link to={`/H3`}>UPLOAD</Link>
+  </Menu.Item>
   <Menu.Item disabled key="toggle5" style={{marginLeft:'40px'}}>
     <Link to={`/H3`}>TICKETS</Link>
   </Menu.Item>
@@ -517,15 +607,20 @@ if(this.state.redirect_logout)
 <br/>
       {this.state.toggle?'':check}
 
-      {this.state.toggleFirst?this.state.toggle?main_table:this.state.toggleAfter?main_table1:'':''}
+      {this.state.toggleFirst?this.state.toggle?main_table:this.state.toggleAfter?main_table1:main_table1:''}
       <br/><br/>
       {this.state.toggleFirst?this.state.toggle?'':add:''}
-
+      <br/><br/>
+      {this.state.toggle?'':
+      <div>
+      <button type="button" style={bt} onClick={this.previous} className="btn btn-primary">Previous</button>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <button type="button" style={bt} onClick={this.next} className="btn btn-primary">Next</button></div>}
       </div>
       </div>
     </Content>
     <Footer style={{ textAlign: 'center' }}>
-      Ant Design ©2016 Created by Ant UED
+
     </Footer>
   </Layout>
 </Layout>
@@ -537,7 +632,7 @@ if(this.state.redirect_logout)
 <Layout style={{ minHeight: '100vh' }}>
 <Sider
   collapsible
-  collapsed={'true'}
+  collapsed={['true']}
 >
     <div className="logo" />
     <Menu theme="dark" defaultSelectedKeys={['2']} mode="inline">
@@ -560,14 +655,13 @@ if(this.state.redirect_logout)
 
     <Content style={{ margin: '0 16px' }}>
       <Breadcrumb style={{ margin: '16px 0' }}>
-        <Breadcrumb.Item>User</Breadcrumb.Item>
-        <Breadcrumb.Item>Bill</Breadcrumb.Item>
+
       </Breadcrumb>
-      <div id="support" class="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+      <div id="support" className="col-sm-12" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
       <Menu
 onClick={this.handleClick}
-defaultSelectedKeys={'toggle4'}
+defaultSelectedKeys={['toggle4']}
 mode="horizontal" style={{marginLeft:'20px'}}
 >
 <Menu.Item disabled key="toggle1">
@@ -582,6 +676,9 @@ ADDRESS
 <Menu.Item key="toggle4" style={{marginLeft:'40px'}}>
 DEPENDENCY
 </Menu.Item>
+<Menu.Item disabled key="toggle6" style={{marginLeft:'40px'}}>
+<Link to={`/H3`}>UPLOAD</Link>
+</Menu.Item>
 <Menu.Item disabled key="toggle5" style={{marginLeft:'40px'}}>
 <Link to={`/H3`}>TICKETS</Link>
 </Menu.Item>
@@ -593,12 +690,17 @@ DEPENDENCY
 {this.state.toggleFirst?this.state.toggle?drop_down_mobile:this.state.toggleAfter?main_table1:'':''}
 <br/><br/>
 {this.state.toggleFirst?this.state.toggle?'':add:''}
-
+<br/><br/>
+{this.state.toggle?'':
+<div>
+<button type="button" style={bt} onClick={this.previous} className="btn btn-primary">Previous</button>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<button type="button" style={bt} onClick={this.next} className="btn btn-primary">Next</button></div>}
 </div>
 </div>
 </Content>
 <Footer style={{ textAlign: 'center' }}>
-Ant Design ©2016 Created by Ant UED
+
 </Footer>
 </Layout>
 </Layout>

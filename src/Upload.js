@@ -110,7 +110,7 @@ componentDidMount() {
   axios.post(url, formData)
 
     .then(res => {
-      // console.log(res.data);
+      //console.log(res.data);
       if(this.state.imagePreviewUrl == 'https://via.placeholder.com/380x230' && res.data.status == false)
       {
         this.setState({error:true});
@@ -121,6 +121,7 @@ componentDidMount() {
       }
     });
     }
+    //console.log(this.state.error);
   }
     _handleImageChange(e) {
       e.preventDefault();
@@ -219,7 +220,7 @@ const bt={
 
     if(this.state.redirect_prev)
     {
-      return <Redirect to='/dummy1' />
+      return <Redirect to='/H' />
     }
     if(this.state.redirect_next)
     {
@@ -278,6 +279,9 @@ const bt={
     </Menu.Item>
     <Menu.Item disabled key="toggle3" style={{marginLeft:'40px'}}>
       DESCRIPTION
+    </Menu.Item>
+    <Menu.Item disabled key="toggle6" style={{marginLeft:'40px'}}>
+      DEPENDENCY
     </Menu.Item>
     <Menu.Item key="toggle4" style={{marginLeft:'40px'}}>
       UPLOAD
@@ -361,6 +365,9 @@ const bt={
     </Menu.Item>
     <Menu.Item disabled key="toggle3" style={{marginLeft:'40px'}}>
       DESCRIPTION
+    </Menu.Item>
+    <Menu.Item disabled key="toggle6" style={{marginLeft:'40px'}}>
+      DEPENDENCY
     </Menu.Item>
     <Menu.Item key="toggle4" style={{marginLeft:'40px'}}>
       UPLOAD

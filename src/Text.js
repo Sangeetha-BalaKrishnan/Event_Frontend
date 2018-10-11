@@ -215,7 +215,7 @@ class TextEditor extends React.Component {
     }
     if(this.state.redirect_next)
     {
-      return <Redirect to='/H2' />
+      return <Redirect to='/H' />
     }
     if(this.state.redirect_logout)
     {
@@ -280,6 +280,9 @@ class TextEditor extends React.Component {
   </Menu.Item>
   <Menu.Item key="toggle3" style={{marginLeft:'40px'}}>
     DESCRIPTION
+  </Menu.Item>
+  <Menu.Item disabled key="toggle6" style={{marginLeft:'40px'}}>
+    DEPENDENCY
   </Menu.Item>
   <Menu.Item disabled key="toggle4" style={{marginLeft:'40px'}}>
     <Link to={`/H`}>UPLOAD</Link>
@@ -357,6 +360,9 @@ General INFO
 </Menu.Item>
 <Menu.Item key="toggle3" style={{marginLeft:'40px'}}>
 DESCRIPTION
+</Menu.Item>
+<Menu.Item disabled key="toggle6" style={{marginLeft:'40px'}}>
+  DEPENDENCY
 </Menu.Item>
 <Menu.Item disabled key="toggle4" style={{marginLeft:'40px'}}>
 <Link to={`/H`}>UPLOAD</Link>

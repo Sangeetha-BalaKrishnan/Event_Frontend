@@ -505,6 +505,9 @@ summa()
     <Menu.Item disabled key="toggle3" style={{marginLeft:'40px'}}>
       DESCRIPTION
     </Menu.Item>
+    <Menu.Item disabled key="toggle6" style={{marginLeft:'40px'}}>
+      DEPENDENCY
+    </Menu.Item>
     <Menu.Item disabled key="toggle4" style={{marginLeft:'40px'}}>
       UPLOAD
     </Menu.Item>
@@ -575,6 +578,9 @@ General INFO
 </Menu.Item>
 <Menu.Item disabled key="toggle3" >
 DESCRIPTION
+</Menu.Item>
+<Menu.Item disabled key="toggle6" >
+  DEPENDENCY
 </Menu.Item>
 <Menu.Item disabled key="toggle4" >
 UPLOAD

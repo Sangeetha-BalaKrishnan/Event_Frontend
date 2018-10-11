@@ -344,6 +344,9 @@ handleClick = (e) => {
   <Menu.Item disabled key="toggle3" style={{marginLeft:'40px'}}>
     <Link to={`/dummy1`}>DESCRIPTION</Link>
   </Menu.Item>
+  <Menu.Item disabled key="toggle6" style={{marginLeft:'40px'}}>
+    DEPENDENCY
+  </Menu.Item>
   <Menu.Item disabled key="toggle4" style={{marginLeft:'40px'}}>
     UPLOAD
   </Menu.Item>
@@ -433,6 +436,9 @@ handleClick = (e) => {
   </Menu.Item>
   <Menu.Item disabled key="toggle3" style={{marginLeft:'40px'}}>
     <Link to={`/dummy1`}>DESCRIPTION</Link>
+  </Menu.Item>
+  <Menu.Item disabled key="toggle6" style={{marginLeft:'40px'}}>
+    DEPENDENCY
   </Menu.Item>
   <Menu.Item disabled key="toggle4" style={{marginLeft:'40px'}}>
     UPLOAD

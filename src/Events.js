@@ -67,13 +67,20 @@ class Events extends Component{
     total_cpy:0,
     conv_cpy:0,
   selectedPlace:{name:'summa'},
-  editorHtml:""
+  editorHtml:"",
+  addon_name:[],
+  addon_type:[],
+  addon_value:[],
+  addon_mand:[],
+  array_value:[],
+  Error_Mand:false
 };
   this.organiser = this.organiser.bind(this);
   this.customer = this.customer.bind(this);
   this.dashboard = this.dashboard.bind(this);
   this.sub = this.sub.bind(this);
   this.add = this.add.bind(this);
+  this.push_value = this.push_value.bind(this);
   this.payment = this.payment.bind(this);
   this.toggle = this.toggle.bind(this);
   this.delete_cookies = this.delete_cookies.bind(this);
@@ -100,16 +107,28 @@ headers: {
 }
 }).then(res=>res.json())
 .then(res => {
+  var i;
+  var array=[];
+  for(i=0;i<res.data.addons[0].length;i++)
+  {
+    array[i]='';
+  }
 
-
-  this.setState({event_name:res.data.event_details.name,start:res.data.event_details.start_time,end:res.data.event_details.end_time,editorHtml:res.data.event_details.description,lat:res.data.location.lat_long.substr(0,res.data.location.lat_long.indexOf(",")),long:res.data.location.lat_long.substr(res.data.location.lat_long.indexOf(",")+1),organizer:res.data.event_details.organizer,phone:res.data.event_details.phone,ticket_name:res.data.tickets[0],amount:res.data.tickets[2],quantity:res.data.tickets[1],value:res.data.tickets[3],address:res.data.location.address,event_id:res.data.eventid,image:res.data.image,loading:false});
+console.log(res);
+  this.setState({event_name:res.data.event_details.name,start:res.data.event_details.start_time,end:res.data.event_details.end_time,editorHtml:res.data.event_details.description,lat:res.data.location.lat_long.substr(0,res.data.location.lat_long.indexOf(",")),long:res.data.location.lat_long.substr(res.data.location.lat_long.indexOf(",")+1),organizer:res.data.event_details.organizer,phone:res.data.event_details.phone,ticket_name:res.data.tickets[0],amount:res.data.tickets[2],quantity:res.data.tickets[1],value:res.data.tickets[3],address:res.data.location.address,event_id:res.data.eventid,image:res.data.image,loading:false,addon_name:res.data.addons[0],addon_type:res.data.addons[1],addon_value:res.data.addons[2],addon_mand:res.data.addons[3],array_value:array});
   cookies.remove('link', { path: '/' });
 
 });
 
 
 }
-
+push_value(x,value)
+{
+  console.log(x,value);
+  var array=this.state.array_value;
+  array[x]=value;
+  this.setState({array_value:array});
+}
 add(x){
 var array=this.state.value;
 if(this.state.value[x]<=this.state.quantity[x])
@@ -137,6 +156,16 @@ payment()
   }
   else
   {
+    var i,flag=0;
+    for(i=0;i<this.state.array_value.length;i++)
+    {
+      if(this.state.array_value[i]==''&& this.state.addon_mand[i]=="Yes")
+      {
+        flag=1;
+      }
+    }
+    if(flag==0)
+    {
     fetch('https://admin.thetickets.in/api/book_ticket', {
   method: 'post',
   headers: {
@@ -165,15 +194,20 @@ payment()
       c.push(res.data[i].cost);
       d.push(res.data[i].uniqueid);
     }
-    this.setState({ticket_name_cpy:a,quantity_cpy:b,amount_cpy:c,total_cpy:res.total,conv_cpy:res.convenince,toggle:true,unique_id:d});
+    this.setState({ticket_name_cpy:a,quantity_cpy:b,amount_cpy:c,total_cpy:res.total,conv_cpy:res.convenince,toggle:true,unique_id:d,Error_Mand:false});
     console.log(d);
   }
   });
   }
+  else {
+    this.setState({Error_Mand:true});
+  }
+}
+
 }
 
 onSuccess = (payment) => {
-               
+
                fetch('https://admin.thetickets.in/api/save_ticket', {
                method: 'post',
                headers: {
@@ -181,7 +215,7 @@ onSuccess = (payment) => {
                'Content-Type': 'application/json',
                'Authorization':'Bearer '+this.state.auth_token
              },
-             body: JSON.stringify({eventid:this.state.event_id,uniqueid:this.state.unique_id,transactionid:payment.paymentID,cost:this.state.total_cpy,charge:this.state.conv_cpy})
+             body: JSON.stringify({eventid:this.state.event_id,uniqueid:this.state.unique_id,transactionid:payment.paymentID,cost:this.state.total_cpy,charge:this.state.conv_cpy,addon_name:this.state.addon_name,addon_value:this.state.array_value})
                }).then(res=>res.json())
                .then(res => {
                 // console.log(res);
@@ -317,7 +351,128 @@ total(){
     const sign={
       marginTop:'36px'
     };
+    const select = this.state.addon_name.map((name,i)=>
 
+    {
+      this.state.addon_type[i]=="select"?
+    <div>hello</div>:
+    ''
+
+    }
+
+
+  );
+    const addon=this.state.addon_name.map((name,i)=>
+    <div key={i} style={{marginLeft:'270px'}}>
+    &nbsp;&nbsp;
+    {
+      this.state.addon_type[i]=="Text box"?
+    this.state.addon_value[i]=="Alpha numeric"?<div><span>{this.state.addon_name[i]}{this.state.addon_mand[i]=="Yes"?<span  style={{color:'red'}}>*</span>:''}</span>&nbsp;&nbsp;&nbsp;<span style={{display:'inline-block'}}><input  value={this.state.array_value[i]} onChange={e => this.push_value(i,e.target.value)} style={{width:'40% !important'}} type="text"   id="width" className="form-control" required/></span></div>:<div><span>{this.state.addon_name[i]}</span>{this.state.addon_mand[i]=="Yes"?<span style={{color:'red'}}>*</span>:''}&nbsp;&nbsp;&nbsp;<span style={{display:'inline-block'}}><input value={this.state.array_value[i]} onChange={e => this.push_value(i,e.target.value)}  style={{width:'40% !important'}} type="number"  id="width" className="form-control" required/></span></div>
+    :
+    this.state.addon_type[i]=="Mobile"?<div><span>{this.state.addon_name[i]}{this.state.addon_mand[i]=="Yes"?<span style={{color:'red'}}>*</span>:''}</span>&nbsp;&nbsp;&nbsp;+91<span style={{display:'inline-block'}}><input value={this.state.array_value[i]} onChange={e => this.push_value(i,e.target.value)} style={{width:'40% !important'}} type="number"   id="width" className="form-control" required/></span></div>:
+      this.state.addon_type[i]=="Select_box"?
+      <div>
+      <span>{this.state.addon_name[i]}{this.state.addon_mand[i]=="Yes"?<span style={{color:'red'}}>*</span>:''}</span>&nbsp;&nbsp;&nbsp;
+<select value={this.state.array_value[i]} onChange={e => this.push_value(i,e.target.value)} style={{ width: '200px',height:'27px',borderRadius:'5px' }} >
+<option value=''>--please select--</option>
+      {this.state.addon_value[i].split(',').map((value,j)=>
+    <option value={value}>{value}</option>
+  )}
+</select>
+</div>
+
+      :
+      this.state.addon_type[i]=="Radio_button"?
+      <div>
+      <span>{this.state.addon_name[i]}{this.state.addon_mand[i]=="Yes"?<span style={{color:'red'}}>*</span>:''}</span>&nbsp;&nbsp;&nbsp;
+      {
+      this.state.addon_value[i].split(',').map((value,j)=>
+
+      <div onChange={e => this.push_value(i,e.target.value)}>
+
+        <input type="radio" value={value} name="gender"/> {value}
+      </div>
+    )
+}</div>
+      :
+      this.state.addon_type[i]=="Check_box"?
+      <div>
+      <span>{this.state.addon_name[i]}{this.state.addon_mand[i]=="Yes"?<span style={{color:'red'}}>*</span>:''}</span>&nbsp;&nbsp;&nbsp;
+      {
+      this.state.addon_value[i].split(',').map((value,j)=>
+
+      <div>
+
+      <label>
+        <input type="checkbox"/>
+        {value}
+       </label>
+      </div>
+    )
+  }</div>:''
+
+
+    }
+
+    <br/>
+    </div>
+    );
+
+    const addon_m=this.state.addon_name.map((name,i)=>
+    <div key={i} style={{marginLeft:'10px'}}>
+    &nbsp;&nbsp;
+    {
+      this.state.addon_type[i]=="Text box"?
+    this.state.addon_value[i]=="Alpha numeric"?<div><span>{this.state.addon_name[i]}{this.state.addon_mand[i]=="Yes"?<span  style={{color:'red'}}>*</span>:''}</span>&nbsp;&nbsp;&nbsp;<span style={{display:'inline-block'}}><input  value={this.state.array_value[i]} onChange={e => this.push_value(i,e.target.value)} style={{width:'40% !important'}} type="text"   id="width" className="form-control" required/></span></div>:<div><span>{this.state.addon_name[i]}</span>{this.state.addon_mand[i]=="Yes"?<span style={{color:'red'}}>*</span>:''}&nbsp;&nbsp;&nbsp;<span style={{display:'inline-block'}}><input value={this.state.array_value[i]} onChange={e => this.push_value(i,e.target.value)}  style={{width:'40% !important'}} type="number"  id="width" className="form-control" required/></span></div>
+    :
+    this.state.addon_type[i]=="Mobile"?<div><span>{this.state.addon_name[i]}{this.state.addon_mand[i]=="Yes"?<span style={{color:'red'}}>*</span>:''}</span>&nbsp;&nbsp;&nbsp;+91<span style={{display:'inline-block'}}><input value={this.state.array_value[i]} onChange={e => this.push_value(i,e.target.value)} style={{width:'40% !important'}} type="number"   id="width" className="form-control" required/></span></div>:
+      this.state.addon_type[i]=="Select_box"?
+      <div>
+      <span>{this.state.addon_name[i]}{this.state.addon_mand[i]=="Yes"?<span style={{color:'red'}}>*</span>:''}</span>&nbsp;&nbsp;&nbsp;
+<select value={this.state.array_value[i]} onChange={e => this.push_value(i,e.target.value)} style={{ width: '200px',height:'27px',borderRadius:'5px' }} >
+<option value=''>--please select--</option>
+      {this.state.addon_value[i].split(',').map((value,j)=>
+    <option value={value}>{value}</option>
+  )}
+</select>
+</div>
+
+      :
+      this.state.addon_type[i]=="Radio_button"?
+      <div>
+      <span>{this.state.addon_name[i]}{this.state.addon_mand[i]=="Yes"?<span style={{color:'red'}}>*</span>:''}</span>&nbsp;&nbsp;&nbsp;
+      {
+      this.state.addon_value[i].split(',').map((value,j)=>
+
+      <div onChange={e => this.push_value(i,e.target.value)}>
+
+        <input type="radio" value={value} name="gender"/> {value}
+      </div>
+    )
+}</div>
+      :
+      this.state.addon_type[i]=="Check_box"?
+      <div>
+      <span>{this.state.addon_name[i]}{this.state.addon_mand[i]=="Yes"?<span style={{color:'red'}}>*</span>:''}</span>&nbsp;&nbsp;&nbsp;
+      {
+      this.state.addon_value[i].split(',').map((value,j)=>
+
+      <div>
+
+      <label>
+        <input type="checkbox"/>
+        {value}
+       </label>
+      </div>
+    )
+  }</div>:''
+
+
+    }
+
+    <br/>
+    </div>
+    );
 
     const Ticket=this.state.ticket_name.map((name,i)=>
     <div key={i} className="outer">
@@ -526,7 +681,7 @@ if(this.state.redirect_payment)
       {this.state.organizer==''?'':<span className="contact"><Icon type="user" theme="outlined" />&nbsp;&nbsp;Contact info</span>}
       <br/>
       <span className="header2">{this.state.end==''?'':"END DATE :"}&nbsp;&nbsp;&nbsp;{this.state.end}</span>
-      <span className="contact1">{this.state.organizer}&nbsp;&nbsp;{this.state.organizer==''?'':<i class="fa fa-phone" style={{fontSize:"18px"}}></i>}&nbsp;{this.state.phone}</span>
+      <span className="contact1">{this.state.organizer}&nbsp;&nbsp;{this.state.organizer==''?'':<i className="fa fa-phone" style={{fontSize:"18px"}}></i>}&nbsp;{this.state.phone}</span>
       <br/><br/>
 
       </div>
@@ -536,6 +691,9 @@ if(this.state.redirect_payment)
       </TabPane>
 
       <TabPane tab="Buy Tickets" key="2">
+      {addon}
+      {this.state.Error_Mand?<span style={{color:'red',marginLeft:'268px'}}>Please fill all the Mandatory sections</span>:''}
+      <br/>
       {this.state.toggle==false?<div style={{marginBottom:'50px'}}>
       {Ticket}
       {this.state.total>=1?<span style={{marginLeft:'830px',fontSize:'18px',fontFamily:'Roboto'}}>TICKET PRICE</span>:''}
@@ -665,7 +823,7 @@ if(this.state.redirect_payment)
       <br/>
       {this.state.organizer==''?'':<span className="contact"><Icon type="user" theme="outlined" />&nbsp;&nbsp;Contact info</span>}
       <br/>
-      <span className="contact1_m">{this.state.organizer}&nbsp;&nbsp;{this.state.organizer==''?'':<i class="fa fa-phone" style={{fontSize:"18px"}}></i>}&nbsp;{this.state.phone}</span>
+      <span className="contact1_m">{this.state.organizer}&nbsp;&nbsp;{this.state.organizer==''?'':<i className="fa fa-phone" style={{fontSize:"18px"}}></i>}&nbsp;{this.state.phone}</span>
       <br/><br/>
 
       </div>
@@ -675,6 +833,9 @@ if(this.state.redirect_payment)
       </TabPane>
 
       <TabPane tab="Buy Tickets" key="2">
+      {addon_m}
+      {this.state.Error_Mand?<span style={{color:'red',marginLeft:'268px'}}>Please fill all the Mandatory sections</span>:''}
+      <br/>
       {this.state.toggle==false?<div style={{marginBottom:'50px'}}>
       {Ticket_m}
       {this.state.total>=1?<span style={{marginLeft:'106px',fontSize:'18px',fontFamily:'Roboto'}}>TICKET PRICE</span>:''}
