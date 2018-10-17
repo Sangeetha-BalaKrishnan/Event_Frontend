@@ -92,7 +92,7 @@ class Hello extends Component{
         var arr=[];
         for(i=0;i<res.title.length;i++)
         {
-          if(res.optional==1)
+          if(res.optional[i]==1)
           {
             arr.push("YES");
           }
@@ -177,12 +177,13 @@ delete_cookies(){
     const temp2=this.state.category_option_arr;
     const temp3=this.state.category_option_ref_arr;
     const temp4=this.state.checkbox_mand_arr;
+    const temp5=this.state.checkbox_mand_arr_cpy;
 
     temp1.splice(event.target.name,1);
     temp2.splice(event.target.name,1);
     temp3.splice(event.target.name,1);
     temp4.splice(event.target.name,1);
-
+    temp5.splice(event.target.name,1);
 
 
     this.setState({
@@ -190,10 +191,11 @@ delete_cookies(){
       name_arr : temp1,
       category_option_arr : temp2,
       category_option_ref_arr : temp3,
-      checkbox_mand_arr:temp4
+      checkbox_mand_arr:temp4,
+      checkbox_mand_arr_cpy:temp5
 
     });
-    // console.log(this.state.name_arr);
+     console.log(this.state.name_arr,this.state.category_option_arr,this.state.category_option_ref_arr,this.state.checkbox_mand_arr);
 
   }
 
@@ -243,7 +245,6 @@ dynamic(){
   return <div>  <label>
     <select name="category_option_ref1" value={this.state.category_option_ref1} style={{ width: '200px',height:'29px',borderRadius:'7px' }} onChange={this.handleChange_name} >
     <option value="Alpha">Alpha numeric</option>
-    <option value="char">char only</option>
     <option value="numb">Number only</option>
     </select>
     </label></div>;
@@ -295,7 +296,7 @@ else {
       toggle:false,
       toggleAfter:true
     })
-   console.log(this.state.name,this.state.category_option,value,check);
+   console.log(this.state.name,this.state.category_option,value,check,check_temp,this.state.checkbox_mand_arr_cpy);
 }
 }
 
@@ -382,7 +383,7 @@ handleClick = (e) => {
                   <option value="Radio_button">Radio button</option>
                   <option value="Check_box">Check box</option>
                   <option value="Select_box">Select box</option>
-                  <option value="Text_area">Text area</option>
+
 
                   </select>
                   </label>
@@ -418,7 +419,7 @@ handleClick = (e) => {
                   <option value="Radio_button">Radio button</option>
                   <option value="Check_box">Check box</option>
                   <option value="Select_box">Select box</option>
-                  <option value="Text_area">Text area</option>
+
 
                   </select>
                   </label>

@@ -81,6 +81,7 @@ class Events extends Component{
   this.sub = this.sub.bind(this);
   this.add = this.add.bind(this);
   this.push_value = this.push_value.bind(this);
+  this.push_value_check = this.push_value_check.bind(this);
   this.payment = this.payment.bind(this);
   this.toggle = this.toggle.bind(this);
   this.delete_cookies = this.delete_cookies.bind(this);
@@ -129,6 +130,44 @@ push_value(x,value)
   array[x]=value;
   this.setState({array_value:array});
 }
+push_value_check(x,y,value,length)
+{
+  console.log(x,value);
+  if(this.state.array_value[x]=='')
+  {
+    var array1=[];
+    for(var z=0;z<length;z++)
+    {
+      array1[z]=0;
+    }
+    if(value==true)
+    array1[y]=1;
+    else {
+      array1[y]=0;
+    }
+  }
+  else {
+    array1=this.state.array_value[x].split(',');
+    if(value==true)
+    array1[y]=1;
+    else {
+      array1[y]=0;
+    }
+  }
+  var string="";
+  for(var z=0;z<array1.length;z++)
+  {
+    string+=array1[z];
+    if(z!=array1.length-1)
+    {
+      string+=',';
+    }
+  }
+  console.log(string);
+  var array=this.state.array_value;
+  array[x]=string;
+  this.setState({array_value:array});
+}
 add(x){
 var array=this.state.value;
 if(this.state.value[x]<=this.state.quantity[x])
@@ -164,6 +203,7 @@ payment()
         flag=1;
       }
     }
+    console.log(this.state.array_value);
     if(flag==0)
     {
     fetch('https://admin.thetickets.in/api/book_ticket', {
@@ -401,12 +441,12 @@ total(){
       {
       this.state.addon_value[i].split(',').map((value,j)=>
 
-      <div>
+      <div >
 
-      <label>
-        <input type="checkbox"/>
+
+        <input type="checkbox" onChange={e => this.push_value_check(i,j,e.target.checked,this.state.addon_value[i].split(',').length)}/>
         {value}
-       </label>
+
       </div>
     )
   }</div>:''
@@ -457,10 +497,10 @@ total(){
       {
       this.state.addon_value[i].split(',').map((value,j)=>
 
-      <div>
+      <div >
 
       <label>
-        <input type="checkbox"/>
+        <input type="checkbox" onChange={e => this.push_value_check(i,j,e.target.checked,this.state.addon_value[i].split(',').length)}/>
         {value}
        </label>
       </div>
