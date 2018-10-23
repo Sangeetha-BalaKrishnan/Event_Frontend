@@ -127,7 +127,7 @@ button:hover {
 .previousButton {
   left: 0;
   -webkit-transform: rotate(180deg) translateY(calc(50% + 0px));
-          transform: rotate(180deg) translateY(calc(50% + 0px));
+          transform: rotate(180deg) translateY(calc(50% + 0px)) !important;
 }
 
 .previousButton:hover {

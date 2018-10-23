@@ -64,6 +64,17 @@ cursor: pointer;
 margin-left:115px;
 }
 
+#book_ticket1_paypal{
+  background: #d7343a;
+padding: 10px 50px;
+border: none;
+font-size: 14px;
+color: #fff;
+border-radius: 5px;
+cursor: pointer;
+margin-left:224px;
+margin-top:-73px;
+}
 #book_ticket1{
   background: #d7343a;
 padding: 10px 50px;
@@ -72,8 +83,8 @@ font-size: 14px;
 color: #fff;
 border-radius: 5px;
 cursor: pointer;
-margin-left:793px;
-margin-top:-73px;
+margin-left:600px;
+margin-top:-8px;
 }
 #book_ticket1_m{
   background: #d7343a;

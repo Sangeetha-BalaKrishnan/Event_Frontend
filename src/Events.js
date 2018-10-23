@@ -73,7 +73,8 @@ class Events extends Component{
   addon_value:[],
   addon_mand:[],
   array_value:[],
-  Error_Mand:false
+  Error_Mand:false,
+  paypal:false,
 };
   this.organiser = this.organiser.bind(this);
   this.customer = this.customer.bind(this);
@@ -85,6 +86,7 @@ class Events extends Component{
   this.payment = this.payment.bind(this);
   this.toggle = this.toggle.bind(this);
   this.delete_cookies = this.delete_cookies.bind(this);
+  this.paypal_button = this.paypal_button.bind(this);
   }
   componentDidMount() {
 
@@ -129,7 +131,26 @@ push_value(x,value)
   var array=this.state.array_value;
   array[x]=value;
   this.setState({array_value:array});
+  var i,flag=0;
+  for(i=0;i<this.state.array_value.length;i++)
+  {
+    if(this.state.array_value[i]==''&& this.state.addon_mand[i]=="Yes")
+    {
+      flag=1;
+    }
+  }
+  console.log(this.state.array_value);
+  if(flag==0)
+  {
+    this.setState({Error_Mand:false});
+  }
+  else {
+    this.setState({Error_Mand:true});
+  }
+  console.log(this.state.Error_Mand);
 }
+
+
 push_value_check(x,y,value,length)
 {
   console.log(x,value);
@@ -167,7 +188,26 @@ push_value_check(x,y,value,length)
   var array=this.state.array_value;
   array[x]=string;
   this.setState({array_value:array});
+  var i,flag=0;
+  for(i=0;i<this.state.array_value.length;i++)
+  {
+    if(this.state.array_value[i]==''&& this.state.addon_mand[i]=="Yes")
+    {
+      flag=1;
+    }
+  }
+  console.log(this.state.array_value);
+  if(flag==0)
+  {
+    this.setState({Error_Mand:false});
+  }
+  else {
+    this.setState({Error_Mand:true});
+  }
+  console.log(this.state.Error_Mand);
 }
+
+
 add(x){
 var array=this.state.value;
 if(this.state.value[x]<=this.state.quantity[x])
@@ -195,17 +235,7 @@ payment()
   }
   else
   {
-    var i,flag=0;
-    for(i=0;i<this.state.array_value.length;i++)
-    {
-      if(this.state.array_value[i]==''&& this.state.addon_mand[i]=="Yes")
-      {
-        flag=1;
-      }
-    }
-    console.log(this.state.array_value);
-    if(flag==0)
-    {
+
     fetch('https://admin.thetickets.in/api/book_ticket', {
   method: 'post',
   headers: {
@@ -238,14 +268,30 @@ payment()
     console.log(d);
   }
   });
+}
+
+}
+paypal_button(event)
+{
+  console.log(event.target.value);
+  this.setState({paypal:event.target.value});
+  var i,flag=0;
+  for(i=0;i<this.state.array_value.length;i++)
+  {
+    if(this.state.array_value[i]==''&& this.state.addon_mand[i]=="Yes")
+    {
+      flag=1;
+    }
+  }
+  console.log(this.state.array_value);
+  if(flag==0)
+  {
+    this.setState({Error_Mand:false});
   }
   else {
     this.setState({Error_Mand:true});
   }
 }
-
-}
-
 onSuccess = (payment) => {
 
                fetch('https://admin.thetickets.in/api/save_ticket', {
@@ -403,7 +449,7 @@ total(){
 
   );
     const addon=this.state.addon_name.map((name,i)=>
-    <div key={i} style={{marginLeft:'270px'}}>
+    <div key={i} style={{marginLeft:'40px'}}>
     &nbsp;&nbsp;
     {
       this.state.addon_type[i]=="Text box"?
@@ -731,10 +777,10 @@ if(this.state.redirect_payment)
       </TabPane>
 
       <TabPane tab="Buy Tickets" key="2">
-      {addon}
-      {this.state.Error_Mand?<span style={{color:'red',marginLeft:'268px'}}>Please fill all the Mandatory sections</span>:''}
-      <br/>
-      {this.state.toggle==false?<div style={{marginBottom:'50px'}}>
+<br/>
+      {this.state.toggle==false?
+
+        <div style={{marginBottom:'50px'}}>
       {Ticket}
       {this.state.total>=1?<span style={{marginLeft:'830px',fontSize:'18px',fontFamily:'Roboto'}}>TICKET PRICE</span>:''}
       {this.state.total>=1?<span style={{marginLeft:'40px',fontSize:'18px',fontFamily:'Roboto'}}>{this.state.total}</span>:''}
@@ -757,12 +803,21 @@ if(this.state.redirect_payment)
       {this.state.total>0?<button  onClick={this.payment} className="btn btn-primary book_ticket">BOOK TICKET</button> :''}
 
       <b/><br/>
-      </div>:
+      </div>
+
+      :
+
       <div style={{marginBottom:'80px'}}>
-      <div style={{backgroundColor:'#e8e8e8'}}>
+      <div  className="row" style={{backgroundColor:'#e8e8e8'}}>
       <br/><br/>
-      <div style={{width:'60%',marginLeft:'239px',backgroundColor:'white',border:'1px solid #e9e9e9'}}>
-      <h1 style={{marginLeft:'283px'}}>Order Summary</h1>
+      <div className="col-sm-6" style={{backgroundColor:'white',width:'57%',marginRight:'30px',marginLeft:'50px',marginBottom:'20px'}}>
+      <h1 style={{marginLeft:'38px'}}>Registration Information</h1>
+      {addon}
+      {this.state.Error_Mand?<span style={{color:'red',marginLeft:'40px',fontSize:'16px'}}>Please fill all the Mandatory sections</span>:''}
+      <br/>
+      </div>
+      <div className="col-sm-4" style={{width:'30%',marginLeft:'35px',marginBottom:'20px',backgroundColor:'white',border:'1px solid #e9e9e9'}}>
+      <h1 style={{marginLeft:'64px'}}>Payment Summary</h1>
 
       {payment_ticket}
       <br/>
@@ -772,18 +827,33 @@ if(this.state.redirect_payment)
       <span className="ticket">CONVENIENCE :</span>
       <span style={{marginLeft:'40px',fontSize:'18px',fontFamily:'Roboto'}}>{this.state.conv_cpy}</span>
       <br/><br/>
-      <div style={{backgroundColor:'#e8e8e8',border:'1px solid black'}}>
+      <div style={{backgroundColor:'#e8e8e8',border:'1px solid black',marginBottom:'20px'}}>
       <span className="ticket">TOTAL :</span>
       <span style={{marginLeft:'40px',fontSize:'18px',fontFamily:'Roboto'}}>{this.state.conv_cpy+this.state.total_cpy}</span>
       <br/>
       </div>
       </div>
-      <br/>
+      <br/><br/>
 
       </div>
       <br/>
-      <div style={{marginLeft:'500px'}}><PaypalExpressBtn env ={env} client={client} onError={this.onError} onSuccess={this.onSuccess} onCancel={this.onCancel} currency={'INR'} total={this.state.total_cpy+this.state.conv_cpy} /></div>
-      <button  onClick={this.toggle} className="btn btn-primary" id="book_ticket1">CANCEL</button>
+      <h1 style={{marginLeft:'500px'}}>Proceed to pay Using</h1>
+      <div style={{marginLeft:'500px'}} onChange={this.paypal_button}>
+      <input type="radio"  value="paypal" name="summa"/>&nbsp;&nbsp;<img style={{height:'37px'}} src="https://newsroom.mastercard.com/wp-content/uploads/2016/09/paypal-logo.png" alt="Girl in a jacket"/><br/>
+      <input type="radio"  value="others" name="summa"/>&nbsp;&nbsp;Others<br/>
+      </div>
+      <br/>
+      <br/>
+
+      {this.state.paypal=="paypal"?
+      this.state.Error_Mand==false?
+      <div style={{marginLeft:'500px'}}>
+      <PaypalExpressBtn env ={env} client={client} onError={this.onError} onSuccess={this.onSuccess} onCancel={this.onCancel} currency={'INR'} total={this.state.total_cpy+this.state.conv_cpy} />
+      <button  onClick={this.toggle} className="btn btn-primary" id="book_ticket1_paypal">CANCEL</button>
+      </div>:
+    <button  onClick={this.toggle} className="btn btn-primary" id="book_ticket1">CANCEL</button>:
+    <button  onClick={this.toggle} className="btn btn-primary" id="book_ticket1">CANCEL</button>}
+
     </div>}
       </TabPane>
 
@@ -873,9 +943,7 @@ if(this.state.redirect_payment)
       </TabPane>
 
       <TabPane tab="Buy Tickets" key="2">
-      {addon_m}
-      {this.state.Error_Mand?<span style={{color:'red',marginLeft:'268px'}}>Please fill all the Mandatory sections</span>:''}
-      <br/>
+
       {this.state.toggle==false?<div style={{marginBottom:'50px'}}>
       {Ticket_m}
       {this.state.total>=1?<span style={{marginLeft:'106px',fontSize:'18px',fontFamily:'Roboto'}}>TICKET PRICE</span>:''}
@@ -903,8 +971,14 @@ if(this.state.redirect_payment)
       <div style={{marginBottom:'80px'}}>
       <div style={{backgroundColor:'#e8e8e8'}}>
       <br/><br/>
+      <div style={{backgroundColor:'white'}}>
+      <h1 style={{marginLeft:'38px'}}>Registration Information</h1>
+      {addon_m}
+      {this.state.Error_Mand?<span style={{color:'red',marginLeft:'88px',fontSize:'16px'}}>Please fill all the Mandatory sections</span>:''}
+      </div>
+      <br/>
       <div style={{width:'83%',marginLeft:'36px',backgroundColor:'white',border:'1px solid #e9e9e9'}}>
-      <h1 style={{marginLeft:'63px'}}>Order Summary</h1>
+      <h1 style={{marginLeft:'63px'}}>Payment Summary</h1>
 
       {payment_ticket}
       <br/>
@@ -924,7 +998,20 @@ if(this.state.redirect_payment)
 
       </div>
       <br/>
-      <div style={{marginLeft:'120px'}}><PaypalExpressBtn env ={env} client={client} onError={this.onError} onSuccess={this.onSuccess} onCancel={this.onCancel} currency={'INR'} total={this.state.total_cpy+this.state.conv_cpy} /></div>
+      <h1 style={{marginLeft:'62px'}}>Proceed to pay Using</h1>
+      <div style={{marginLeft:'140px'}} onChange={this.paypal_button}>
+      <input type="radio"  value="paypal" name="summa"/>&nbsp;&nbsp;<img style={{height:'37px'}} src="https://newsroom.mastercard.com/wp-content/uploads/2016/09/paypal-logo.png" alt="Girl in a jacket"/><br/>
+      <input type="radio"  value="others" name="summa"/>&nbsp;&nbsp;Others<br/>
+      </div>
+      <br/><br/>
+      {this.state.paypal=="paypal"?
+      this.state.Error_Mand==false?
+      <div style={{marginLeft:'120px'}}>
+      <PaypalExpressBtn env ={env} client={client} onError={this.onError} onSuccess={this.onSuccess} onCancel={this.onCancel} currency={'INR'} total={this.state.total_cpy+this.state.conv_cpy} />
+      
+      </div>:
+    " ":
+    " "}
       <br/><br/><br/>
       <button  onClick={this.toggle} className="btn btn-primary" id="book_ticket1_m">CANCEL</button>
     </div>}
