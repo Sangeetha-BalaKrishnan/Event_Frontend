@@ -8,6 +8,8 @@ import MediaQuery from 'react-responsive';
 import swal from 'sweetalert';
 import SocialButton from './SocialButton';
 import Cookies from 'universal-cookie';
+import FacebookLogin from 'react-facebook-login';
+
 const cookies = new Cookies();
 
 const after={
@@ -127,19 +129,25 @@ handleClick()
 }
 
 facebookDataLogin(user) {
-    var name = user['_profile']['name'];
-    var email = user['_profile']['email'];
+    var name = user['name'];
+    var email = user['email'];
     var password = '12345678';
     var role = 'customer';
     var phone = null;
-    console.log(JSON.stringify({name:user['_profile']['name'],role:'customer',email: user['_profile']['email'],phone:null, password:'12345678'}));
+    if(user['email'] ==  undefined || user['email'] == "" || user['email'] == null)
+      {
+        swal('Your account does not have email id . Please use our singup page to register yoursef.');
+        return ;
+      }
+    console.log(user['email'],user['userID']);
+    console.log(JSON.stringify({name:user['name'],role:'customer',email: user['email'],phone:null, password:'12345678'}));
     fetch('https://admin.thetickets.in/api/register1', {
       method: 'post',
       headers: {
         'Accept': 'application/json, text/plain, */*',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({name:user['_profile']['name'],role:'customer',email: user['_profile']['email'],phone:null, password:'12345678'})
+      body: JSON.stringify({name:user['name'],role:'customer',email: user['email'],phone:null, password:'12345678'})
     }).then(res=>res.json())
       .then(res => {
         // console.log(res);
@@ -231,16 +239,15 @@ check_all()
       <div id="logform2" class="col-sm-6">
       <br/><br/><br/><br/>
         <div class="col-sm-6" id="signup1">
-           <SocialButton
-              provider='facebook'
-              appId='246946452678768'
-              onLoginSuccess={handleSocialLogin}
-              onLoginFailure={handleSocialLoginFailure}
-              id="bttfb"
-              className="btn btn-default"
-            >
-              Signup with Facebook
-            </SocialButton>
+            <FacebookLogin
+              appId="246946452678768"
+              autoLoad={false}
+              fields="name,email,picture"
+              callback={handleSocialLogin}
+              onFailure = {handleSocialLoginFailure}
+              cssClass="btn btn-default bttfb"
+            />
+
         </div>
 
       <div className="or-space1">

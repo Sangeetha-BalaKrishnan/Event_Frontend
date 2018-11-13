@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Link,Redirect } from "react-router-dom"
 import Cookies from 'universal-cookie';
 import SocialButton from './SocialButton';
 import swal from 'sweetalert';
+import FacebookLogin from 'react-facebook-login';
 
 import './signin_org.css';
 
@@ -100,8 +101,13 @@ class Signin_org extends Component{
   }
 
   facebookDataLogin(user){
-        var name = user['_profile']['name'];
-        var email = user['_profile']['email'];
+        var name = user['name'];
+        var email = user['email'];
+        if(email == undefined || email == null)
+          {
+            swal('Your account does not have email id . Please use our singup page to register yoursef.');
+            return ;
+          }
         var password = '12345678';
         var role = 'customer';
         var phone = null;
@@ -116,7 +122,7 @@ class Signin_org extends Component{
         .then(res => {
           if(res.status==true)
           {
-            var email = user['_profile']['email'];
+            var email = user['email'];
             var password = '12345678';
             fetch('https://admin.thetickets.in/api/login', {
               method: 'post',
@@ -124,7 +130,7 @@ class Signin_org extends Component{
                 'Accept': 'application/json, text/plain, */*',
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify({email: user['_profile']['email'], password:'12345678',role:'organiser'})
+              body: JSON.stringify({email: user['email'], password:'12345678',role:'organiser'})
             }).then(res=>res.json())
               .then(res => {
                 // console.log(res.status);
@@ -144,7 +150,7 @@ class Signin_org extends Component{
           }
           else if(res.status == null)
           {
-            var email = user['_profile']['email'];
+            var email = user['email'];
             var password = '12345678';
             fetch('https://admin.thetickets.in/api/login', {
               method: 'post',
@@ -152,7 +158,7 @@ class Signin_org extends Component{
                 'Accept': 'application/json, text/plain, */*',
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify({email: user['_profile']['email'], password:'12345678',role:'organiser'})
+              body: JSON.stringify({email: user['email'], password:'12345678',role:'organiser'})
             }).then(res=>res.json())
               .then(res => {
                 // console.log(res.status);
@@ -258,16 +264,14 @@ class Signin_org extends Component{
   </ul>
 <br/>
 
-  <SocialButton
-      provider='facebook'
-      appId='246946452678768'
-      onLoginSuccess={handleSocialLogin}
-      onLoginFailure={handleSocialLoginFailure}
-      id="bttfb1"
-      className="btn btn-default"
-    >
-      Login with Facebook
-    </SocialButton>
+  <FacebookLogin
+      appId="246946452678768"
+      autoLoad={false}
+      fields="name,email,picture"
+      callback={handleSocialLogin}
+      onFailure = {handleSocialLoginFailure}
+      cssClass="btn btn-default bttfb1"
+    />
 
 
 </div>

@@ -294,6 +294,8 @@ paypal_button(event)
 }
 onSuccess = (payment) => {
 
+
+
                fetch('https://admin.thetickets.in/api/save_ticket', {
                method: 'post',
                headers: {
@@ -318,6 +320,7 @@ onSuccess = (payment) => {
        }
 onCancel = (data) => {
            // User pressed "cancel" or close Paypal's popup!
+           
            console.log('The payment was cancelled!', data);
            // You can bind the "data" object's value to your state or props or whatever here, please see below for sample returned data
        }
@@ -840,7 +843,6 @@ if(this.state.redirect_payment)
       <h1 style={{marginLeft:'500px'}}>Proceed to pay Using</h1>
       <div style={{marginLeft:'500px'}} onChange={this.paypal_button}>
       <input type="radio"  value="paypal" name="summa"/>&nbsp;&nbsp;<img style={{height:'37px'}} src="https://newsroom.mastercard.com/wp-content/uploads/2016/09/paypal-logo.png" alt="Girl in a jacket"/><br/>
-      <input type="radio"  value="others" name="summa"/>&nbsp;&nbsp;Others<br/>
       </div>
       <br/>
       <br/>

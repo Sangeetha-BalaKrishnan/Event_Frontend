@@ -6,6 +6,7 @@ import Cookies from 'universal-cookie';
 import './signin_org.css';
 import SocialButton from './SocialButton';
 import swal from 'sweetalert';
+import FacebookLogin from 'react-facebook-login';
 
 
 const cookies = new Cookies();
@@ -94,7 +95,7 @@ class Signin_cust extends Component{
       {
         var link = "/Events/"+cookies.get('link');
         this.setState({redirect_payment:true,error:false,link:link});
-        
+
       }
       else
       {
@@ -110,25 +111,31 @@ class Signin_cust extends Component{
   }
 
   facebookDataLogin(user){
-        
-        var name = user['_profile']['name'];
-        var email = user['_profile']['email'];
+
+        var name = user['name'];
+        var email = user['email'];
         var password = '12345678';
         var role = 'customer';
+        var userid = user['userID'];
         var phone = null;
-        console.log(JSON.stringify({name:user['_profile']['name'],role:'customer',email: user['_profile']['email'],phone:null, password:'12345678'}));
+        if(user['email'] ==  undefined || user['email'] == "" || user['email'] == null)
+          {
+            swal('Your account does not have email id . Please use our singup page to register yoursef.');
+            return ;
+          }
+        console.log(JSON.stringify({name:user['name'],role:'customer',email: user['email'],phone:null, password:'12345678'}));
         fetch('https://admin.thetickets.in/api/register1', {
           method: 'post',
           headers: {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({name:user['_profile']['name'],role:'customer',email: user['_profile']['email'],phone:null, password:'12345678'})
+          body: JSON.stringify({name:user['name'],role:'customer',email: user['email'],phone:null, password:'12345678'})
         }).then(res=>res.json())
           .then(res => {
             if(res.status==true)
             {
-              var email = user['_profile']['email'];
+              var email = user['email'];
               var password = '12345678';
               fetch('https://admin.thetickets.in/api/login', {
                 method: 'post',
@@ -136,7 +143,7 @@ class Signin_cust extends Component{
                   'Accept': 'application/json, text/plain, */*',
                   'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({email: user['_profile']['email'], password:'12345678',role:'customer'})
+                body: JSON.stringify({email: user['email'], password:'12345678',role:'customer'})
               }).then(res=>res.json())
                 .then(res => {
                   // console.log(res.status);
@@ -161,11 +168,11 @@ class Signin_cust extends Component{
                   {
                     this.setState({error:true,error_msg:res.error});
                   }
-                });  
+                });
             }
             else if(res.status == null)
             {
-              var email = user['_profile']['email'];
+              var email = user['email'];
               var password = '12345678';
               fetch('https://admin.thetickets.in/api/login', {
                 method: 'post',
@@ -173,7 +180,7 @@ class Signin_cust extends Component{
                   'Accept': 'application/json, text/plain, */*',
                   'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({email: user['_profile']['email'], password:'12345678',role:'customer'})
+                body: JSON.stringify({email: user['email'], password:'12345678',role:'customer'})
               }).then(res=>res.json())
                 .then(res => {
                   // console.log(res.status);
@@ -198,7 +205,7 @@ class Signin_cust extends Component{
                   {
                     this.setState({error:true,error_msg:res.error});
                   }
-                });  
+                });
 
 
 
@@ -207,10 +214,10 @@ class Signin_cust extends Component{
             {
               swal(res.error);
             }
-            
-            
+
+
           });
-        
+
       }
   render(){
     const handleSocialLogin = (user) => {
@@ -302,16 +309,14 @@ class Signin_cust extends Component{
   </ul>
 <br/>
 
-   <SocialButton
-      provider='facebook'
-      appId='246946452678768'
-      onLoginSuccess={handleSocialLogin}
-      onLoginFailure={handleSocialLoginFailure}
-      id="bttfb1"
-      className="btn btn-default"
-    >
-      Login with Facebook
-    </SocialButton>
+   <FacebookLogin
+      appId="246946452678768"
+      autoLoad={false}
+      fields="name,email,picture"
+      callback={handleSocialLogin}
+      onFailure = {handleSocialLoginFailure}
+      cssClass="btn btn-default bttfb1"
+    />
 
 </div>
 </div>
